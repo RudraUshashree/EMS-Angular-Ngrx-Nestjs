@@ -1,0 +1,32 @@
+<mat-card class="oh text-center little-profile">
+  <img mat-card-image src="assets/images/background/bg3.PNG" alt="">
+  <mat-card-content>
+    <div class="pro-img">
+      <img *ngIf="currentEmployee?.photoUrl" [src]="currentEmployee?.photoUrl" width="100" alt="user"
+        class="img-circle">
+    </div>
+    <mat-card-actions class="db">
+      <button mat-raised-button color="accent" (click)="onUpdateProfile()">Update Profile</button>
+    </mat-card-actions>
+    <div class="m-t-25">
+      <h5 class="m-0 font-light">Employee Name</h5>
+      <small id="employee-name">{{currentEmployee?.name}}</small>
+    </div>
+    <div class="m-t-25">
+      <h5 class="m-0 font-light">Email Id</h5>
+      <small>{{currentEmployee?.email}}</small>
+    </div>
+    <div class="m-t-25">
+      <h5 class="m-0 font-light">Date of Birth</h5>
+      <small>{{currentEmployee?.dob | date}}</small>
+    </div>
+    <div class="m-t-25">
+      <h5 class="m-0 font-light">Contact No.</h5>
+      <small>{{currentEmployee?.contact}}</small>
+    </div>
+    <div class="m-t-25">
+      <h5 class="m-0 font-light">Worked Technologies</h5>
+      <small>{{currentEmployee?.worked_technologies}}</small>
+    </div>
+  </mat-card-content>
+</mat-card>

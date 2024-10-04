@@ -1,0 +1,97 @@
+<mat-card>
+  <!-- <app-snack-bar #snackBar></app-snack-bar> -->
+  <div class="mat-elevation-z8">
+    <div class="p-4">
+      <div class="text-center">
+        <h3>Employees Leaves</h3>
+      </div>
+      <div>
+        <div class="row">
+          <div class="col-4 customDropdown">
+            <mat-form-field appearance="outline">
+              <mat-label>Leave Type</mat-label>
+              <mat-select [(ngModel)]="selectedLeaveType" (selectionChange)="applyFilters()">
+                <mat-option *ngFor="let leaveType of leaveTypeList" [value]="leaveType.value">{{ leaveType.displayValue
+                  }}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="col-4 customDropdown">
+            <mat-form-field appearance="outline">
+              <mat-label>Leave Status</mat-label>
+              <mat-select [(ngModel)]="selectedLeaveStatus" (selectionChange)="applyFilters()">
+                <mat-option *ngFor="let leaveStatus of leaveStatusList" [value]="leaveStatus.value">{{
+                  leaveStatus.displayValue }}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="col-4">
+            <button mat-flat-button color="warn" (click)="onClearFilters()">Clear Filters</button>
+          </div>
+        </div>
+      </div>
+
+      <table class="tableCustomWrapper" mat-table [dataSource]="dataSource">
+        <ng-container matColumnDef="createdAt">
+          <th mat-header-cell *matHeaderCellDef> Date </th>
+          <td mat-cell *matCellDef="let element"> {{element.createdAt | date}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef> Employee Name</th>
+          <td mat-cell *matCellDef="let element"> {{element?.emp?.name}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="start_date">
+          <th mat-header-cell *matHeaderCellDef> Start Date </th>
+          <td mat-cell *matCellDef="let element"> {{element.start_date | date}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="end_date">
+          <th mat-header-cell *matHeaderCellDef> End Date </th>
+          <td mat-cell *matCellDef="let element"> {{element.end_date | date}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="leaves_type">
+          <th mat-header-cell *matHeaderCellDef> Leave Type </th>
+          <td mat-cell *matCellDef="let element"> {{element.leaves_type}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="leaves">
+          <th mat-header-cell *matHeaderCellDef> Leaves </th>
+          <td mat-cell *matCellDef="let element"> {{element.leaves}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="duration">
+          <th mat-header-cell *matHeaderCellDef> Duration </th>
+          <td mat-cell *matCellDef="let element"> {{element.duration ? element.duration.replace('_', ' ') : '-'}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="reason">
+          <th mat-header-cell *matHeaderCellDef> Reason </th>
+          <td mat-cell *matCellDef="let element"> {{element.reason}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="leave_status">
+          <th mat-header-cell *matHeaderCellDef> Leave Status </th>
+          <td mat-cell *matCellDef="let element">
+            <mat-form-field>
+              <mat-select [value]="element.leave_status" (selectionChange)="onLeaveStatusChange($event, element)"
+                [disabled]="element.leave_status !== 'Pending'">
+                <mat-option *ngFor="let status of leaveStatusList" [value]="status.value">
+                  {{ status.displayValue }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+
+      <mat-paginator [pageSizeOptions]="[7, 14, 21]" showFirstLastButtons aria-label="Select page of periodic elements">
+      </mat-paginator>
+    </div>
+  </div>
+</mat-card>

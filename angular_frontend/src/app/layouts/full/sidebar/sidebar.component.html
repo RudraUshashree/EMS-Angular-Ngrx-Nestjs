@@ -1,0 +1,20 @@
+<div class="user-profile" style="background: url(assets/images/background/bg1.PNG) no-repeat;">
+  <div class="profile-img"> <img src="assets/images/users/user.PNG" alt="user"> </div>
+  <div class="profile-text">
+        <a class=""> Welcome {{ this.userName }} <i
+          class="ti-angle-down font-12 m-l-5"></i>
+        </a>
+  </div>
+</div>
+
+<mat-nav-list appAccordion>
+  <mat-list-item class="p-0" appAccordionLink *ngFor="let menuitem of menuItems" >
+    <a class="" appAccordionToggle [routerLink]=[menuitem.state] [routerLinkActive]="userRole === 'admin' ? 'active-admin' : 'active-employee'" [routerLinkActiveOptions]="{
+      exact: true
+   }" *ngIf="menuitem.type === 'link'">
+      <mat-icon>{{ menuitem.icon }}</mat-icon>
+      <span>{{ menuitem.name }}</span>
+      <span fxFlex></span>
+    </a>
+  </mat-list-item>
+</mat-nav-list>

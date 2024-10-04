@@ -1,0 +1,166 @@
+<mat-card>
+  <mat-card-content>
+    <div class="d-flex justify-content-end p-3">
+      <button mat-mini-fab color="warn" (click)="onClose()">
+        <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="close"></mat-icon>
+      </button>
+    </div>
+    <form class="basic-form" [formGroup]="updateEmployeeForm">
+      <div class="row">
+        <div class="col-6">
+          <mat-form-field>
+            <mat-label>Name</mat-label>
+            <input id="employeename" matInput placeholder="Full Name *" type="text" formControlName="name">
+            <mat-error *ngIf="updateEmployeeForm.get('name')?.hasError('required')">
+              Full Name is required
+            </mat-error>
+            <mat-error *ngIf="updateEmployeeForm.get('name')?.hasError('minlength')">
+              Name should have atleast 3 characters
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-6">
+          <mat-form-field>
+            <mat-label>Date of birth</mat-label>
+            <input matInput [matDatepicker]="picker" formControlName="dob">
+            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+            <mat-error *ngIf="updateEmployeeForm.get('dob')?.hasError('required')">
+              Date of birth is required
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-6">
+          <mat-form-field>
+            <mat-label>Contact No.</mat-label>
+            <input matInput placeholder="Conatct No. *" type="text" formControlName="contact">
+            <mat-error *ngIf="updateEmployeeForm.get('contact')?.hasError('required')">
+              Contact number is required
+            </mat-error>
+            <mat-error *ngIf="updateEmployeeForm.get('contact')?.hasError('pattern')">
+              Must be a 10-digit number
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-6">
+          <mat-form-field>
+            <mat-label>Address</mat-label>
+            <textarea matInput placeholder="Textarea" placeholder="Address *" formControlName="address"></textarea>
+            <mat-error *ngIf="updateEmployeeForm.get('address')?.hasError('required')">
+              Address is required
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-6">
+          <mat-form-field>
+            <mat-label>City</mat-label>
+            <input matInput placeholder="City" type="text" formControlName="city">
+          </mat-form-field>
+        </div>
+        <div class="col-6">
+          <mat-form-field>
+            <mat-label>Zipcode</mat-label>
+            <input matInput placeholder="Zipcode" type="text" formControlName="zipcode">
+            <mat-error *ngIf="updateEmployeeForm.get('zipcode')?.hasError('pattern')">
+              Must be a 5-6 digit number
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-6">
+          <mat-form-field>
+            <mat-label>Employee Type</mat-label>
+            <mat-select formControlName="emp_type">
+              @for (empType of empTypeList; track empType) {
+              <mat-option [value]="empType.value">{{empType.displayValue}}</mat-option>
+              }
+            </mat-select>
+            <mat-error *ngIf="updateEmployeeForm.get('emp_type')?.hasError('required')">
+              Employee Type is required
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-6">
+          <mat-form-field>
+            <mat-label>Work Type</mat-label>
+            <mat-select formControlName="work_type">
+              @for (workType of workTypeList; track workType) {
+              <mat-option [value]="workType.value">{{workType.displayValue}}</mat-option>
+              }
+            </mat-select>
+            <mat-error *ngIf="updateEmployeeForm.get('work_type')?.hasError('required')">
+              Work Type is required
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-6">
+          <mat-form-field>
+            <mat-label>Experience</mat-label>
+            <input matInput placeholder="Experience" type="number" formControlName="experience">
+            <mat-error *ngIf="updateEmployeeForm.get('experience')?.hasError('required')">
+              Experience is required
+            </mat-error>
+            <mat-error *ngIf="updateEmployeeForm.get('experience')?.hasError('min')">
+              Experience must be a positive number
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-6">
+          <mat-form-field>
+            <mat-label>Salary</mat-label>
+            <input matInput placeholder="Salary" type="number" formControlName="salary">
+            <mat-error *ngIf="updateEmployeeForm.get('salary')?.hasError('required')">
+              Salary is required
+            </mat-error>
+            <mat-error *ngIf="updateEmployeeForm.get('salary')?.hasError('min')">
+              Salary must be a positive number
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-6">
+          <mat-form-field>
+            <mat-label>Date of Joining</mat-label>
+            <input matInput [matDatepicker]="picker1" formControlName="doj">
+            <mat-datepicker-toggle matIconSuffix [for]="picker1"></mat-datepicker-toggle>
+            <mat-datepicker #picker1></mat-datepicker>
+            <mat-error *ngIf="updateEmployeeForm.get('doj')?.hasError('required')">
+              Date of joining is required
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-6">
+          <mat-form-field>
+            <mat-label>Worked Technologies</mat-label>
+            <mat-select formControlName="worked_technologies" multiple>
+              <mat-option *ngFor="let workedTechnology of workedTechnologies" [value]="workedTechnology.value">
+                {{workedTechnology.displayValue}}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="updateEmployeeForm.get('worked_technologies')?.hasError('required')">
+              Please select at least one technology
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="col-12 text-center">
+        <button mat-flat-button color="primary" (click)="onUpdateEmployee()"
+          [disabled]="updateEmployeeForm.invalid">Update</button>
+      </div>
+    </form>
+  </mat-card-content>
+</mat-card>

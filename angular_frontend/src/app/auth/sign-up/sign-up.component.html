@@ -1,0 +1,205 @@
+<div class="container">
+  <mat-card-content class="form-main-wrapper">
+    <form class="basic-form" [formGroup]="employeeSignUpForm" (ngSubmit)="onSignUp()" enctype="multipart/form-data">
+      <div class="col-12 text-center">
+        <h3>Sign Up</h3>
+      </div>
+
+      <div class="row">
+        <div class="col-6">
+          <mat-form-field>
+            <input matInput placeholder="Full Name *" formControlName="name" type="text">
+            <mat-error *ngIf="employeeSignUpForm.get('name')?.hasError('required')">
+              Full Name is required
+            </mat-error>
+            <mat-error *ngIf="employeeSignUpForm.get('name')?.hasError('minlength')">
+              Name should have atleast 3 characters
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="col-6">
+          <mat-form-field>
+            <input matInput placeholder="Email Id *" formControlName="email" type="email">
+            <mat-error *ngIf="employeeSignUpForm.get('email')?.hasError('required')">
+              Email is required
+            </mat-error>
+            <mat-error *ngIf="employeeSignUpForm.get('email')?.hasError('email')">
+              Invalid email address
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-6">
+          <mat-form-field>
+            <input matInput placeholder="Password *" formControlName="password" type="password">
+            <mat-error *ngIf="employeeSignUpForm.get('password')?.hasError('required')">
+              Password is required
+            </mat-error>
+            <mat-error *ngIf="employeeSignUpForm.get('password')?.hasError('minlength')">
+              Password must be at least 4 characters long
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="col-6 date-wrapper">
+          <mat-form-field>
+            <mat-label>Date of Birth</mat-label>
+            <input matInput [matDatepicker]="picker" formControlName="dob">
+            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+            <mat-error *ngIf="employeeSignUpForm.get('dob')?.hasError('required')">
+              Date of birth is required
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-6">
+          <mat-form-field>
+            <input matInput placeholder="Contact No. *" formControlName="contact" type="text">
+            <mat-error *ngIf="employeeSignUpForm.get('contact')?.hasError('required')">
+              Contact number is required
+            </mat-error>
+            <mat-error *ngIf="employeeSignUpForm.get('contact')?.hasError('pattern')">
+              Must be a 10-digit number
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="col-6">
+          <mat-form-field>
+            <textarea matInput placeholder="Address *" formControlName="address"></textarea>
+            <mat-error *ngIf="employeeSignUpForm.get('address')?.hasError('required')">
+              Address is required
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-6">
+          <mat-form-field>
+            <input matInput placeholder="City" formControlName="city" type="text">
+          </mat-form-field>
+        </div>
+
+        <div class="col-6">
+          <mat-form-field>
+            <input matInput placeholder="Zipcode" formControlName="zipcode" type="text">
+            <mat-error *ngIf="employeeSignUpForm.get('zipcode')?.hasError('pattern')">
+              Must be a 5-6 digit number
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-6">
+          <mat-form-field>
+            <mat-label>Employee Type</mat-label>
+            <mat-select formControlName="emp_type">
+              <mat-option *ngFor="let empType of empTypeList"
+                [value]="empType.value">{{empType.displayValue}}</mat-option>
+            </mat-select>
+            <mat-error *ngIf="employeeSignUpForm.get('emp_type')?.hasError('required')">
+              Employee Type is required
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="col-6">
+          <mat-form-field>
+            <mat-label>Work Type</mat-label>
+            <mat-select formControlName="work_type">
+              <mat-option *ngFor="let workType of workTypeList"
+                [value]="workType.value">{{workType.displayValue}}</mat-option>
+            </mat-select>
+            <mat-error *ngIf="employeeSignUpForm.get('work_type')?.hasError('required')">
+              Work Type is required
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-6">
+          <mat-form-field>
+            <input matInput placeholder="Experience *" formControlName="experience" type="number">
+            <mat-error *ngIf="employeeSignUpForm.get('experience')?.hasError('required')">
+              Experience is required
+            </mat-error>
+            <mat-error *ngIf="employeeSignUpForm.get('experience')?.hasError('min')">
+              Experience must be a positive number
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="col-6">
+          <mat-form-field>
+            <input matInput placeholder="Salary *" formControlName="salary" type="number">
+            <mat-error *ngIf="employeeSignUpForm.get('salary')?.hasError('required')">
+              Salary is required
+            </mat-error>
+            <mat-error *ngIf="employeeSignUpForm.get('salary')?.hasError('min')">
+              Salary must be a positive number
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-6 date-wrapper">
+          <mat-form-field>
+            <mat-label>Date of Joining</mat-label>
+            <input matInput [matDatepicker]="picker1" formControlName="doj">
+            <mat-datepicker-toggle matIconSuffix [for]="picker1"></mat-datepicker-toggle>
+            <mat-datepicker #picker1></mat-datepicker>
+            <mat-error *ngIf="employeeSignUpForm.get('doj')?.hasError('required')">
+              Date of joining is required
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="col-6">
+          <mat-form-field>
+            <mat-label>Worked Technologies</mat-label>
+            <mat-select formControlName="worked_technologies" multiple>
+              <mat-option *ngFor="let workedTechnology of workedTechnologies" [value]="workedTechnology.value">
+                {{workedTechnology.displayValue}}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="employeeSignUpForm.get('worked_technologies')?.hasError('required')">
+              Please select at least one technology
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="w-100">
+        <label for="formFile" class="form-label text-start">Profile image</label>
+      </div>
+      <div class="mb-3 w-100 d-flex align-items-center gap-2">
+        <div class="profile-wrap">
+          <input class="form-control" type="file" id="image" formControlName="image" (change)="onFileChange($event)">
+        </div>
+        @if (imagePreview) {
+        <div class="img-wrap">
+          <img class="preview-img" [src]="imagePreview" alt="image-preview">
+        </div>
+        }
+      </div>
+
+      <div class="col-12">
+        <a href="" class="create-link" [routerLink]="['/auth/signin']"><strong>Already a user?</strong></a>
+      </div>
+
+      <div class="col-12 text-center">
+        <button mat-flat-button color="primary" [disabled]="employeeSignUpForm.invalid">Sign Up</button>
+      </div>
+    </form>
+  </mat-card-content>
+</div>

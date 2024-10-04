@@ -1,0 +1,52 @@
+<div class="row">
+  <div class="col-lg-4 col-sm-12">
+    <mat-card>
+      <mat-card-content class="text-center">
+        <mat-card-title>Total Employees</mat-card-title>
+        <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="group"></mat-icon>
+        <div>
+          <h1>{{employeesTotalCount}}</h1>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <div class="col-lg-4 col-sm-12">
+    <mat-card>
+      <mat-card-content class="text-center">
+        <mat-card-title>Active Employees</mat-card-title>
+        <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="person"></mat-icon>
+        <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="add"></mat-icon>
+        <div>
+          <h1>{{activeEmployeesCount}}</h1>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <div class="col-lg-4 col-sm-12">
+    <mat-card>
+      <mat-card-content class="text-center">
+        <mat-card-title>Inactive Employees</mat-card-title>
+        <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="person"></mat-icon>
+        <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="remove"></mat-icon>
+        <div>
+          <h1>{{inactiveEmployeesCount}}</h1>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-lg-8 col-sm-12">
+    @if(!(loading$ | async)){
+    <app-employee-type-chart [employeeTypes]="employeeTypes"></app-employee-type-chart>
+    }
+  </div>
+  <div class="col-lg-4 col-sm-12">
+    @if(!(loading$ | async)){
+    <app-work-type-chart [workTypes]="workTypes"></app-work-type-chart>
+    }
+  </div>
+</div>

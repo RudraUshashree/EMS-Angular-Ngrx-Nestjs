@@ -1,0 +1,23 @@
+<div class="row">
+  <div class="col-lg-8 col-sm-12">
+    @if(!(leaveLoading$ | async)){
+    <app-employee-leaves-types-chart [leavesTypes]="leavesTypes"></app-employee-leaves-types-chart>
+    }
+  </div>
+  <div class="col-lg-4 col-sm-12">
+    @if(!(leaveLoading$ | async)){
+    <app-employee-leaves-status-chart [leaveStatus]="leaveStatus"></app-employee-leaves-status-chart>
+    }
+  </div>
+</div>
+<div class="row">
+  <div class="col-lg-3 col-sm-12">
+    <app-profile [currentEmployee]="employee$ | async"
+      (updateButtonClicked)="onUpdateProfileButtonClicked()"></app-profile>
+  </div>
+  <div class="col-lg-9 col-sm-12">
+    <app-update-profile *ngIf="showUpdateProfileForm" [currentEmployee]="employee$ | async"
+      (closeButtonClicked)="onCloseButtonClicked()"></app-update-profile>
+    <app-manage-employee></app-manage-employee>
+  </div>
+</div>

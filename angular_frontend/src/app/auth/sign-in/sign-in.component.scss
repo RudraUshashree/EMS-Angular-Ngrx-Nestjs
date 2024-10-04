@@ -1,0 +1,60 @@
+.container{
+  display: flex;
+  max-width: 1140px;
+  margin: 0 auto;
+  height: 100vh;
+  padding: 50px 0;
+  justify-content: center;
+  @media (max-width: 1199px) {
+    max-width: 920px;
+  }
+  @media (max-width: 991px) {
+    max-width: 720px;
+  }
+  @media (max-width: 767px) {
+    max-width: 100%;
+    padding: 16px;
+  }
+}
+
+.btn-signin {
+  padding-bottom: 20px;
+}
+
+.header{
+  color: white;
+}
+
+.validation {
+  color: red;
+  padding-bottom: 20px;
+}
+
+.create-link {
+  color: #000;
+}
+
+.form-main-wrapper {
+  margin: auto;
+  max-width: 540px;
+}
+
+.basic-form {
+  background: #fff;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: auto;
+  box-sizing: border-box;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.5);
+}
+
+.basic-form h3 {
+  color: #333;
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 28px;
+}

@@ -1,0 +1,209 @@
+<mat-card>
+  <mat-tab-group mat-stretch-tabs="false" [(selectedIndex)]="selectedTabIndex">
+    <mat-tab label="Employees">
+      <div class="mat-elevation-z8 search-filter-section">
+        <div>
+          <mat-form-field appearance="outline">
+            <input matInput [(ngModel)]="searchControl.value" (input)="onSearch($event)"
+              placeholder="Search Employee by Name">
+          </mat-form-field>
+        </div>
+
+        <div>
+          <div class="row">
+            <div class="col-4">
+              <mat-form-field appearance="outline">
+                <mat-label>Employee Type</mat-label>
+                <mat-select [(ngModel)]="selectedEmpType" (selectionChange)="applyFilters()" className="select-field">
+                  <mat-option *ngFor="let empType of empTypeList" [value]="empType.value">{{ empType.displayValue
+                    }}</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div class="col-4">
+              <mat-form-field appearance="outline">
+                <mat-label>Technologies</mat-label>
+                <mat-select [(ngModel)]="selectedworkedTechnologies" (selectionChange)="applyFilters()" multiple>
+                  <mat-option *ngFor="let workedTechnology of workedTechnologies" [value]="workedTechnology.value">{{
+                    workedTechnology.displayValue }}</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div class="col-4">
+              <button mat-flat-button color="warn" (click)="onClearFilters()">Clear Filters</button>
+            </div>
+          </div>
+        </div>
+        <table mat-table [dataSource]="dataSource">
+          <ng-container matColumnDef="image">
+            <th mat-header-cell *matHeaderCellDef> Image </th>
+            <td mat-cell *matCellDef="let element">
+              <img class="image" *ngIf="element.photoUrl" [src]="element.photoUrl" alt="{{ element.name }}" width="50"
+                height="50">
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef> Name </th>
+            <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="email">
+            <th mat-header-cell *matHeaderCellDef> Email Id </th>
+            <td mat-cell *matCellDef="let element"> {{element.email}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="dob">
+            <th mat-header-cell *matHeaderCellDef> Date of Joining </th>
+            <td mat-cell *matCellDef="let element"> {{element.dob | date}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="contact">
+            <th mat-header-cell *matHeaderCellDef> Contact No. </th>
+            <td mat-cell *matCellDef="let element"> {{element.contact}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="city">
+            <th mat-header-cell *matHeaderCellDef> City </th>
+            <td mat-cell *matCellDef="let element"> {{element.city}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="experience">
+            <th mat-header-cell *matHeaderCellDef> Experience </th>
+            <td mat-cell *matCellDef="let element"> {{element.experience}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="emp_type">
+            <th mat-header-cell *matHeaderCellDef> Employee Type </th>
+            <td mat-cell *matCellDef="let element"> {{ element.emp_type.replace('_', ' ') }} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="worked_technologies">
+            <th mat-header-cell *matHeaderCellDef> Worked Technologies </th>
+            <td mat-cell *matCellDef="let element"> {{element.worked_technologies}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="status">
+            <th mat-header-cell *matHeaderCellDef> status </th>
+            <td mat-cell *matCellDef="let element"> {{element.status}} </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="onRowClicked(row)"></tr>
+        </table>
+
+        <mat-paginator [pageSizeOptions]="[10, 20, 30]" showFirstLastButtons
+          aria-label="Select page of periodic elements">
+        </mat-paginator>
+      </div>
+    </mat-tab>
+
+    <mat-tab label="Update Employee Status" [disabled]="selectedTabIndex === 0 ? true : false">
+      <mat-card-content>
+        <form class="basic-form" [formGroup]="employeeForm">
+          <div class="row text-center">
+            <div class="col-12">
+              <img *ngIf="photoUrl" [src]="photoUrl" width="100" height="100" alt="user" class="img-circle">
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-6">
+              <mat-form-field appearance="outline">
+                <mat-label>Name</mat-label>
+                <input matInput placeholder="Name" readonly formControlName="name">
+              </mat-form-field>
+            </div>
+            <div class="col-6">
+              <mat-form-field appearance="outline">
+                <mat-label>Date of birth</mat-label>
+                <input matInput readonly formControlName="dob">
+              </mat-form-field>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-6">
+              <mat-form-field appearance="outline">
+                <mat-label>Contact No.</mat-label>
+                <input matInput readonly formControlName="contact">
+              </mat-form-field>
+            </div>
+            <div class="col-6">
+              <mat-form-field appearance="outline">
+                <mat-label>Address</mat-label>
+                <input matInput readonly formControlName="address">
+              </mat-form-field>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-6">
+              <mat-form-field appearance="outline">
+                <mat-label>City</mat-label>
+                <input matInput readonly formControlName="city">
+              </mat-form-field>
+            </div>
+            <div class="col-6">
+              <mat-form-field appearance="outline">
+                <mat-label>Zipcode</mat-label>
+                <input matInput readonly formControlName="zipcode">
+              </mat-form-field>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-6">
+              <mat-form-field appearance="outline">
+                <mat-label>Employee Type</mat-label>
+                <input matInput readonly formControlName="emp_type">
+              </mat-form-field>
+            </div>
+            <div class="col-6">
+              <mat-form-field appearance="outline">
+                <mat-label>Work Type</mat-label>
+                <input matInput readonly formControlName="work_type">
+              </mat-form-field>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-6">
+              <mat-form-field appearance="outline">
+                <mat-label>Experience</mat-label>
+                <input matInput readonly formControlName="experience">
+              </mat-form-field>
+            </div>
+            <div class="col-6">
+              <mat-form-field appearance="outline">
+                <mat-label>Salary</mat-label>
+                <input matInput readonly formControlName="salary">
+              </mat-form-field>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-6">
+              <mat-form-field appearance="outline">
+                <mat-label>Worked Technologies</mat-label>
+                <input matInput readonly formControlName="worked_technologies">
+              </mat-form-field>
+            </div>
+            <div class="col-6">
+              <mat-form-field appearance="outline">
+                <mat-label>Employee Status</mat-label>
+                <mat-select formControlName="status">
+                  <mat-option value="Active">Active</mat-option>
+                  <mat-option value="Inactive">Inactive</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="col-12 text-center">
+            <button mat-flat-button color="primary" (click)="onUpdateStatus()">Update Employee Status</button>
+          </div>
+        </form>
+      </mat-card-content>
+    </mat-tab>
+  </mat-tab-group>
+</mat-card>

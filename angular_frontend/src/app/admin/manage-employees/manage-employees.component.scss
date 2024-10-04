@@ -1,0 +1,55 @@
+.mat-mdc-row:hover {
+  background-color: rgba(0, 0, 0, 0.08);
+  cursor: pointer;
+}
+
+.mat-mdc-card {
+  padding: 0px 16px;
+}
+
+.image {
+  border-radius: 10px;
+}
+
+.search-filter-section {
+  margin-top: 20px;
+
+  ::ng-deep .mat-mdc-form-field {
+    .mat-mdc-text-field-wrapper {
+      .mat-mdc-form-field-flex {
+        .mdc-notched-outline {
+          .mdc-notched-outline__notch {
+            .mdc-floating-label {
+              top: 50%;
+
+              mat-label {
+                font-size: 14px;
+                line-height: normal;
+              }
+            }
+          }
+        }
+
+        .mat-mdc-form-field-infix {
+          padding: 6px 0px;
+          min-height: auto;
+
+          .mat-mdc-input-element {
+            font-size: 14px;
+            line-height: normal;
+          }
+        }
+      }
+    }
+  }
+}
+
+::ng-deep .mat-mdc-select-panel-above {
+  .mat-mdc-select-panel {
+    .mat-mdc-option {
+      min-height: 36px;
+      font-size: 14px;
+      line-height: normal;
+    }
+  }
+}
