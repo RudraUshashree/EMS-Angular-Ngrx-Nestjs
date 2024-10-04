@@ -7,9 +7,9 @@ import { catchError, exhaustMap, map, of } from "rxjs";
 import { ILoginPayload, ILoginResponse, ISignupResponse } from 'src/app/models/auth.model';
 
 @Injectable()
-export class AuthEffects  {
+export class AuthEffects {
 
-  constructor(private actions$: Actions, private authService: AuthService, private snackBarService:SnackBarService) { }
+  constructor(private actions$: Actions, private authService: AuthService, private snackBarService: SnackBarService) { }
 
   login$ = createEffect(() => this.actions$.pipe(
     ofType(login.type),
@@ -20,8 +20,9 @@ export class AuthEffects  {
           return { type: loginSuccess.type, res };
         }),
         catchError((error) => {
-          this.snackBarService.openAlert({message: error, type: "error"})
-          return of({ type: loginError.type, error })})
+          this.snackBarService.openAlert({ message: error, type: "error" })
+          return of({ type: loginError.type, error })
+        })
       )
     )
   ));
@@ -31,15 +32,17 @@ export class AuthEffects  {
     exhaustMap((props: { payload: FormData, type: string }) =>
       this.authService.signUpEmployee(props.payload).pipe(
         map((res: ISignupResponse) => {
-          if(res){
-            this.snackBarService.openAlert({message: res.message, type: "success"})
+          if (res) {
+            this.snackBarService.openAlert({ message: res.message, type: "success" })
           }
-          return { type: signupSuccess.type, res }}
+          return { type: signupSuccess.type, res }
+        }
         ),
         catchError((error) => {
           const errorMsg = error?.error?.message;
-          this.snackBarService.openAlert({message: errorMsg, type: "error"})
-          return of({ type: signupError.type, error })})
+          this.snackBarService.openAlert({ message: errorMsg, type: "error" })
+          return of({ type: signupError.type, error })
+        })
       )
     )
   ));

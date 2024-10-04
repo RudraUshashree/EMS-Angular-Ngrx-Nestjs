@@ -27,14 +27,11 @@ export const leaveReducer = createReducer(
   on(addLeave, (state): LeaveState => ({ ...state, loading: true })),
   on(AddLeaveSuccess, (state, { res }): LeaveState => {
     return { ...state, loading: false, addLeave: res, leaves: { balanced_leaves: res.balanced_leaves, leaves: [res.leave, ...(state.leaves?.leaves ?? [])] } };
-    // return { ...state, loading: false, addLeave : res, leaves: { balanced_leaves: res.balanced_leaves, leaves: [...(state.leaves?.leaves ?? []), res.leave]}};
-    // return { ...state, loading: false, addLeave : res, leaves: [res.leave, ...(state.leaves ?? [])] };
   }),
   on(AddLeaveError, (state, { error }): LeaveState => ({ ...state, loading: false, error })),
 
   // Get All Employees Leaves
   on(getEmployeesLeaves, (state): LeaveState => ({ ...state, loading: true })),
-  // on(getEmployeesLeavesSuccess, (state, { res }) => ({ ...state, loading: false, leaves: res })),
   on(getEmployeesLeavesSuccess, (state, { res }): LeaveState => {
     return { ...state, loading: false, leaves: { balanced_leaves: 0, leaves: res } }
   }),
@@ -61,7 +58,7 @@ export const leaveReducer = createReducer(
         res.leave,
         ...state.leaves.leaves.slice(leaveIndex + 1)
       ];
-      return { ...state, loading: false, leaves: {balanced_leaves : 0, leaves: updatedLeaves} };
+      return { ...state, loading: false, leaves: { balanced_leaves: 0, leaves: updatedLeaves } };
     }
 
     // If leave not found, return the state without modifications
@@ -81,11 +78,11 @@ export const leaveReducer = createReducer(
 
   // Filter Employees Leaves
   on(filterEmployeesLeaves, (state) => ({ ...state, loading: true })),
-  on(filterEmployeesLeavesSuccess, (state, { res }) => ({ ...state, loading: false, leaves: {balanced_leaves: 0, leaves: res} })),
+  on(filterEmployeesLeavesSuccess, (state, { res }) => ({ ...state, loading: false, leaves: { balanced_leaves: 0, leaves: res } })),
   on(filterEmployeesLeavesError, (state, { error }) => ({ ...state, loading: false, error })),
 
   // Filter One Employee Leaves
   on(filterOneEmployeeLeaves, (state) => ({ ...state, loading: true })),
-  on(filterOneEmployeeLeavesSuccess, (state, { res }) => ({ ...state, loading: false, leaves: {balanced_leaves: 0, leaves: res} })),
+  on(filterOneEmployeeLeavesSuccess, (state, { res }) => ({ ...state, loading: false, leaves: { balanced_leaves: 0, leaves: res } })),
   on(filterOneEmployeeLeavesError, (state, { error }) => ({ ...state, loading: false, error }))
 );

@@ -18,11 +18,21 @@ import { getEmployeeLeaves } from 'src/app/store/leaves/actions';
 import { leaveStatusData } from 'src/app/shared/data/leave-status.data';
 import { LeaveTypeData } from 'src/app/shared/data/leaves-type.data';
 import { EmployeeLeavesStatusChartComponent } from './emp-dashboard-components/employee-leaves-status-chart/employee-leaves-status-chart.component';
+import { SpinnerComponent } from 'src/app/shared/spinner.component';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [NgIf, EmployeeLeavesTypesChartComponent, EmployeeLeavesStatusChartComponent, ProfileComponent, ManageEmployeeComponent, UpdateProfileComponent, CommonModule],
+  imports: [
+    CommonModule,
+    NgIf,
+    EmployeeLeavesTypesChartComponent,
+    EmployeeLeavesStatusChartComponent,
+    ProfileComponent,
+    ManageEmployeeComponent,
+    UpdateProfileComponent,
+    SpinnerComponent
+  ],
   templateUrl: './emp-dashboard.component.html'
 })
 export class EmployeeDashboardComponent implements OnInit, OnDestroy {

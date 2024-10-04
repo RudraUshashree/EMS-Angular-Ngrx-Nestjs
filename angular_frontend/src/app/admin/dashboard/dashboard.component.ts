@@ -6,10 +6,10 @@ import { EmployeeTypeChartComponent } from './dashboard-components/employee-type
 import { WorkTypeChartComponent } from './dashboard-components/work-type-chart/work-type-chart.component';
 import { ManageEmployeesComponent } from '../manage-employees/manage-employees.component';
 import { DemoMaterialModule } from 'src/app/demo-material-module';
-import { selectGetEmployees, selectGetEmployeesLoading, selectUpdateEmployee } from 'src/app/store/employee/selectors';
+import { selectGetEmployees, selectGetEmployeesLoading } from 'src/app/store/employee/selectors';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/store/reducer';
-import { IEmployee, IUpdateEmployeeResponse } from 'src/app/models/employee.model';
+import { IEmployee } from 'src/app/models/employee.model';
 import { Observable, Subject, takeUntil } from 'rxjs';
 import { getEmployees } from 'src/app/store/employee/actions';
 import { ListModel } from 'src/app/models/list-model';
@@ -18,11 +18,21 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { WorkedTechnologiesData } from 'src/app/shared/data/worked-technologies.data';
+import { SpinnerComponent } from 'src/app/shared/spinner.component';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, FormsModule, EmployeeTypeChartComponent, WorkTypeChartComponent, DemoMaterialModule, ManageEmployeesComponent],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    FormsModule,
+    EmployeeTypeChartComponent,
+    WorkTypeChartComponent,
+    DemoMaterialModule,
+    ManageEmployeesComponent,
+    SpinnerComponent
+  ],
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss']
 })
@@ -34,9 +44,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
    * Observables for handling employees, search results, employee status updates, and loading states.
    */
   private destroy$ = new Subject<void>();
-  filteredEmployees$: Observable<IEmployee[]>;
-  searchEmployees$: Observable<IEmployee[]>;
-  updateEmployeeStatus$: Observable<IUpdateEmployeeResponse | null>;
   loading$: Observable<boolean>;
   employees$: Observable<IEmployee[] | []>;
 
@@ -106,9 +113,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
   ) {
     this.employees$ = this.store.select(selectGetEmployees);
     this.loading$ = this.store.select(selectGetEmployeesLoading);
-    this.updateEmployeeStatus$ = this.store.select(selectUpdateEmployee);
-    this.filteredEmployees$ = this.store.select(selectGetEmployees);
-    this.searchEmployees$ = this.store.select(selectGetEmployees);
   }
 
   ngOnInit(): void {

@@ -1,3 +1,7 @@
+@if(loading$ | async){
+  <app-spinner></app-spinner>
+}
+
 <div class="p-2">
   <button mat-flat-button color="accent" (click)="onAddLeaveButtonClick()">
     <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="add"></mat-icon>Add Leave
@@ -55,7 +59,6 @@
               End date is required
             </mat-error>
           </mat-form-field>
-          <!-- <p>Selected range: {{ employeeLeaveForm.value.start | date }} - {{ employeeLeaveForm.value.end | date }}</p> -->
           <p *ngIf="numberOfDays > 1">Taken Leaves: {{ numberOfDays }}</p>
         </div>
         <div class="col-6" *ngIf="numberOfDays === 1">

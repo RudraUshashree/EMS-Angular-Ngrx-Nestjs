@@ -1,3 +1,7 @@
+@if(loading$ | async){
+  <app-spinner></app-spinner>
+}
+
 <mat-card>
   <mat-tab-group mat-stretch-tabs="false" [(selectedIndex)]="selectedTabIndex">
     <mat-tab label="Employees">

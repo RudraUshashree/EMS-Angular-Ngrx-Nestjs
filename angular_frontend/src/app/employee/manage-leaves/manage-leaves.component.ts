@@ -19,11 +19,19 @@ import { Store } from '@ngrx/store';
 import { selectAddLeave } from 'src/app/store/leaves/selectors';
 import { AppState } from 'src/app/store/reducer';
 import { addLeave, deleteEmployeeLeave, filterOneEmployeeLeaves, getEmployeeLeaves } from 'src/app/store/leaves/actions';
+import { SpinnerComponent } from 'src/app/shared/spinner.component';
 
 @Component({
   selector: 'app-leaves',
   standalone: true,
-  imports: [DemoMaterialModule, ReactiveFormsModule, SharedModule, NgIf, CommonModule],
+  imports: [
+    DemoMaterialModule,
+    ReactiveFormsModule,
+    SharedModule,
+    NgIf,
+    CommonModule,
+    SpinnerComponent
+  ],
   templateUrl: './manage-leaves.component.html',
   styleUrl: './manage-leaves.component.scss'
 })
@@ -98,7 +106,7 @@ export class ManageLeavesComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.empId = this.authService.getUserIdFromToken();
 
-    this.onloadEmployeeLeaves();
+    this.onLoadEmployeeLeaves();
     this.calculateNoOfDays();
     this.leaveSubscription();
     this.onApplyFilters();
@@ -137,9 +145,8 @@ export class ManageLeavesComponent implements OnInit, OnDestroy {
    */
   onClearFilters() {
     this.leaveTypesForm.reset();
-    this.onloadEmployeeLeaves();
+    this.onLoadEmployeeLeaves();
   }
-
 
   /**
    * Handles the "Add Leave" form submission, dispatching the leave data to the store.
@@ -188,7 +195,7 @@ export class ManageLeavesComponent implements OnInit, OnDestroy {
   /**
   * Dispatches an action to load all employee leaves.
   */
-  onloadEmployeeLeaves() {
+  onLoadEmployeeLeaves() {
     this.store.dispatch(getEmployeeLeaves({ empId: this.empId }));
   }
 

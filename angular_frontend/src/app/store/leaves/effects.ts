@@ -41,6 +41,7 @@ export class LeaveEffects {
 
   constructor(private actions$: Actions, private leavesService: LeavesService, private snackBarService: SnackBarService) { }
 
+  //Add Leaves
   addLeave$ = createEffect(() => this.actions$.pipe(
     ofType(addLeave.type),
     exhaustMap((props: { payload: ILeaveAddPayload, type: string }) =>
@@ -57,6 +58,7 @@ export class LeaveEffects {
     )
   ));
 
+  //Get All Employees Leaves
   getEmployeesLeaves$ = createEffect(() => this.actions$.pipe(
     ofType(getEmployeesLeaves.type),
     exhaustMap(() =>
@@ -72,6 +74,7 @@ export class LeaveEffects {
     )
   ));
 
+  //Get One Employee Leave
   getEmployeeLeaves$ = createEffect(() => this.actions$.pipe(
     ofType(getEmployeeLeaves.type),
     exhaustMap((props: { empId: string, type: string }) =>
@@ -144,8 +147,8 @@ export class LeaveEffects {
   //Filter One Employee Leaves
   filterOneEmployeeLeaves$ = createEffect(() => this.actions$.pipe(
     ofType(filterOneEmployeeLeaves.type),
-    exhaustMap((props: {empId: string, leaveType: string, type: string }) =>
-      this.leavesService.filterOneEmployeeLeaves(props.empId ,props.leaveType).pipe(
+    exhaustMap((props: { empId: string, leaveType: string, type: string }) =>
+      this.leavesService.filterOneEmployeeLeaves(props.empId, props.leaveType).pipe(
         map((res: ILeave[]) => {
           return { type: filterOneEmployeeLeavesSuccess.type, res };
         }),

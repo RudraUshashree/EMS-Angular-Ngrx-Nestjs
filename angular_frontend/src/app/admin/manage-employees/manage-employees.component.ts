@@ -14,11 +14,20 @@ import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/store/reducer';
 import { filterEmployees, getEmployees, searchEmployees, updateEmployeeStatus } from 'src/app/store/employee/actions';
 import { SnackBarService } from 'src/app/services/snackbar.service';
+import { SpinnerComponent } from 'src/app/shared/spinner.component';
 
 @Component({
   selector: 'app-manage-employees',
   standalone: true,
-  imports: [DemoMaterialModule, NgIf, NgFor, FormsModule, ReactiveFormsModule, CommonModule],
+  imports: [
+    DemoMaterialModule,
+    NgIf,
+    NgFor,
+    FormsModule,
+    ReactiveFormsModule,
+    CommonModule,
+    SpinnerComponent
+  ],
   templateUrl: './manage-employees.component.html',
   styleUrls: ['./manage-employees.component.scss']
 })

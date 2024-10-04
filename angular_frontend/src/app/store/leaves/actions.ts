@@ -68,7 +68,7 @@ export const updateEmployeeLeaveStatusError = createAction(
 // Delete Employee Leaves
 export const deleteEmployeeLeave = createAction(
   '[Leave] DeleteEmployeeLeave',
-  props<{ leaveId: string , noOfLeaves: number }>()
+  props<{ leaveId: string, noOfLeaves: number }>()
 );
 
 export const deleteEmployeeLeaveSuccess = createAction(
@@ -101,7 +101,7 @@ export const filterEmployeesLeavesError = createAction(
 // Filter One Employee Leaves
 export const filterOneEmployeeLeaves = createAction(
   '[Leave] filterOneEmployeeLeaves',
-  props<{empId: string, leaveType: string }>()
+  props<{ empId: string, leaveType: string }>()
 );
 
 export const filterOneEmployeeLeavesSuccess = createAction(

@@ -15,11 +15,12 @@ import { filterEmployees, getEmployees, searchEmployees } from 'src/app/store/em
 import { IEmployee } from 'src/app/models/employee.model';
 import { selectGetEmployees } from 'src/app/store/employee/selectors';
 import { SnackBarService } from 'src/app/services/snackbar.service';
+import { SpinnerComponent } from 'src/app/shared/spinner.component';
 
 @Component({
   selector: 'app-manage-employee',
   standalone: true,
-  imports: [DemoMaterialModule, NgIf, NgFor, FormsModule, ReactiveFormsModule],
+  imports: [DemoMaterialModule, NgIf, NgFor, FormsModule, ReactiveFormsModule, SpinnerComponent],
   templateUrl: './manage-employee.component.html',
   styleUrl: './manage-employee.component.scss'
 })

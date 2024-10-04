@@ -15,11 +15,20 @@ import { SharedModule } from 'src/app/shared/shared.module';
 import { filterEmployeesLeaves, getEmployeesLeaves, updateEmployeeLeaveStatus } from 'src/app/store/leaves/actions';
 import { selectEmployeeLeaves, selectLeaveLoading } from 'src/app/store/leaves/selectors';
 import { AppState } from 'src/app/store/reducer';
+import { SpinnerComponent } from 'src/app/shared/spinner.component';
 
 @Component({
   selector: 'app-manage-employees-leaves',
   standalone: true,
-  imports: [DemoMaterialModule, FormsModule, ReactiveFormsModule, SharedModule, NgIf, CommonModule],
+  imports: [
+    DemoMaterialModule,
+    FormsModule,
+    ReactiveFormsModule,
+    SharedModule,
+    NgIf,
+    CommonModule,
+    SpinnerComponent
+  ],
   templateUrl: './manage-employees-leaves.component.html',
   styleUrl: './manage-employees-leaves.component.scss'
 })

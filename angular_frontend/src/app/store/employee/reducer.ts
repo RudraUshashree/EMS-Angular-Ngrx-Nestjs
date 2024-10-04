@@ -1,6 +1,24 @@
 import { createReducer, on } from '@ngrx/store';
 import { IEmployee, IUpdateEmployeeResponse } from 'src/app/models/employee.model';
-import { filterEmployees, filterEmployeesError, filterEmployeesSuccess, getEmployees, getEmployeesError, getEmployeesSuccess, getOneEmployee, getOneEmployeeError, getOneEmployeeSuccess, searchEmployees, searchEmployeesError, searchEmployeesSuccess, updateEmployee, updateEmployeeError, updateEmployeeStatus, updateEmployeeStatusError, updateEmployeeStatusSuccess, updateEmployeeSuccess } from './actions';
+import {
+  filterEmployees,
+  filterEmployeesError,
+  filterEmployeesSuccess,
+  getEmployees, getEmployeesError,
+  getEmployeesSuccess,
+  getOneEmployee,
+  getOneEmployeeError,
+  getOneEmployeeSuccess,
+  searchEmployees,
+  searchEmployeesError,
+  searchEmployeesSuccess,
+  updateEmployee,
+  updateEmployeeError,
+  updateEmployeeStatus,
+  updateEmployeeStatusError,
+  updateEmployeeStatusSuccess,
+  updateEmployeeSuccess
+} from './actions';
 
 export interface EmployeesState {
   loading: boolean;
@@ -35,24 +53,24 @@ export const employeeReducer = createReducer(
   on(updateEmployeeSuccess, (state, { res }) => ({ ...state, loading: false, employee: res.employee })),
   on(updateEmployeeError, (state, { error }) => ({ ...state, loading: false, error })),
 
-   // Update Employee Status
-   on(updateEmployeeStatus, (state) => ({ ...state, loading: true })),
-   on(updateEmployeeStatusSuccess, (state, { res }): EmployeesState => {
-     const employeeIndex = state.employees.findIndex(emp => emp._id === res.employee._id);
+  // Update Employee Status
+  on(updateEmployeeStatus, (state) => ({ ...state, loading: true })),
+  on(updateEmployeeStatusSuccess, (state, { res }): EmployeesState => {
+    const employeeIndex = state.employees.findIndex(emp => emp._id === res.employee._id);
     //   Check if the employee exists in the current state
-     if (employeeIndex > -1) {
-       const updatedEmployees = [
-         ...state.employees.slice(0, employeeIndex),
-         res.employee,
-         ...state.employees.slice(employeeIndex + 1)
-       ];
-       return { ...state, loading: false, employees: updatedEmployees };
-     }
+    if (employeeIndex > -1) {
+      const updatedEmployees = [
+        ...state.employees.slice(0, employeeIndex),
+        res.employee,
+        ...state.employees.slice(employeeIndex + 1)
+      ];
+      return { ...state, loading: false, employees: updatedEmployees };
+    }
 
-     // If employee not found, return the state without modifications
-     return { ...state, loading: false };
-   }),
-   on(updateEmployeeStatusError, (state, { error }) => ({ ...state, loading: false, error })),
+    // If employee not found, return the state without modifications
+    return { ...state, loading: false };
+  }),
+  on(updateEmployeeStatusError, (state, { error }) => ({ ...state, loading: false, error })),
 
   // Filter Employees
   on(filterEmployees, (state) => ({ ...state, loading: true })),
