@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, NotFoundException, ServiceUnavailableException, UnauthorizedException } from "@nestjs/common";
+import { BadRequestException, Injectable, InternalServerErrorException, NotFoundException, ServiceUnavailableException, UnauthorizedException } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
 import { EMPLOYEE_MODEL, EmployeeDocument } from "../schemas/employee.schema";
@@ -85,12 +85,7 @@ export class LeaveService {
         try {
             return await this.leaveModel.find().sort({ createdAt: -1 });
         } catch (error) {
-            console.error(error);
-
-            // Handle specific error cases
-            if (error.name === 'ValidationError') {
-                throw new BadRequestException(error);
-            }
+            throw new InternalServerErrorException('An error while retriving leaves.')
         }
     }
 
@@ -118,28 +113,19 @@ export class LeaveService {
                 }
             }
         } catch (error) {
-            // Handle specific error cases
-            if (error.name === 'NotFoundException') {
-                throw new NotFoundException(error);
-            }
-            if (error.name === 'UnauthorizedException') {
-                throw new UnauthorizedException(error);
-            }
-            if (error.name === 'ValidationError') {
-                throw new BadRequestException(error);
-            }
+            throw new InternalServerErrorException('An error while retriving leaves of the employee.')
         }
     }
 
     /**
-   * Updates the status of a specific leave request and adjusts the employee's balanced leave if the leave is rejected.
-   * @param id The leave record ID.
-   * @param updateLeaveStatus The DTO containing updated leave status and other related information.
-   * @returns A message confirming the leave status update and the updated leave record.
-   * @throws NotFoundException if the leave record is not found.
-   * @throws BadRequestException if there is a validation error.
-   * @throws ServiceUnavailableException if the update fails due to a service issue.
-   */
+     * Updates the status of a specific leave request and adjusts the employee's balanced leave if the leave is rejected.
+     * @param id The leave record ID.
+     * @param updateLeaveStatus The DTO containing updated leave status and other related information.
+     * @returns A message confirming the leave status update and the updated leave record.
+     * @throws NotFoundException if the leave record is not found.
+     * @throws BadRequestException if there is a validation error.
+     * @throws ServiceUnavailableException if the update fails due to a service issue.
+     */
     async updateLeaveStatus(id: string, updateLeaveStatus: UpadteLeaveStatusDTO) {
         try {
 
@@ -184,14 +170,14 @@ export class LeaveService {
     }
 
     /**
-    * Deletes a specific leave record and updates the employee's leave balance.
-    * @param empId The employee's ID.
-    * @param id The leave record ID.
-    * @param leaves The number of leave days to be restored to the employee's balance.
-    * @returns A message confirming the leave deletion and the updated leave balance.
-    * @throws NotFoundException if the leave record is not found.
-    * @throws BadRequestException if there is a validation error.
-    */
+     * Deletes a specific leave record and updates the employee's leave balance.
+     * @param empId The employee's ID.
+     * @param id The leave record ID.
+     * @param leaves The number of leave days to be restored to the employee's balance.
+     * @returns A message confirming the leave deletion and the updated leave balance.
+     * @throws NotFoundException if the leave record is not found.
+     * @throws BadRequestException if there is a validation error.
+     */
     async deleteEmployeeLeave(empId: string, id: string, leaves: number) {
         try {
             const leave = await this.leaveModel.findByIdAndDelete(id);
@@ -218,9 +204,8 @@ export class LeaveService {
             if (error.name === 'NotFoundException') {
                 throw new NotFoundException(error);
             }
-            if (error.name === 'ValidationError') {
-                throw new BadRequestException(error);
-            }
+
+            throw new InternalServerErrorException('An error while deleting leave.')
         }
     }
 
@@ -231,17 +216,21 @@ export class LeaveService {
      * @returns A list of filtered leave records.
      */
     async filterEmployeesLeaves(leaveType?: string, leaveStatus?: string) {
-        const query: any = {};
+        try {
+            const query: any = {};
 
-        if (leaveType) {
-            query.leaves_type = leaveType;
+            if (leaveType) {
+                query.leaves_type = leaveType;
+            }
+
+            if (leaveStatus) {
+                query.leave_status = leaveStatus;
+            }
+
+            return this.leaveModel.find(query).exec();
+        } catch (error) {
+            throw new BadRequestException(error.errors);
         }
-
-        if (leaveStatus) {
-            query.leave_status = leaveStatus;
-        }
-
-        return this.leaveModel.find(query).exec();
     }
 
     /**
@@ -255,7 +244,7 @@ export class LeaveService {
         try {
             return this.leaveModel.find({ emp: empId, leaves_type: leaveType }).exec();
         } catch (error) {
-            throw new BadRequestException(error);
+            throw new InternalServerErrorException('An error while filtering leaves.')
         }
     }
 }

@@ -28,10 +28,7 @@ export class EmployeeService {
 		try {
 			const isEmployeeExists = await this.employeeModel.findOne({ email: addEmployeeDto.email });
 			if (isEmployeeExists) {
-				return {
-					message: 'An employee with this email already exists.',
-					statusCode: 409
-				};
+				throw new ConflictException('An employee with this email already exists.');
 			}
 
 			const filenames = addEmployeeDto.image.join('');
@@ -51,23 +48,22 @@ export class EmployeeService {
 
 		} catch (error) {
 			if (error.name === 'ValidationError') {
-				throw new BadRequestException('Validation failed: ' + error.message);
+				throw new BadRequestException('Validation failed: ' + error);
 			}
 
-			if (error.code === 11000) {
+			if (error.status === 409) {
 				throw new ConflictException('An employee with this email already exists.');
 			}
 
-			throw new InternalServerErrorException('An unexpected error occurred.');
+			throw new InternalServerErrorException('An error occurred while adding the employee.');
 		}
 	}
-
 	/**
-	* Retrieves all employees.
-	* @returns A list of all employees with their photo URL.
-	* @throws BadRequestException If validation fails.
-	* @throws ServiceUnavailableException If an unexpected error occurs.
-	*/
+	 * Retrieves all employees.
+	 * @returns A list of all employees with their photo URL.
+	 * @throws BadRequestException If validation fails.
+	 * @throws ServiceUnavailableException If an unexpected error occurs.
+	 */
 	async getAllEmployees() {
 		try {
 			const employees = await this.employeeModel.find().lean();
@@ -78,11 +74,7 @@ export class EmployeeService {
 			}));
 
 		} catch (error) {
-			if (error.name === 'ValidationError') {
-				throw new BadRequestException(error.errors);
-			}
-
-			throw new ServiceUnavailableException('Something went wrong please try again.');
+			throw new BadRequestException(error.errors);
 		}
 	}
 
@@ -125,6 +117,8 @@ export class EmployeeService {
 				employee: employeeWithPhotoUrl
 			};
 		} catch (error) {
+			console.log('error: ', error);
+
 			if (error instanceof NotFoundException) {
 				throw new NotFoundException(error.message);
 			}
@@ -137,23 +131,23 @@ export class EmployeeService {
 	}
 
 	/**
-	* Retrieves a specific employee's information based on their ID.
-	* @param id The ID of the employee to retrieve.
-	* @returns The employee record with the photo URL.
-	* @throws NotFoundException If the employee is not found.
-	* @throws BadRequestException If validation fails.
-	*/
+	 * Retrieves a specific employee's information based on their ID.
+	 * @param id The ID of the employee to retrieve.
+	 * @returns The employee record with the photo URL.
+	 * @throws NotFoundException If the employee is not found.
+	 * @throws BadRequestException If validation fails.
+	 */
 	async getEmployee(id: string) {
 		try {
 			const employee = await this.employeeModel.findById(id).lean();
 
+			if (!employee) {
+				throw new NotFoundException("Employee not found");
+			}
+
 			const emp = {
 				...employee,
 				photoUrl: `http://localhost:3000/${employee.image}`
-			}
-
-			if (!emp) {
-				throw new NotFoundException("Employee not found");
 			}
 
 			return emp;
@@ -162,21 +156,16 @@ export class EmployeeService {
 			if (error.name === 'NotFoundException') {
 				throw new NotFoundException(error.errors);
 			}
-			if (error.name === 'ValidationError') {
-				throw new BadRequestException(error.errors);
-			}
 		}
-
 	}
 
-
 	/**
-	   * Searches for employees based on a search term (by name).
-	   * @param searchTerm The search term to filter employees by name.
-	   * @returns A list of employees matching the search term with their photo URL.
-	   * @throws NotFoundException If no employees are found matching the search term.
-	   * @throws BadRequestException If validation fails.
-	   */
+	 * Searches for employees based on a search term (by name).
+	 * @param searchTerm The search term to filter employees by name.
+	 * @returns A list of employees matching the search term with their photo URL.
+	 * @throws NotFoundException If no employees are found matching the search term.
+	 * @throws BadRequestException If validation fails.
+	 */
 	async searchEmployee(searchTerm: string) {
 		try {
 			const regex = new RegExp(searchTerm, 'i');
@@ -194,9 +183,8 @@ export class EmployeeService {
 			if (error.name === 'NotFoundException') {
 				throw new NotFoundException(error.errors);
 			}
-			if (error.name === 'ValidationError') {
-				throw new BadRequestException(error.errors);
-			}
+
+			throw new BadRequestException(error.errors);
 		}
 	}
 
@@ -207,26 +195,31 @@ export class EmployeeService {
 	 * @returns A list of filtered employees with their photo URL.
 	 */
 	async filterEmployees(employeeType?: string, workedTechnologies?: string) {
-		const query: any = {};
+		try {
+			const query: any = {};
 
-		if (employeeType) {
-			query.emp_type = employeeType;
-		}
-
-		if (workedTechnologies) {
-			const techArray = workedTechnologies.split(',').map(tech => tech.trim());
-
-			if (techArray.length > 0) {
-				const regexPattern = techArray.map(tech => `(${tech})`).join('|');
-				query.worked_technologies = { $regex: regexPattern, $options: 'i' };
+			if (employeeType) {
+				query.emp_type = employeeType;
 			}
+
+			if (workedTechnologies) {
+				const techArray = workedTechnologies.split(',').map(tech => tech.trim());
+
+				if (techArray.length > 0) {
+					const regexPattern = techArray.map(tech => `(${tech})`).join('|');
+					query.worked_technologies = { $regex: regexPattern, $options: 'i' };
+				}
+			}
+
+			const filteredEmployees = await this.employeeModel.find(query).lean().exec();
+
+			return filteredEmployees.map(employee => ({
+				...employee,
+				photoUrl: `http://localhost:3000/${employee.image}`
+			}));
+
+		} catch (error) {
+			throw new BadRequestException(error.errors);
 		}
-
-		const filteredEmployees = await this.employeeModel.find(query).lean().exec();
-
-		return filteredEmployees.map(employee => ({
-			...employee,
-			photoUrl: `http://localhost:3000/${employee.image}`
-		}));
 	}
 }

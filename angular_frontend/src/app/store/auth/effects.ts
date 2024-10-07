@@ -39,7 +39,7 @@ export class AuthEffects {
         }
         ),
         catchError((error) => {
-          const errorMsg = error?.error?.message;
+          const errorMsg = error?.message;
           this.snackBarService.openAlert({ message: errorMsg, type: "error" })
           return of({ type: signupError.type, error })
         })

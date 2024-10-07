@@ -38,30 +38,26 @@ export class EmployeeController {
         }),
     )
     async addEmployee(@UploadedFiles() files: Express.Multer.File[], @Body() addEmployeeDto: AddEmployeeDTO) {
-        try {
-            addEmployeeDto.image = files.map(file => file.filename);
-            return await this.employeeService.addEmployee(addEmployeeDto);
-        } catch (error) {
-            throw new InternalServerErrorException('An error occurred while adding the employee.');
-        }
+        addEmployeeDto.image = files.map(file => file.filename);
+        return await this.employeeService.addEmployee(addEmployeeDto);
     }
 
     /**
- * Searches for employees based on a search term.
- * @param searchTerm The term used to search employees (by name.).
- * @returns A list of employees that match the search term.
- */
+     * Searches for employees based on a search term.
+     * @param searchTerm The term used to search employees (by name.).
+     * @returns A list of employees that match the search term.
+     */
     @Get("search")
     searchEmployee(@Query("searchTerm") searchTerm: string) {
         return this.employeeService.searchEmployee(searchTerm)
     }
 
     /**
-    * Filters employees by employee type and/or worked technologies.
-    * @param employeeType Optional query parameter to filter by employee type.
-    * @param workedTechnologies Optional query parameter to filter by technologies the employee has worked with.
-    * @returns A list of employees matching the filter criteria.
-    */
+     * Filters employees by employee type and/or worked technologies.
+     * @param employeeType Optional query parameter to filter by employee type.
+     * @param workedTechnologies Optional query parameter to filter by technologies the employee has worked with.
+     * @returns A list of employees matching the filter criteria.
+     */
     @Get('filter')
     async filterEmployees(
         @Query('employeeType') employeeType?: string,
@@ -91,10 +87,10 @@ export class EmployeeController {
     }
 
     /**
-    * Retrieves a specific employee's information based on their unique ID.
-    * @param id The ID of the employee to retrieve.
-    * @returns The employee record corresponding to the given ID.
-    */
+     * Retrieves a specific employee's information based on their unique ID.
+     * @param id The ID of the employee to retrieve.
+     * @returns The employee record corresponding to the given ID.
+     */
     @Get(":id")
     getEmployee(@Param("id") id: string) {
         return this.employeeService.getEmployee(id);

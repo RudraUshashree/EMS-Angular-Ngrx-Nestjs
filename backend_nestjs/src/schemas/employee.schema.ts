@@ -124,12 +124,10 @@ EmployeeSchema.pre<EmployeeDocument>("save", async function (next: Function) {
     const hassedPwd = await bcrypt.hash(this.password, +process.env.SALT);
     this.password = hassedPwd;
     next();
-}
-)
+})
 
 EmployeeSchema.method("isValid", async function (userPwd: string) {
     const hassedPwd = this.password;
     const isMatched = await bcrypt.compare(userPwd, hassedPwd);
     return isMatched;
-}
-)
+})
