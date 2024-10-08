@@ -1,0 +1,211 @@
+@if(loading$ | async){
+<app-spinner></app-spinner>
+}
+
+<div class="p-2">
+  <button mat-flat-button color="accent" (click)="onAddProjectButtonClick()">
+    <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="add"></mat-icon>Add Project
+  </button>
+</div>
+
+<mat-card>
+  <mat-card-content *ngIf="addProjectFormShow">
+    <div class="d-flex justify-content-end">
+      <button mat-mini-fab color="warn" (click)="onCloseButtonClick()">
+        <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="close"></mat-icon>
+      </button>
+    </div>
+    <div class="col-12 text-center header">
+      <h3>Add Project</h3>
+    </div>
+    <form class="basic-form" [formGroup]="addProjectForm">
+      <div class="row">
+        <div class="col-6">
+          <mat-form-field>
+            <mat-label>Project Title</mat-label>
+            <input matInput formControlName="title">
+          </mat-form-field>
+        </div>
+        <div class="col-6">
+          <mat-form-field>
+            <mat-label>Project Description</mat-label>
+            <input matInput formControlName="description">
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-6">
+          <mat-form-field>
+            <mat-label>Technologies</mat-label>
+            <input matInput formControlName="technologies">
+          </mat-form-field>
+        </div>
+        <div class="col-6">
+          <mat-form-field>
+            <mat-label>Client Name</mat-label>
+            <input matInput formControlName="client_name">
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-6">
+          <mat-form-field>
+            <mat-label>hours</mat-label>
+            <input matInput formControlName="hours" type="number">
+          </mat-form-field>
+        </div>
+        <div class="col-6">
+          <mat-form-field>
+            <mat-label>price</mat-label>
+            <input matInput formControlName="price" type="number">
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-6">
+          <mat-form-field>
+            <mat-label>Employees</mat-label>
+            <mat-select formControlName="emp" multiple>
+              <mat-option *ngFor="let emp of employees" [value]="emp._id">
+                {{emp.name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col-6 text-center">
+          <button mat-flat-button color="primary" (click)="onAddProject()">Add</button>
+        </div>
+      </div>
+    </form>
+  </mat-card-content>
+</mat-card>
+
+<mat-card>
+  <mat-tab-group mat-stretch-tabs="false" [(selectedIndex)]="selectedTabIndex">
+    <mat-tab label="Projects">
+      <div class="mat-elevation-z8 search-filter-section">
+
+        <table mat-table [dataSource]="dataSource">
+          <ng-container matColumnDef="createdAt">
+            <th mat-header-cell *matHeaderCellDef> Date </th>
+            <td mat-cell *matCellDef="let element"> {{element.createdAt | date}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="title">
+            <th mat-header-cell *matHeaderCellDef> Title </th>
+            <td mat-cell *matCellDef="let element"> {{element.title}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="description">
+            <th mat-header-cell *matHeaderCellDef> Description </th>
+            <td mat-cell *matCellDef="let element"> {{element.description}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="technologies">
+            <th mat-header-cell *matHeaderCellDef> Technologies </th>
+            <td mat-cell *matCellDef="let element"> {{element.technologies}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="client_name">
+            <th mat-header-cell *matHeaderCellDef> Client Name </th>
+            <td mat-cell *matCellDef="let element"> {{element.client_name}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="hours">
+            <th mat-header-cell *matHeaderCellDef> Hours </th>
+            <td mat-cell *matCellDef="let element"> {{element.hours}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="price">
+            <th mat-header-cell *matHeaderCellDef> Price </th>
+            <td mat-cell *matCellDef="let element"> {{element.price}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="emp">
+            <th mat-header-cell *matHeaderCellDef> Employee </th>
+            <td mat-cell *matCellDef="let element">
+              {{getEmployeeNames(element.emp)}}
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="onRowClicked(row)"></tr>
+        </table>
+
+        <mat-paginator [pageSizeOptions]="[10, 20, 30]" showFirstLastButtons
+          aria-label="Select page of periodic elements">
+        </mat-paginator>
+      </div>
+    </mat-tab>
+
+    <mat-tab label="Update Project" [disabled]="selectedTabIndex === 0 ? true : false">
+      <mat-card-content>
+        <form class="basic-form" [formGroup]="projectForm">
+          <div class="row">
+            <div class="col-6">
+              <mat-form-field>
+                <mat-label>Project Title</mat-label>
+                <input matInput placeholder="Title" formControlName="title">
+              </mat-form-field>
+            </div>
+            <div class="col-6">
+              <mat-form-field>
+                <mat-label>Project Description</mat-label>
+                <input matInput formControlName="description">
+              </mat-form-field>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-6">
+              <mat-form-field>
+                <mat-label>Technologies</mat-label>
+                <input matInput formControlName="technologies">
+              </mat-form-field>
+            </div>
+            <div class="col-6">
+              <mat-form-field>
+                <mat-label>Client Name</mat-label>
+                <input matInput formControlName="client_name">
+              </mat-form-field>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-6">
+              <mat-form-field>
+                <mat-label>hours</mat-label>
+                <input matInput formControlName="hours">
+              </mat-form-field>
+            </div>
+            <div class="col-6">
+              <mat-form-field>
+                <mat-label>price</mat-label>
+                <input matInput formControlName="price">
+              </mat-form-field>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-6">
+              <mat-form-field>
+                <mat-label>Employees</mat-label>
+                <mat-select formControlName="emp" multiple>
+                  <mat-option *ngFor="let emp of employees" [value]="emp._id">
+                    {{emp.name}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div class="col-6 text-center">
+              <button mat-flat-button color="primary" (click)="onUpdateProject()">Update</button>
+            </div>
+          </div>
+        </form>
+      </mat-card-content>
+    </mat-tab>
+  </mat-tab-group>
+</mat-card>

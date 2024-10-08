@@ -5,11 +5,11 @@ export const addLeave = createAction(
   '[Leave] Add Leave',
   props<{ payload: ILeaveAddPayload }>()
 );
-export const AddLeaveSuccess = createAction(
+export const addLeaveSuccess = createAction(
   '[Leave] AddLeaveSuccess',
   props<{ res: ILeaveAddResponse }>()
 );
-export const AddLeaveError = createAction(
+export const addLeaveError = createAction(
   '[Leave] AddLeaveError',
   props<{ error: any }>()
 );

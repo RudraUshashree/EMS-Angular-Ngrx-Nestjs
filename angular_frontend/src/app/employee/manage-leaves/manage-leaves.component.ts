@@ -47,8 +47,8 @@ export class ManageLeavesComponent implements OnInit, OnDestroy {
   loading$: Observable<boolean>;
 
   /**
-  * List of leave types, status and duration available for the employee.
-  */
+   * List of leave types, status and duration available for the employee.
+   */
   leaveTypeList: ListModel[] = LeaveTypeData;
   durationList: ListModel[] = DurationData;
   leaveStatusList: ListModel[] = leaveStatusData;
@@ -63,8 +63,8 @@ export class ManageLeavesComponent implements OnInit, OnDestroy {
   addLeaveFormShow: boolean = false;
 
   /**
-* DataSource for the MatTable used to display employees with pagination.
-*/
+  * DataSource for the MatTable used to display employees with pagination.
+  */
   dataSource!: MatTableDataSource<any>;
   displayedColumns: string[] = ['start_date', 'end_date', 'leaves_type', 'leaves', 'duration', 'reason', 'leave_status', 'actions'];
 
@@ -80,8 +80,8 @@ export class ManageLeavesComponent implements OnInit, OnDestroy {
   });
 
   /**
- * Form group for applying filters on leave type.
- */
+   * Form group for applying filters on leave type.
+   */
   leaveTypesForm = new FormGroup({
     leave_type: new FormControl('')
   });
@@ -113,8 +113,8 @@ export class ManageLeavesComponent implements OnInit, OnDestroy {
   }
 
   /**
- * Handler for the "Add Leave" button click to toggle the form visibility.
- */
+   * Handler for the "Add Leave" button click to toggle the form visibility.
+   */
   onAddLeaveButtonClick() {
     this.addLeaveFormShow = true;
   }
@@ -129,8 +129,8 @@ export class ManageLeavesComponent implements OnInit, OnDestroy {
   }
 
   /**
-  * Subscribes to the leave type filter form changes and dispatches actions to filter the employee leaves.
-  */
+   * Subscribes to the leave type filter form changes and dispatches actions to filter the employee leaves.
+   */
   onApplyFilters() {
     this.leaveTypesForm.get('leave_type')?.valueChanges.subscribe((value) => {
       if (value) {
@@ -193,8 +193,8 @@ export class ManageLeavesComponent implements OnInit, OnDestroy {
   }
 
   /**
-  * Dispatches an action to load all employee leaves.
-  */
+   * Dispatches an action to load all employee leaves.
+   */
   onLoadEmployeeLeaves() {
     this.store.dispatch(getEmployeeLeaves({ empId: this.empId }));
   }
@@ -208,8 +208,8 @@ export class ManageLeavesComponent implements OnInit, OnDestroy {
   }
 
   /**
-  * Subscribes to the leaves observable and updates the data source for the leaves table.
-  */
+   * Subscribes to the leaves observable and updates the data source for the leaves table.
+   */
   leaveSubscription() {
     this.leaves$.pipe(takeUntil(this.destroy$)).subscribe({
       next: (data: ILeavesResponse | null) => {

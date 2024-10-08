@@ -79,7 +79,7 @@ export class LeaveService {
     /**
      * Retrieves all leave records for employees.
      * @returns A list of all leave records for employees.
-     * @throws BadRequestException if there is a validation error.
+     * @throws InternalServerErrorException if there is a error.
      */
     async getAllEmployeesLeaves() {
         try {
@@ -93,8 +93,7 @@ export class LeaveService {
      * Retrieves all leave records and balance for a specific employee.
      * @param empId The employee's ID.
      * @returns An object containing the employee's leave records and current leave balance.
-     * @throws NotFoundException if the employee is not found.
-     * @throws BadRequestException if a validation error occurs.
+     * @throws InternalServerErrorException if a error occurs.
      */
     async getEmployeeLeaves(empId: string) {
         try {
@@ -176,7 +175,7 @@ export class LeaveService {
      * @param leaves The number of leave days to be restored to the employee's balance.
      * @returns A message confirming the leave deletion and the updated leave balance.
      * @throws NotFoundException if the leave record is not found.
-     * @throws BadRequestException if there is a validation error.
+     * @throws InternalServerErrorException if there is a error.
      */
     async deleteEmployeeLeave(empId: string, id: string, leaves: number) {
         try {
@@ -213,6 +212,7 @@ export class LeaveService {
      * Filters leave records based on optional leave type and leave status.
      * @param leaveType Optional filter to select leave records by type.
      * @param leaveStatus Optional filter to select leave records by status.
+     * @throws BadRequestException if an error occurs while filtering.
      * @returns A list of filtered leave records.
      */
     async filterEmployeesLeaves(leaveType?: string, leaveStatus?: string) {
@@ -238,7 +238,7 @@ export class LeaveService {
     * @param empId The employee's ID.
     * @param leaveType The leave type to filter by.
     * @returns A list of leave records matching the employee and leave type.
-    * @throws BadRequestException if an error occurs while filtering.
+    * @throws InternalServerErrorException if an error occurs while filtering.
     */
     async filterOneEmployeeLeaves(empId: string, leaveType: string) {
         try {

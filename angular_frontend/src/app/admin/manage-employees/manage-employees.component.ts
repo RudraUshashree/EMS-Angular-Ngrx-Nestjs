@@ -60,7 +60,7 @@ export class ManageEmployeesComponent implements OnInit, OnDestroy {
   selectedworkedTechnologies: string[] = [];
 
   /**
-   * Used to manage selected tab index in the dashboard and the currently selected employee for updates.
+   * Used to manage selected tab index in the manage-employees and the currently selected employee for updates.
   */
   selectedTabIndex: number = 0;
   selectedEmployee!: IEmployee;
@@ -74,8 +74,8 @@ export class ManageEmployeesComponent implements OnInit, OnDestroy {
   photoUrl!: string;
 
   /**
- * Form of employee information.
- */
+   * Form of employee information.
+   */
   employeeForm = new FormGroup({
     name: new FormControl(),
     dob: new FormControl(),

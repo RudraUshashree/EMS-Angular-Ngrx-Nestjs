@@ -56,5 +56,4 @@ export const LEAVE_MODEL = Leave.name;
 LeaveSchema.pre("find", function (next: Function) {
     this.populate({ path: "emp", select: { name: 1 } })
     next();
-}
-)
+})

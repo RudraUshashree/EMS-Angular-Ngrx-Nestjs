@@ -8,6 +8,7 @@ import { AdminModule } from './admin/admin.module';
 import { EmployeeModule } from './employee/employee.module';
 import { LeaveModule } from './leaves/leaves.module';
 import { AuthModule } from './auth/auth.module';
+import { ProjectModule } from './project/project.module';
 
 @Module({
   imports: [
@@ -20,10 +21,11 @@ import { AuthModule } from './auth/auth.module';
       useClass: MongooseConfigService
     }),
 
+    AuthModule,
     AdminModule,
     EmployeeModule,
     LeaveModule,
-    AuthModule
+    ProjectModule
   ],
   controllers: [AppController],
   providers: [AppService],

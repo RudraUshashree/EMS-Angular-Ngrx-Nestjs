@@ -52,12 +52,6 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
     }),
     EffectsModule.forRoot(...allEffects),
   ],
-  // providers: [
-  //   {
-  //     provide: LocationStrategy,
-  //     useClass: PathLocationStrategy
-  //   }
-  // ],
   providers: [
     {
       provide: HTTP_INTERCEPTORS,
@@ -67,4 +61,4 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule { }

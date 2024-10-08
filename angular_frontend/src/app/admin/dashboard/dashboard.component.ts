@@ -62,12 +62,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
   employeesData: IEmployee[] = [];
 
   /**
-   * Used to manage selected tab index in the dashboard and the currently selected employee for updates.
-   */
-  selectedTabIndex: number = 0;
-  selectedEmployee!: IEmployee;
-
-  /**
    * DataSource for the MatTable used to display employees with pagination.
    */
   dataSource!: MatTableDataSource<any>;

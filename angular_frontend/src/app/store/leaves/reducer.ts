@@ -1,5 +1,27 @@
 import { createReducer, on } from '@ngrx/store';
-import { addLeave, AddLeaveError, AddLeaveSuccess, deleteEmployeeLeave, deleteEmployeeLeaveError, deleteEmployeeLeaveSuccess, filterEmployeesLeaves, filterEmployeesLeavesError, filterEmployeesLeavesSuccess, filterOneEmployeeLeaves, filterOneEmployeeLeavesError, filterOneEmployeeLeavesSuccess, getEmployeeLeaves, getEmployeeLeavesError, getEmployeeLeavesSuccess, getEmployeesLeaves, getEmployeesLeavesError, getEmployeesLeavesSuccess, updateEmployeeLeaveStatus, updateEmployeeLeaveStatusError, updateEmployeeLeaveStatusSuccess } from './actions';
+import {
+  addLeave,
+  addLeaveError,
+  addLeaveSuccess,
+  deleteEmployeeLeave,
+  deleteEmployeeLeaveError,
+  deleteEmployeeLeaveSuccess,
+  filterEmployeesLeaves,
+  filterEmployeesLeavesError,
+  filterEmployeesLeavesSuccess,
+  filterOneEmployeeLeaves,
+  filterOneEmployeeLeavesError,
+  filterOneEmployeeLeavesSuccess,
+  getEmployeeLeaves,
+  getEmployeeLeavesError,
+  getEmployeeLeavesSuccess,
+  getEmployeesLeaves,
+  getEmployeesLeavesError,
+  getEmployeesLeavesSuccess,
+  updateEmployeeLeaveStatus,
+  updateEmployeeLeaveStatusError,
+  updateEmployeeLeaveStatusSuccess
+} from './actions';
 import { ILeave, ILeaveAddResponse, ILeavesResponse, IUpdateEmployeeLeaveStatusResponse } from 'src/app/models/leaves.model';
 
 export interface LeaveState {
@@ -25,17 +47,16 @@ export const leaveReducer = createReducer(
 
   // Add Leave
   on(addLeave, (state): LeaveState => ({ ...state, loading: true })),
-  on(AddLeaveSuccess, (state, { res }): LeaveState => {
+  on(addLeaveSuccess, (state, { res }): LeaveState => {
     return { ...state, loading: false, addLeave: res, leaves: { balanced_leaves: res.balanced_leaves, leaves: [res.leave, ...(state.leaves?.leaves ?? [])] } };
   }),
-  on(AddLeaveError, (state, { error }): LeaveState => ({ ...state, loading: false, error })),
+  on(addLeaveError, (state, { error }): LeaveState => ({ ...state, loading: false, error })),
 
   // Get All Employees Leaves
   on(getEmployeesLeaves, (state): LeaveState => ({ ...state, loading: true })),
   on(getEmployeesLeavesSuccess, (state, { res }): LeaveState => {
     return { ...state, loading: false, leaves: { balanced_leaves: 0, leaves: res } }
   }),
-
   on(getEmployeesLeavesError, (state, { error }): LeaveState => ({ ...state, loading: false, error })),
 
   // Get Employee Leaves

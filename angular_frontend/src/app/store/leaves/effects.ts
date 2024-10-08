@@ -3,8 +3,8 @@ import { Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
 import {
   addLeave,
-  AddLeaveError,
-  AddLeaveSuccess,
+  addLeaveError,
+  addLeaveSuccess,
   deleteEmployeeLeave,
   deleteEmployeeLeaveError,
   deleteEmployeeLeaveSuccess,
@@ -47,12 +47,12 @@ export class LeaveEffects {
     exhaustMap((props: { payload: ILeaveAddPayload, type: string }) =>
       this.leavesService.addLeaves(props.payload).pipe(
         map((res: ILeaveAddResponse) => {
-          return { type: AddLeaveSuccess.type, res };
+          return { type: addLeaveSuccess.type, res };
         }),
         catchError((error) => {
           const errorMsg = error?.error?.message;
           this.snackBarService.openAlert({ message: errorMsg, type: "error" })
-          return of({ type: AddLeaveError.type, error })
+          return of({ type: addLeaveError.type, error })
         })
       )
     )
