@@ -32,6 +32,16 @@ export class ProjectController {
     }
 
     /**
+     * Retrieve all projects records for a specific employee by their ID.
+     * @param empId The employee ID.
+     * @returns The list of projects records for the employee.
+     */
+    @Get(':empId')
+    getEmployeeDailyUpdates(@Param("empId") empId: string) {
+        return this.projectService.getEmployeeAssignedProjects(empId);
+    }
+
+    /**
      * Update the status of a specific leave record.
      * @param id The leave record ID.
      * @param updateProject The DTO containing the updated leave status.

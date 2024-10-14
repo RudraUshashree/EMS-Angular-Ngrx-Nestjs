@@ -26,6 +26,7 @@ export class ProjectModule {
             .apply(AuthMiddleware)
             .forRoutes(
                 { path: 'project', method: RequestMethod.GET },
+                { path: 'project/:id', method: RequestMethod.GET },
                 { path: 'project/add-project', method: RequestMethod.POST },
                 { path: 'project/:id', method: RequestMethod.PUT }
             );

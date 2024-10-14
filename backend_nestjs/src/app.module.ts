@@ -9,6 +9,7 @@ import { EmployeeModule } from './employee/employee.module';
 import { LeaveModule } from './leaves/leaves.module';
 import { AuthModule } from './auth/auth.module';
 import { ProjectModule } from './project/project.module';
+import { DailyUpdateModule } from './daily-update/daily-update.module';
 
 @Module({
   imports: [
@@ -25,7 +26,8 @@ import { ProjectModule } from './project/project.module';
     AdminModule,
     EmployeeModule,
     LeaveModule,
-    ProjectModule
+    ProjectModule,
+    DailyUpdateModule
   ],
   controllers: [AppController],
   providers: [AppService],

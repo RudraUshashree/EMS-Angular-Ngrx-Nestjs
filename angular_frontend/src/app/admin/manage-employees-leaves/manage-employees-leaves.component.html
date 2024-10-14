@@ -1,5 +1,5 @@
 @if(loading$ | async){
-  <app-spinner></app-spinner>
+<app-spinner></app-spinner>
 }
 
 <mat-card>
@@ -14,8 +14,9 @@
             <mat-form-field appearance="outline">
               <mat-label>Leave Type</mat-label>
               <mat-select [(ngModel)]="selectedLeaveType" (selectionChange)="applyFilters()">
-                <mat-option *ngFor="let leaveType of leaveTypeList" [value]="leaveType.value">{{ leaveType.displayValue
-                  }}</mat-option>
+                <mat-option *ngFor="let leaveType of leaveTypeList" [value]="leaveType.value">
+                  {{ leaveType.displayValue }}
+                </mat-option>
               </mat-select>
             </mat-form-field>
           </div>

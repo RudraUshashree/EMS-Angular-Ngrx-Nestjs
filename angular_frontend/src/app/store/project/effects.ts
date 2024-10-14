@@ -1,13 +1,12 @@
 import { SnackBarService } from '../../services/snackbar.service';
 import { Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
-import { addProject, addProjectError, addProjectSuccess, getProjects, getProjectsError, getProjectsSuccess, updateProject, updateProjectError, updateProjectSuccess } from "./actions";
+import { addProject, addProjectError, addProjectSuccess, getEmployeeProjects, getEmployeeProjectsError, getEmployeeProjectsSuccess, getProjects, getProjectsError, getProjectsSuccess, updateProject, updateProjectError, updateProjectSuccess } from "./actions";
 import { catchError, exhaustMap, map, of } from "rxjs";
 import {
 } from 'src/app/models/leaves.model';
 import { IAddProjectPayload, IAddProjectResponse, IProject, IUpdateProjectPayload, IUpdateProjectResponse } from 'src/app/models/project.model';
 import { ProjectService } from 'src/app/services/project.service';
-import { updateEmployeeError } from '../employee/actions';
 
 @Injectable()
 export class ProjectEffects {
@@ -43,6 +42,22 @@ export class ProjectEffects {
           const errorMsg = error?.error?.message;
           this.snackBarService.openAlert({ message: errorMsg, type: "error" })
           return of({ type: getProjectsError.type, error })
+        })
+      )
+    )
+  ));
+
+  //Get Employee Projects
+  getEmployeeProjects$ = createEffect(() => this.actions$.pipe(
+    ofType(getEmployeeProjects.type),
+    exhaustMap((props: { empId: string, type: string }) =>
+      this.projectService.getEmployeeProjects(props.empId).pipe(
+        map((res: IProject[]) => ({ type: getEmployeeProjectsSuccess.type, res })
+        ),
+        catchError((error) => {
+          const errorMsg = error?.error?.message;
+          this.snackBarService.openAlert({ message: errorMsg, type: "error" });
+          return of({ type: getEmployeeProjectsError.type, error })
         })
       )
     )

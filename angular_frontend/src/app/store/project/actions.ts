@@ -30,6 +30,22 @@ export const getProjectsError = createAction(
   props<{ error: any }>()
 );
 
+// Get Employee Projects
+export const getEmployeeProjects = createAction(
+  '[Project] GetEmployeeProjects',
+  props<{ empId: string }>()
+);
+
+export const getEmployeeProjectsSuccess = createAction(
+  '[Project] GetEmployeeProjectsSuccess',
+  props<{ res: IProject[] }>()
+);
+
+export const getEmployeeProjectsError = createAction(
+  '[Project] GetEmployeeProjectsError',
+  props<{ error: any }>()
+);
+
 
 // Update Project
 export const updateProject = createAction(

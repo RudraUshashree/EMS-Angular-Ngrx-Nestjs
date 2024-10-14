@@ -46,6 +46,21 @@ export class ProjectService {
     }
 
     /**
+     * Retrieves all projects records for a specific employee.
+     * @param empId The employee's ID.
+     * @returns An object containing the employee's projects records.
+     * @throws InternalServerErrorException if a error occurs.
+     */
+    async getEmployeeAssignedProjects(empId: string) {
+        try {
+            const empAssignedProjects = await this.projectModel.find({ emp: empId });
+            return empAssignedProjects;
+        } catch (error) {
+            throw new BadRequestException(error.errors);
+        }
+    }
+
+    /**
      * Updates an project's information based on their ID.
      * @param id The ID of the project to be updated.
      * @param updateProjectDTO The data transfer object containing the updated project details.
@@ -67,7 +82,7 @@ export class ProjectService {
 
             return {
                 message: 'Project updated successfully.',
-                employee: updatedProject
+                project: updatedProject
             };
         } catch (error) {
             console.log('error: ', error);

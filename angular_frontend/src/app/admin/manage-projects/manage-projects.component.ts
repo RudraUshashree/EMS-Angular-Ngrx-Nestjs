@@ -58,25 +58,28 @@ export class ManageProjectsComponent implements OnInit {
   displayedColumns: string[] = ['createdAt', 'title', 'description', 'technologies', 'client_name', 'hours', 'price', 'emp'];
 
   /**
-   * Form of project information.
+   * Form of updating project information.
    */
   projectForm: FormGroup = new FormGroup({
     title: new FormControl('', Validators.required),
     description: new FormControl('', Validators.required),
     technologies: new FormControl('', Validators.required),
     client_name: new FormControl('', Validators.required),
-    hours: new FormControl(0, Validators.required),
-    price: new FormControl(0, Validators.required),
+    hours: new FormControl(0, [Validators.required, Validators.min(1)]),
+    price: new FormControl(0, [Validators.required, Validators.min(1)]),
     emp: new FormControl([])
   });
 
+  /**
+   * Form of adding project information.
+   */
   addProjectForm: FormGroup = new FormGroup({
     title: new FormControl('', Validators.required),
     description: new FormControl('', Validators.required),
     technologies: new FormControl('', Validators.required),
     client_name: new FormControl('', Validators.required),
-    hours: new FormControl(0, Validators.required),
-    price: new FormControl(0, Validators.required),
+    hours: new FormControl(0, [Validators.required, Validators.min(1)]),
+    price: new FormControl(0, [Validators.required, Validators.min(1)]),
     emp: new FormControl([])
   });
 
@@ -102,8 +105,6 @@ export class ManageProjectsComponent implements OnInit {
     this.store.dispatch(getProjects());
     this.projects$.pipe(takeUntil(this.destroy$)).subscribe({
       next: (projects: IProject[]) => {
-        console.log('projects: ', projects);
-
         this.dataSource = new MatTableDataSource<any>(projects);
         this.dataSource.paginator = this.paginator;
       },
@@ -114,7 +115,7 @@ export class ManageProjectsComponent implements OnInit {
     })
   }
 
-  getEmployeeNames(emp: any[]): string {
+  getEmployeeNames(emp: IEmployee[]): string {
     return emp?.map(data => data.name).join(', ') || '-';
   }
 
@@ -147,12 +148,12 @@ export class ManageProjectsComponent implements OnInit {
     const employeeIds = emp.map(employee => employee._id);
 
     this.projectForm = new FormGroup({
-      title: new FormControl(data['title']),
-      description: new FormControl(data['description']),
-      technologies: new FormControl(data['technologies']),
-      client_name: new FormControl(data['client_name']),
-      hours: new FormControl(data['hours']),
-      price: new FormControl(data['price']),
+      title: new FormControl(data['title'] ?? '', Validators.required),
+      description: new FormControl(data['description'] ?? '', Validators.required),
+      technologies: new FormControl(data['technologies'] ?? '', Validators.required),
+      client_name: new FormControl(data['client_name'] ?? '', Validators.required),
+      hours: new FormControl(data['hours'] ?? '', [Validators.required, Validators.min(1)]),
+      price: new FormControl(data['price'] ?? '', [Validators.required, Validators.min(1)]),
       emp: new FormControl(employeeIds)
     });
   }

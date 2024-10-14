@@ -38,6 +38,16 @@ export class ProjectService {
   }
 
   /**
+   * Fetches the projects of a specific employee by their ID.
+   *
+   * @param empId - The ID of the employee whose projects are to be fetched.
+   * @returns Observable with the employee's projects data (IProject).
+   */
+  getEmployeeProjects(empId: string): Observable<IProject[]> {
+    return this.http.get<IProject[]>(`${environment.api_url}/project/${empId}`);
+  }
+
+  /**
    * Updates the status of a specific project.
    *
    * @param id - The ID of the project to be updated.

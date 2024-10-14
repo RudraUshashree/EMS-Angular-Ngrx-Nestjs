@@ -1,0 +1,51 @@
+<mat-card>
+  <div class="mat-elevation-z8 search-filter-section">
+    <table mat-table [dataSource]="dataSource">
+      <ng-container matColumnDef="createdAt">
+        <th mat-header-cell *matHeaderCellDef> Date </th>
+        <td mat-cell *matCellDef="let element"> {{element.createdAt | date}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="emp">
+        <th mat-header-cell *matHeaderCellDef> Employee </th>
+        <td mat-cell *matCellDef="let element"> {{element.emp?.name}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="work">
+        <th mat-header-cell *matHeaderCellDef> Work </th>
+        <td mat-cell *matCellDef="let element"> {{element.work}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="project_type">
+        <th mat-header-cell *matHeaderCellDef> Project Type </th>
+        <td mat-cell *matCellDef="let element"> {{element.project_type ?? '-'}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="project">
+        <th mat-header-cell *matHeaderCellDef> Project </th>
+        <td mat-cell *matCellDef="let element"> {{element.project[0]?.title ?? '-'}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="skill_title">
+        <th mat-header-cell *matHeaderCellDef> Skill Title </th>
+        <td mat-cell *matCellDef="let element"> {{element.skill_title ?? '-'}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="hours">
+        <th mat-header-cell *matHeaderCellDef> Hours </th>
+        <td mat-cell *matCellDef="let element"> {{element.hours}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="update_content">
+        <th mat-header-cell *matHeaderCellDef> Update Content </th>
+        <td mat-cell *matCellDef="let element"> {{element.update_content}} </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+
+    <mat-paginator [pageSizeOptions]="[10, 20, 30]" showFirstLastButtons aria-label="Select page of periodic elements">
+    </mat-paginator>
+  </div>
+</mat-card>

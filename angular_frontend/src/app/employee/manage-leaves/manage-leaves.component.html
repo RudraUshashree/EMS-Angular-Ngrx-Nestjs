@@ -1,5 +1,5 @@
 @if(loading$ | async){
-  <app-spinner></app-spinner>
+<app-spinner></app-spinner>
 }
 
 <div class="p-2">
@@ -47,8 +47,9 @@
         <div class="col-6">
           <mat-form-field>
             <mat-date-range-input [formGroup]="employeeLeaveForm" [rangePicker]="picker">
-              <input matStartDate formControlName="start_date" placeholder="Start date">
-              <input matEndDate formControlName="end_date" placeholder="End date">
+              <input matStartDate (focus)="picker.open()" readonly formControlName="start_date"
+                placeholder="Start date">
+              <input matEndDate (focus)="picker.open()" readonly formControlName="end_date" placeholder="End date">
             </mat-date-range-input>
             <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
             <mat-date-range-picker #picker></mat-date-range-picker>

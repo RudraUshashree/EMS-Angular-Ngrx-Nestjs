@@ -1,6 +1,6 @@
 import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { DemoMaterialModule } from 'src/app/demo-material-module';
-import { CommonModule, NgFor, NgIf } from '@angular/common';
+import { CommonModule, DatePipe, NgFor, NgIf } from '@angular/common';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -28,6 +28,7 @@ import { SpinnerComponent } from 'src/app/shared/spinner.component';
     CommonModule,
     SpinnerComponent
   ],
+  providers: [DatePipe],
   templateUrl: './manage-employees.component.html',
   styleUrls: ['./manage-employees.component.scss']
 })
@@ -93,7 +94,8 @@ export class ManageEmployeesComponent implements OnInit, OnDestroy {
 
   constructor(
     private snackBarService: SnackBarService,
-    private store: Store<AppState>
+    private store: Store<AppState>,
+    private datePipe: DatePipe,
   ) {
     this.employees$ = this.store.select(selectGetEmployees);
     this.loading$ = this.store.select(selectGetEmployeesLoading);
@@ -150,9 +152,11 @@ export class ManageEmployeesComponent implements OnInit, OnDestroy {
     this.selectedEmployee = data;
     this.photoUrl = data.photoUrl;
 
+    const formattedDate = this.datePipe.transform(data['dob'], 'yyyy-MM-dd');
+
     this.employeeForm = new FormGroup({
       name: new FormControl(data['name']),
-      dob: new FormControl(data['dob']),
+      dob: new FormControl(formattedDate),
       contact: new FormControl(data['contact']),
       address: new FormControl(data['address']),
       city: new FormControl(data['city']),
@@ -190,8 +194,8 @@ export class ManageEmployeesComponent implements OnInit, OnDestroy {
   }
 
   /**
-  * Applies filters based on selected employee type and worked technologies.
-  */
+   * Applies filters based on selected employee type and worked technologies.
+   */
   applyFilters() {
     this.store.dispatch(filterEmployees({ employeeType: this.selectedEmpType, workedTechnologies: this.selectedworkedTechnologies }));
     this.filteredEmployees$.pipe(takeUntil(this.destroy$)).subscribe({
@@ -215,8 +219,8 @@ export class ManageEmployeesComponent implements OnInit, OnDestroy {
   }
 
   /**
-  * Clears all filters and reloads all employees.
-  */
+   * Clears all filters and reloads all employees.
+   */
   onClearFilters() {
     this.selectedEmpType = '';
     this.selectedworkedTechnologies = [];

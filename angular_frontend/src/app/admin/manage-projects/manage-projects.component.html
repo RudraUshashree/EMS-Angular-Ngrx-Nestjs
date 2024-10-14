@@ -16,7 +16,7 @@
       </button>
     </div>
     <div class="col-12 text-center header">
-      <h3>Add Project</h3>
+      <h3>Add Project Details</h3>
     </div>
     <form class="basic-form" [formGroup]="addProjectForm">
       <div class="row">
@@ -24,12 +24,18 @@
           <mat-form-field>
             <mat-label>Project Title</mat-label>
             <input matInput formControlName="title">
+            <mat-error *ngIf="addProjectForm.get('title')?.hasError('required')">
+              Title is required
+            </mat-error>
           </mat-form-field>
         </div>
         <div class="col-6">
           <mat-form-field>
             <mat-label>Project Description</mat-label>
             <input matInput formControlName="description">
+            <mat-error *ngIf="addProjectForm.get('description')?.hasError('required')">
+              Description is required
+            </mat-error>
           </mat-form-field>
         </div>
       </div>
@@ -39,12 +45,18 @@
           <mat-form-field>
             <mat-label>Technologies</mat-label>
             <input matInput formControlName="technologies">
+            <mat-error *ngIf="addProjectForm.get('technologies')?.hasError('required')">
+              Technologies are required
+            </mat-error>
           </mat-form-field>
         </div>
         <div class="col-6">
           <mat-form-field>
             <mat-label>Client Name</mat-label>
             <input matInput formControlName="client_name">
+            <mat-error *ngIf="addProjectForm.get('client_name')?.hasError('required')">
+              Client name are required
+            </mat-error>
           </mat-form-field>
         </div>
       </div>
@@ -52,14 +64,26 @@
       <div class="row">
         <div class="col-6">
           <mat-form-field>
-            <mat-label>hours</mat-label>
+            <mat-label>No. of hours per day</mat-label>
             <input matInput formControlName="hours" type="number">
+            <mat-error *ngIf="addProjectForm.get('hours')?.hasError('required')">
+              Hours are required
+            </mat-error>
+            <mat-error *ngIf="addProjectForm.get('hours')?.hasError('min')">
+              Hours must be a positive number
+            </mat-error>
           </mat-form-field>
         </div>
         <div class="col-6">
           <mat-form-field>
-            <mat-label>price</mat-label>
+            <mat-label>Price</mat-label>
             <input matInput formControlName="price" type="number">
+            <mat-error *ngIf="addProjectForm.get('price')?.hasError('required')">
+              Price are required
+            </mat-error>
+            <mat-error *ngIf="addProjectForm.get('price')?.hasError('min')">
+              Price must be a positive number
+            </mat-error>
           </mat-form-field>
         </div>
       </div>
@@ -76,7 +100,8 @@
           </mat-form-field>
         </div>
         <div class="col-6 text-center">
-          <button mat-flat-button color="primary" (click)="onAddProject()">Add</button>
+          <button mat-flat-button color="primary" [disabled]="addProjectForm.invalid"
+            (click)="onAddProject()">Add</button>
         </div>
       </div>
     </form>
@@ -148,13 +173,19 @@
             <div class="col-6">
               <mat-form-field>
                 <mat-label>Project Title</mat-label>
-                <input matInput placeholder="Title" formControlName="title">
+                <input matInput formControlName="title">
+                <mat-error *ngIf="projectForm.get('title')?.hasError('required')">
+                  Title is required
+                </mat-error>
               </mat-form-field>
             </div>
             <div class="col-6">
               <mat-form-field>
                 <mat-label>Project Description</mat-label>
                 <input matInput formControlName="description">
+                <mat-error *ngIf="projectForm.get('description')?.hasError('required')">
+                  Description is required
+                </mat-error>
               </mat-form-field>
             </div>
           </div>
@@ -164,12 +195,18 @@
               <mat-form-field>
                 <mat-label>Technologies</mat-label>
                 <input matInput formControlName="technologies">
+                <mat-error *ngIf="projectForm.get('technologies')?.hasError('required')">
+                  Technologies are required
+                </mat-error>
               </mat-form-field>
             </div>
             <div class="col-6">
               <mat-form-field>
                 <mat-label>Client Name</mat-label>
                 <input matInput formControlName="client_name">
+                <mat-error *ngIf="projectForm.get('client_name')?.hasError('required')">
+                  Client name are required
+                </mat-error>
               </mat-form-field>
             </div>
           </div>
@@ -177,14 +214,26 @@
           <div class="row">
             <div class="col-6">
               <mat-form-field>
-                <mat-label>hours</mat-label>
-                <input matInput formControlName="hours">
+                <mat-label>No. of hours per day</mat-label>
+                <input matInput formControlName="hours" type="number">
+                <mat-error *ngIf="projectForm.get('hours')?.hasError('required')">
+                  Hours are required
+                </mat-error>
+                <mat-error *ngIf="projectForm.get('hours')?.hasError('min')">
+                  Hours must be a positive number
+                </mat-error>
               </mat-form-field>
             </div>
             <div class="col-6">
               <mat-form-field>
                 <mat-label>price</mat-label>
-                <input matInput formControlName="price">
+                <input matInput formControlName="price" type="number">
+                <mat-error *ngIf="projectForm.get('price')?.hasError('required')">
+                  Price are required
+                </mat-error>
+                <mat-error *ngIf="projectForm.get('price')?.hasError('min')">
+                  Price must be a positive number
+                </mat-error>
               </mat-form-field>
             </div>
           </div>
@@ -201,7 +250,8 @@
               </mat-form-field>
             </div>
             <div class="col-6 text-center">
-              <button mat-flat-button color="primary" (click)="onUpdateProject()">Update</button>
+              <button mat-flat-button color="primary" [disabled]="projectForm.invalid"
+                (click)="onUpdateProject()">Update</button>
             </div>
           </div>
         </form>

@@ -74,7 +74,7 @@ export class LeaveEffects {
     )
   ));
 
-  //Get One Employee Leave
+  //Get Employee Leaves
   getEmployeeLeaves$ = createEffect(() => this.actions$.pipe(
     ofType(getEmployeeLeaves.type),
     exhaustMap((props: { empId: string, type: string }) =>

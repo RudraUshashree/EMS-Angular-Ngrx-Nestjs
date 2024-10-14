@@ -3,6 +3,9 @@ import {
   addProject,
   addProjectError,
   addProjectSuccess,
+  getEmployeeProjects,
+  getEmployeeProjectsError,
+  getEmployeeProjectsSuccess,
   getProjects,
   getProjectsError,
   getProjectsSuccess,
@@ -38,21 +41,27 @@ export const projectReducer = createReducer(
   }),
   on(addProjectError, (state, { error }): ProjectState => ({ ...state, loading: false, error })),
 
-  // Get All Employees Leaves
+  // Get All Projects
   on(getProjects, (state): ProjectState => ({ ...state, loading: true })),
   on(getProjectsSuccess, (state, { res }): ProjectState => {
     return { ...state, loading: false, projects: res }
   }),
   on(getProjectsError, (state, { error }): ProjectState => ({ ...state, loading: false, error })),
 
+  // Get Employee Projects
+  on(getEmployeeProjects, (state): ProjectState => ({ ...state, loading: true })),
+  on(getEmployeeProjectsSuccess, (state, { res }): ProjectState => ({ ...state, loading: false, projects: res })),
+  on(getEmployeeProjectsError, (state, { error }) => ({ ...state, loading: false, error })),
+
   // Update Project
-  on(updateProject, (state) => ({ ...state, loading: true })),
+  on(updateProject, (state): ProjectState => ({ ...state, loading: true })),
   on(updateProjectSuccess, (state, { res }): ProjectState => {
     if (!state.projects) {
       return { ...state, loading: false };
     }
 
     const projectIndex = state.projects.findIndex(project => project._id === res.project._id);
+
     //   Check if the project exists in the current state
     if (projectIndex > -1) {
       const updatedProjects = [

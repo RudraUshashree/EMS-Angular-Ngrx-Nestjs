@@ -3,6 +3,7 @@ import { ManageEmployeesLeavesComponent } from './manage-employees-leaves/manage
 import { AuthGuard } from '../shared/auth.gaurd';
 import { ManageEmployeesComponent } from './manage-employees/manage-employees.component';
 import { ManageProjectsComponent } from './manage-projects/manage-projects.component';
+import { DailyUpdatesComponent } from './daily-updates/daily-updates.component';
 
 export const AdminRoutes: Routes = [
   {
@@ -22,6 +23,11 @@ export const AdminRoutes: Routes = [
   {
     path: 'manage-projects',
     component: ManageProjectsComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'daily-updates',
+    component: DailyUpdatesComponent,
     canActivate: [AuthGuard]
   }
 ];
