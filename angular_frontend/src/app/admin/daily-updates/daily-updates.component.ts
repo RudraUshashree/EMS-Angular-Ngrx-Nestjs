@@ -1,16 +1,21 @@
 import { CommonModule } from '@angular/common';
-import { Component, ViewChild } from '@angular/core';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatTableDataSource } from '@angular/material/table';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Observable, Subject, takeUntil } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { DemoMaterialModule } from 'src/app/demo-material-module';
-import { IDailyUpdate } from 'src/app/models/daily-updates.model';
 import { SnackBarService } from 'src/app/services/snackbar.service';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { getDailyUpdates } from 'src/app/store/daily-update/actions';
 import { selectDailyUpdates, selectDailyUpdatesLoading } from 'src/app/store/daily-update/selectors';
 import { AppState } from 'src/app/store/reducer';
+import { EmployeeDailyUpdatesTableComponent } from './employee-daily-updates-table/employee-daily-updates-table.component';
+import { IDailyUpdate, IEmp } from 'src/app/models/daily-updates.model';
+
+interface GroupedDailyUpdate {
+  emp: IEmp;
+  updates: IDailyUpdate[];
+}
 
 @Component({
   selector: 'app-daily-updates',
@@ -18,26 +23,19 @@ import { AppState } from 'src/app/store/reducer';
   imports: [
     DemoMaterialModule,
     SharedModule,
-    CommonModule
+    CommonModule,
+    EmployeeDailyUpdatesTableComponent
   ],
   templateUrl: './daily-updates.component.html',
-  styleUrl: './daily-updates.component.scss'
+  styleUrls: ['./daily-updates.component.scss']
 })
-export class DailyUpdatesComponent {
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
-
-  /**
-   * Observable to handle daily updates and loading.
-   */
-  private destroy$ = new Subject<void>()
+export class DailyUpdatesComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
   dailyUpdates$: Observable<IDailyUpdate[]>;
   loading$: Observable<boolean>;
 
-  /**
- * DataSource for the MatTable used to display daily updates with pagination.
- */
-  dataSource!: MatTableDataSource<any>;
-  displayedColumns: string[] = ['createdAt', 'emp', 'work', 'project_type', 'project', 'skill_title', 'hours', 'update_content'];
+  dailyUpdates: IDailyUpdate[] = [];
+  groupedDailyUpdates: GroupedDailyUpdate[] = [];
 
   constructor(
     private snackBarService: SnackBarService,
@@ -51,20 +49,51 @@ export class DailyUpdatesComponent {
     this.onLoadDailyUpdates();
   }
 
-  /**
-  * Dispatches an action to load all projects.
-  */
   onLoadDailyUpdates() {
     this.store.dispatch(getDailyUpdates());
     this.dailyUpdates$.pipe(takeUntil(this.destroy$)).subscribe({
       next: (dailyUpdates: IDailyUpdate[]) => {
-        this.dataSource = new MatTableDataSource<any>(dailyUpdates);
-        this.dataSource.paginator = this.paginator;
+        this.dailyUpdates = dailyUpdates;
+        this.groupedDailyUpdates = this.groupByEmployee(this.dailyUpdates);
       },
       error: (error) => {
         const errorMsg = error?.error?.message;
-        this.snackBarService.openAlert({ message: errorMsg, type: "error" })
+        this.snackBarService.openAlert({ message: errorMsg, type: "error" });
       }
     })
+  }
+
+  groupByEmployee(dailyUpdates: IDailyUpdate[]): GroupedDailyUpdate[] {
+    const grouped: { [key: string]: GroupedDailyUpdate } = {};
+
+    dailyUpdates.forEach(update => {
+      const empId = update.emp._id;
+      if (!grouped[empId]) {
+        grouped[empId] = { emp: update.emp, updates: [] };
+      }
+      grouped[empId].updates.push(update);
+    });
+
+    return Object.values(grouped);
+  }
+
+  isToday(date: string | undefined): boolean {
+    if (!date) return false;
+
+    const today = new Date();
+    const updateDate = new Date(date);
+
+    return today.getFullYear() === updateDate.getFullYear() &&
+      today.getMonth() === updateDate.getMonth() &&
+      today.getDate() === updateDate.getDate();
+  }
+
+  trackByEmployeeId(index: number, group: GroupedDailyUpdate): string {
+    return group.emp._id;
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

@@ -2,11 +2,27 @@ import { SnackBarService } from '../../services/snackbar.service';
 import { Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { catchError, exhaustMap, map, of } from "rxjs";
-import {
-} from 'src/app/models/leaves.model';
 import { DailyUpdatesService } from 'src/app/services/daily-update.service';
-import { getDailyUpdates, getDailyUpdatesError, getDailyUpdatesSuccess, getEmployeeDailyUpdates, getEmployeeDailyUpdatesError, getEmployeeDailyUpdatesSuccess, addDailyUpdate, addDailyUpdateSuccess, addDailyUpdateError } from './actions';
-import { IAddDailyUpdatePayload, IDailyUpdate, IDailyUpdatesResponse } from 'src/app/models/daily-updates.model';
+import {
+  getDailyUpdates,
+  getDailyUpdatesError,
+  getDailyUpdatesSuccess,
+  getEmployeeDailyUpdates,
+  getEmployeeDailyUpdatesError,
+  getEmployeeDailyUpdatesSuccess,
+  addDailyUpdate,
+  addDailyUpdateSuccess,
+  addDailyUpdateError,
+  updateDailyUpdate,
+  updateDailyUpdateSuccess,
+  updateDailyUpdateError
+} from './actions';
+import {
+  IAddDailyUpdatePayload,
+  IDailyUpdate,
+  IDailyUpdatesResponse,
+  IUpdateDailyUpdatePayload
+} from 'src/app/models/daily-updates.model';
 
 @Injectable()
 export class DailyUpdatesEffects {
@@ -67,24 +83,24 @@ export class DailyUpdatesEffects {
     )
   ));
 
-  // Update Project
-  // updateProject$ = createEffect(() => this.actions$.pipe(
-  //   ofType(updateProject.type),
-  //   exhaustMap((props: { id: string, payload: IUpdateProjectPayload, type: string }) =>
-  //     this.projectService.updateProject(props.id, props.payload).pipe(
-  //       map((res: IUpdateProjectResponse) => {
-  //         if (res) {
-  //           this.snackBarService.openAlert({ message: res.message, type: "success" })
-  //         }
-  //         return { type: updateProjectSuccess.type, res }
-  //       }
-  //       ),
-  //       catchError((error) => {
-  //         const errorMsg = error?.error?.message;
-  //         this.snackBarService.openAlert({ message: errorMsg, type: "error" })
-  //         return of({ type: updateProjectError.type, error })
-  //       })
-  //     )
-  //   )
-  // ));
+  // Update Daily Update
+  updateDailyUpdate$ = createEffect(() => this.actions$.pipe(
+    ofType(updateDailyUpdate.type),
+    exhaustMap((props: { id: string, payload: IUpdateDailyUpdatePayload, type: string }) =>
+      this.dailyUpdatesService.updateProject(props.id, props.payload).pipe(
+        map((res: IDailyUpdatesResponse) => {
+          if (res) {
+            this.snackBarService.openAlert({ message: res.message, type: "success" })
+          }
+          return { type: updateDailyUpdateSuccess.type, res }
+        }
+        ),
+        catchError((error) => {
+          const errorMsg = error?.error?.message;
+          this.snackBarService.openAlert({ message: errorMsg, type: "error" })
+          return of({ type: updateDailyUpdateError.type, error })
+        })
+      )
+    )
+  ));
 }

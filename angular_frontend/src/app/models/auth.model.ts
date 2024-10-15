@@ -15,3 +15,13 @@ export interface ISignupResponse {
   message: string;
   employeeId: string;
 }
+
+export interface IAdminSignupPayload {
+  name: string;
+  email: string;
+  password: string
+}
+
+export interface IAdminSignupResponse {
+  message: string;
+}

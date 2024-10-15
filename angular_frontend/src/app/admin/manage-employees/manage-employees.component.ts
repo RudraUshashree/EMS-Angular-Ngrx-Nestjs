@@ -214,6 +214,8 @@ export class ManageEmployeesComponent implements OnInit, OnDestroy {
    * @param event - Input event from the search bar
    */
   onSearch(event: any) {
+    this.selectedEmpType = '';
+    this.selectedworkedTechnologies = [];
     const value = event.target.value;
     this.searchControl.setValue(value);
   }

@@ -12,13 +12,14 @@ import { AppState } from 'src/app/store/reducer';
 import { IEmployee } from 'src/app/models/employee.model';
 import { Observable, Subject, takeUntil } from 'rxjs';
 import { getEmployees } from 'src/app/store/employee/actions';
-import { ListModel } from 'src/app/models/list-model';
 import { WorkTypeData } from 'src/app/shared/data/work-type.data';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
-import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { WorkedTechnologiesData } from 'src/app/shared/data/worked-technologies.data';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SpinnerComponent } from 'src/app/shared/spinner.component';
+import { getProjects } from 'src/app/store/project/actions';
+import { IProject } from 'src/app/models/project.model';
+import { selectProjects } from 'src/app/store/project/selectors';
 
 @Component({
   selector: 'app-dashboard',
@@ -46,26 +47,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
   loading$: Observable<boolean>;
   employees$: Observable<IEmployee[] | []>;
+  projects$: Observable<IProject[]>;
 
-  /**
-   * Lists for employee types and technologies worked on for the chart display.
-   */
-  empTypeList: ListModel[] = EmployeeTypeData;
-  workedTechnologies: ListModel[] = WorkedTechnologiesData;
-
-  /**
-   * Form control for searching employees and selected filters for employee type and technologies.
-   */
-  searchControl = new FormControl();
-  selectedEmpType: string = '';
-  selectedworkedTechnologies: string[] = [];
   employeesData: IEmployee[] = [];
-
-  /**
-   * DataSource for the MatTable used to display employees with pagination.
-   */
-  dataSource!: MatTableDataSource<any>;
-  displayedColumns: string[] = ['image', 'name', 'email', 'dob', 'contact', 'city', 'experience', 'emp_type', 'worked_technologies', 'status'];
 
   /**
    * Variables for holding employees' total count and counts of active and inactive employees.
@@ -75,28 +59,17 @@ export class DashboardComponent implements OnInit, OnDestroy {
   inactiveEmployeesCount: number = 0;
 
   /**
+   * Variables for holding projects total count and counts of active and inactive projects.
+   */
+  projectsTotalCount: number = 0;
+  activeProjectsCount: number = 0;
+  inactiveProjectsCount: number = 0;
+
+  /**
    * Objects for storing employee type and work type counts for chart display.
    */
   employeeTypes: IAssociatedData = {};
   workTypes: IAssociatedData = {};
-
-  /**
-   * Form for updating employee information.
-   */
-  employeeForm = new FormGroup({
-    name: new FormControl(),
-    dob: new FormControl(),
-    contact: new FormControl(),
-    address: new FormControl(),
-    city: new FormControl(),
-    zipcode: new FormControl(),
-    emp_type: new FormControl(),
-    work_type: new FormControl(),
-    experience: new FormControl(),
-    salary: new FormControl(),
-    worked_technologies: new FormControl(),
-    status: new FormControl(),
-  });
 
   /**
  * Constructor initializes the component with the Store service to access state and selectors.
@@ -106,11 +79,13 @@ export class DashboardComponent implements OnInit, OnDestroy {
     private store: Store<AppState>
   ) {
     this.employees$ = this.store.select(selectGetEmployees);
+    this.projects$ = this.store.select(selectProjects);
     this.loading$ = this.store.select(selectGetEmployeesLoading);
   }
 
   ngOnInit(): void {
     this.loadAllEmployees();
+    this.loadProjects();
   }
 
   /**
@@ -121,9 +96,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.employees$.pipe(takeUntil(this.destroy$)).subscribe({
       next: (employees) => {
         this.employeesData = employees;
-        this.dataSource = new MatTableDataSource<IEmployee>(this.employeesData);
-        this.dataSource.paginator = this.paginator;
-
         this.employeesTotalCount = this.employeesData.length;
         this.activeEmployeesCount = this.employeesData.filter(etype => etype.status === 'Active').length;
         this.inactiveEmployeesCount = this.employeesData.filter(etype => etype.status === 'Inactive').length;
@@ -151,6 +123,20 @@ export class DashboardComponent implements OnInit, OnDestroy {
           keys: workTypes,
           values: workTypesCounts
         }
+      }
+    })
+  }
+
+  /**
+   * Dispatches an action to load all projects.
+   */
+  loadProjects() {
+    this.store.dispatch(getProjects());
+    this.projects$.pipe(takeUntil(this.destroy$)).subscribe({
+      next: (projects: IProject[]) => {
+        this.projectsTotalCount = projects.length;
+        this.activeProjectsCount = projects.filter(project => project.status === true).length;
+        this.inactiveProjectsCount = projects.filter(project => project.status === false).length;
       }
     })
   }

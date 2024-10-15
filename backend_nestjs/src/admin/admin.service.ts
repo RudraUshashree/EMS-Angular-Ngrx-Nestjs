@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, ServiceUnavailableException } from "@nestjs/common";
+import { BadRequestException, ConflictException, Injectable, ServiceUnavailableException } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
 import { ADMIN_MODEL, AdminDocument } from "src/schemas/admin.schema";
@@ -25,21 +25,25 @@ export class AdminService {
         try {
             const isAdminExists = await this.adminModel.findOne({ email: addAdminDto.email });
 			if (isAdminExists) {
-				return {
-					message: 'An admin with this email already exists.',
-					statusCode: 409
-				};
+                throw new ConflictException('An admin with this email already exists.');
 			}
 
             const user = await this.adminModel.create(addAdminDto);
             if (user) {
-                return 'Admin is added.'
+                return {
+					message: 'Registered Successfully.'
+				};
             }
 
         } catch (error) {
             if (error.name === 'ValidationError') {
                 throw new BadRequestException(error.errors);
             }
+
+            if (error.status === 409) {
+                throw new ConflictException('An admin with this email already exists.');
+            }
+
             throw new ServiceUnavailableException();
         }
     }

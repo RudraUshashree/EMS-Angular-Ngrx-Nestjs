@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environment/environment';
-import { IAddDailyUpdatePayload, IDailyUpdate, IDailyUpdatesResponse } from '../models/daily-updates.model';
+import { IAddDailyUpdatePayload, IDailyUpdate, IDailyUpdatesResponse, IUpdateDailyUpdatePayload } from '../models/daily-updates.model';
 
 @Injectable({
   providedIn: 'root'
@@ -45,14 +45,14 @@ export class DailyUpdatesService {
     return this.http.get<IDailyUpdate[]>(`${environment.api_url}/daily-update/${empId}`);
   }
 
-  // /**
-  //  * Updates the status of a specific project.
-  //  *
-  //  * @param id - The ID of the project to be updated.
-  //  * @param updatedProjectData - The new status to update for the project.
-  //  * @returns Observable with the response after updating the project status (IUpdateEmployeeLeaveStatusResponse).
-  //  */
-  // updateProject(id: string, updatedProjectData: IUpdateProjectPayload): Observable<IUpdateProjectResponse> {
-  //   return this.http.put<IUpdateProjectResponse>(`${environment.api_url}/project/${id}`, updatedProjectData);
-  // }
+  /**
+   * Updates the daily update of a specific employee.
+   *
+   * @param id - The ID of the daily update to be updated.
+   * @param updatedDailyUpdateData - The new status to update for the daily update.
+   * @returns Observable with the response after updating the daily update (IDailyUpdatesResponse).
+   */
+  updateProject(id: string, updatedDailyUpdateData: IUpdateDailyUpdatePayload): Observable<IDailyUpdatesResponse> {
+    return this.http.put<IDailyUpdatesResponse>(`${environment.api_url}/daily-update/${id}`, updatedDailyUpdateData);
+  }
 }

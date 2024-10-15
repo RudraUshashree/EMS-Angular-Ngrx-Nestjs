@@ -82,13 +82,6 @@ export class SignUpComponent implements OnInit, OnDestroy {
   });
 
   /**
-  * Getter to access the form controls in the template.
-  */
-  get getFormData() {
-    return this.employeeSignUpForm.controls;
-  }
-
-  /**
  * Handles the sign-up process by dispatching the signup action with the form data.
  * It also handles image file upload.
  */

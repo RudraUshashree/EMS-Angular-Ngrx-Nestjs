@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { ILoginPayload, ILoginResponse, ISignupResponse } from 'src/app/models/auth.model';
+import { IAdminSignupPayload, IAdminSignupResponse, ILoginPayload, ILoginResponse, ISignupResponse } from 'src/app/models/auth.model';
 
 export const login = createAction(
   '[Auth] Login',
@@ -24,5 +24,18 @@ export const signupSuccess = createAction(
 );
 export const signupError = createAction(
   '[Auth] SignupError',
+  props<{ error: any }>()
+);
+
+export const adminSignup = createAction(
+  '[Auth] AdminSignup',
+  props<{ payload: IAdminSignupPayload }>()
+);
+export const adminSignupSuccess = createAction(
+  '[Auth] AdminSignupSuccess',
+  props<{ res: IAdminSignupResponse }>()
+);
+export const adminSignupError = createAction(
+  '[Auth] AdminSignupError',
   props<{ error: any }>()
 );

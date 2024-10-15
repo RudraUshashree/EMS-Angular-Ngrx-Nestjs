@@ -2,9 +2,9 @@ import { SnackBarService } from './../../services/snackbar.service';
 import { Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { AuthService } from "src/app/services/auth.service";
-import { login, loginError, loginSuccess, signup, signupError, signupSuccess } from "./actions";
+import { adminSignup, adminSignupError, adminSignupSuccess, login, loginError, loginSuccess, signup, signupError, signupSuccess } from "./actions";
 import { catchError, exhaustMap, map, of } from "rxjs";
-import { ILoginPayload, ILoginResponse, ISignupResponse } from 'src/app/models/auth.model';
+import { IAdminSignupPayload, IAdminSignupResponse, ILoginPayload, ILoginResponse, ISignupResponse } from 'src/app/models/auth.model';
 
 @Injectable()
 export class AuthEffects {
@@ -42,6 +42,26 @@ export class AuthEffects {
           const errorMsg = error?.message;
           this.snackBarService.openAlert({ message: errorMsg, type: "error" })
           return of({ type: signupError.type, error })
+        })
+      )
+    )
+  ));
+
+  adminSignup$ = createEffect(() => this.actions$.pipe(
+    ofType(adminSignup.type),
+    exhaustMap((props: { payload: IAdminSignupPayload, type: string }) =>
+      this.authService.signUpAdmin(props.payload).pipe(
+        map((res: IAdminSignupResponse) => {
+          if (res) {
+            this.snackBarService.openAlert({ message: res.message, type: "success" })
+          }
+          return { type: adminSignupSuccess.type, res }
+        }
+        ),
+        catchError((error) => {
+          const errorMsg = error?.message;
+          this.snackBarService.openAlert({ message: errorMsg, type: "error" })
+          return of({ type: adminSignupError.type, error })
         })
       )
     )

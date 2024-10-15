@@ -3,6 +3,7 @@ import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
 import { DAILY_UPDATE_MODEL, DailyUpdateDocument } from "src/schemas/daily-update.schema";
 import { AddDailyUpdateDTO } from "./dtos/add-daily-update.dto";
+import { UpdateDailyUpdateDTO } from "./dtos/update-daily-update.dto";
 
 @Injectable()
 export class DailyUpdateService {
@@ -84,38 +85,37 @@ export class DailyUpdateService {
         }
     }
 
-    // /**
-    //  * Updates an project's information based on their ID.
-    //  * @param id The ID of the project to be updated.
-    //  * @param updateProjectDTO The data transfer object containing the updated project details.
-    //  * @returns The updated project record with the successfull message.
-    //  * @throws NotFoundException If the project is not found.
-    //  * @throws BadRequestException If validation fails.
-    //  */
-    // async updateProject(id: string, updateProjectDTO: UpdateProjectDTO) {
-    //     try {
-    //         const updatedProject = await this.projectModel.findByIdAndUpdate(
-    //             id,
-    //             { $set: updateProjectDTO },
-    //             { new: true, runValidators: true }
-    //         ).lean();
+    /**
+     * Updates an daily update's information based on their ID.
+     * @param id The ID of the daily update to be updated.
+     * @param updateDailyUpdate The data transfer object containing the updated daily update details.
+     * @returns The updated daily update record with the successfull message.
+     * @throws NotFoundException If the daily update is not found.
+     * @throws BadRequestException If validation fails.
+     */
+    async updateDailyUpdate(id: string, updateDailyUpdate: UpdateDailyUpdateDTO) {
+        try {
+            const dailyUpdate = await this.dailyUpdateModel.findByIdAndUpdate(
+                id,
+                { $set: updateDailyUpdate },
+                { new: true, runValidators: true }
+            ).lean();
 
-    //         if (!updatedProject) {
-    //             throw new NotFoundException('Project not found');
-    //         }
+            if (!dailyUpdate) {
+                throw new NotFoundException('Daily Update not found');
+            }
 
-    //         return {
-    //             message: 'Project updated successfully.',
-    //             project: updatedProject
-    //         };
-    //     } catch (error) {
-    //         console.log('error: ', error);
+            return {
+                message: 'Updated successfully.',
+                dailyUpdate: dailyUpdate
+            };
+        } catch (error) {
+            console.log('error: ', error);
+            if (error instanceof NotFoundException) {
+                throw new NotFoundException(error.message);
+            }
 
-    //         if (error instanceof NotFoundException) {
-    //             throw new NotFoundException(error.message);
-    //         }
-
-    //         throw new BadRequestException(error.errors);
-    //     }
-    // }
+            throw new BadRequestException(error.errors);
+        }
+    }
 }

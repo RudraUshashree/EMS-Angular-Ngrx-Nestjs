@@ -1,0 +1,7 @@
+::ng-deep .mdc-switch.mdc-switch--selected:enabled .mdc-switch__icon {
+  fill: rgb(255, 255, 255) !important;
+}
+
+::ng-deep .mdc-switch--selected .mdc-switch__handle-track .mdc-switch__handle::before {
+  background: rgb(7, 181, 250);
+}

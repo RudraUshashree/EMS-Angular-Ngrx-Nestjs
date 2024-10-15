@@ -29,8 +29,8 @@ export class ManageEmployeeComponent implements OnInit, OnDestroy {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   /**
-  * Observables for handling employees, search results, employee status updates, and loading states.
-  */
+   * Observables for handling employees, search results, employee status updates, and loading states.
+   */
   destroy$ = new Subject<void>()
   filteredEmployees$: Observable<IEmployee[]>;
   searchEmployees$: Observable<IEmployee[]>;
@@ -38,14 +38,14 @@ export class ManageEmployeeComponent implements OnInit, OnDestroy {
   employees$: Observable<IEmployee[]>;
 
   /**
- * Lists for employee types and technologies.
- */
+   * Lists for employee types and technologies.
+   */
   empTypeList: ListModel[] = EmployeeTypeData;
   workedTechnologies: ListModel[] = WorkedTechnologiesData;
 
   /**
- * Lists for employee types and technologies.
- */
+   * Lists for employee types and technologies.
+   */
   selectedEmpType: string = '';
   selectedworkedTechnologies: string[] = [];
 
@@ -53,8 +53,8 @@ export class ManageEmployeeComponent implements OnInit, OnDestroy {
   searchControl = new FormControl();
 
   /**
-* DataSource for the MatTable used to display employees with pagination.
-*/
+   * DataSource for the MatTable used to display employees with pagination.
+   */
   dataSource!: MatTableDataSource<any>;
   displayedColumns: string[] = ['image', 'name', 'email', 'city', 'experience', 'emp_type', 'worked_technologies', 'status'];
 
@@ -97,8 +97,8 @@ export class ManageEmployeeComponent implements OnInit, OnDestroy {
   }
 
   /**
-  * Loads all employees and sets up the data source for the employee table.
-  */
+   * Loads all employees and sets up the data source for the employee table.
+   */
   loadAllEmployees() {
     this.store.dispatch(getEmployees());
     this.employees$.pipe(takeUntil(this.destroy$)).subscribe((employees) => {
@@ -124,17 +124,19 @@ export class ManageEmployeeComponent implements OnInit, OnDestroy {
   }
 
   /**
-  * Handles the input change in the search bar and triggers search.
-  * @param event - The input event from the search bar
-  */
+   * Handles the input change in the search bar and triggers search.
+   * @param event - The input event from the search bar
+   */
   onSearch(event: any) {
+    this.selectedEmpType = '';
+    this.selectedworkedTechnologies = [];
     const value = event.target.value;
     this.searchControl.setValue(value);
   }
 
   /**
-  * Clears all applied filters and reloads the full employee list.
-  */
+   * Clears all applied filters and reloads the full employee list.
+   */
   onClearFilters() {
     this.selectedEmpType = '';
     this.selectedworkedTechnologies = [];

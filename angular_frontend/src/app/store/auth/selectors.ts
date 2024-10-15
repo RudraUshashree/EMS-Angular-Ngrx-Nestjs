@@ -18,6 +18,7 @@ export const selectAuthSignupSuccess = createSelector(
   selectAuthFeature,
   (state: AuthState) => state.signupSuccess
 );
+
 export const selectAuthError = createSelector(
   selectAuthFeature,
   (state: AuthState) => state.error

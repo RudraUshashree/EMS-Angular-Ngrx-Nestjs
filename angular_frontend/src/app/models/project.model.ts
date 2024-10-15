@@ -7,6 +7,7 @@ export interface IProject {
   client_name: string,
   hours: number,
   price: number,
+  status: boolean,
   createdAt?: string,
   updatedAt?: string,
   __v?: number
@@ -34,7 +35,8 @@ export interface IUpdateProjectPayload {
   technologies: string,
   client_name: string,
   hours: number,
-  price: number
+  price: number,
+  status: boolean
 }
 
 export interface IUpdateProjectResponse {

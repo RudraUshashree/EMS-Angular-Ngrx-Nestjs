@@ -1,31 +1,27 @@
-// import { IsArray, IsNumber, IsOptional, IsString } from "class-validator";
+import { IsArray, IsNumber, IsOptional, IsString } from "class-validator";
 
-// export class UpdateProjectDTO {
-//     @IsArray()
-//     @IsOptional()
-//     emp: []
+export class UpdateDailyUpdateDTO {
+    @IsString()
+    @IsOptional()
+    work: string;
 
-//     @IsString()
-//     @IsOptional()
-//     title: string;
+    @IsString()
+    @IsOptional()
+    project_type: string;
 
-//     @IsString()
-//     @IsOptional()
-//     client_name: string;
+    @IsArray()
+    @IsOptional()
+    project: [];
 
-//     @IsString()
-//     @IsOptional()
-//     description: string;
+    @IsString()
+    @IsOptional()
+    skill_title: string;
 
-//     @IsString()
-//     @IsOptional()
-//     technologies: string;
+    @IsNumber()
+    @IsOptional()
+    hours: number;
 
-//     @IsNumber()
-//     @IsOptional()
-//     hours: number;
-
-//     @IsNumber()
-//     @IsOptional()
-//     price: number;
-// }
+    @IsString()
+    @IsOptional()
+    update_content: string;
+}

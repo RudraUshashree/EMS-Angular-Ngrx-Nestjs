@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { IAddDailyUpdatePayload, IDailyUpdate, IDailyUpdatesResponse } from 'src/app/models/daily-updates.model';
+import { IAddDailyUpdatePayload, IDailyUpdate, IDailyUpdatesResponse, IUpdateDailyUpdatePayload } from 'src/app/models/daily-updates.model';
 
 // Add Daily Update
 export const addDailyUpdate = createAction(
@@ -48,18 +48,18 @@ export const getEmployeeDailyUpdatesError = createAction(
 );
 
 
-// // Update Project
-// export const updateProject = createAction(
-//   '[Project] UpdateProject',
-//   props<{ id: string, payload: IUpdateProjectPayload }>()
-// );
+// Update Daily Updates
+export const updateDailyUpdate = createAction(
+  '[DailyUpdate] UpdateDailyUpdate',
+  props<{ id: string, payload: IUpdateDailyUpdatePayload }>()
+);
 
-// export const updateProjectSuccess = createAction(
-//   '[Project] UpdateProjectSuccess',
-//   props<{ res: IUpdateProjectResponse }>()
-// );
+export const updateDailyUpdateSuccess = createAction(
+  '[DailyUpdate] UpdateDailyUpdateSuccess',
+  props<{ res: IDailyUpdatesResponse }>()
+);
 
-// export const updateProjectError = createAction(
-//   '[Project] UpdateProjectError',
-//   props<{ error: any }>()
-// );
+export const updateDailyUpdateError = createAction(
+  '[DailyUpdate] UpdateDailyUpdateError',
+  props<{ error: any }>()
+);

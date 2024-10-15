@@ -37,21 +37,21 @@ export class ManageEmployeesLeavesComponent implements OnInit, OnDestroy {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   /**
-* Observables for handling leaves and loading states.
-*/
+  * Observables for handling leaves and loading states.
+  */
   private destroy$ = new Subject<void>();
   leaves$: Observable<ILeavesResponse | null>;
   loading$: Observable<boolean>;
 
   /**
- * Lists for leave types and leave status.
- */
+   * Lists for leave types and leave status.
+   */
   leaveTypeList: ListModel[] = LeaveTypeData;
   leaveStatusList: ListModel[] = leaveStatusData;
 
   /**
-* DataSource for the MatTable used to display employees with pagination.
-*/
+  * DataSource for the MatTable used to display employees with pagination.
+  */
   dataSource!: MatTableDataSource<any>;
   displayedColumns: string[] = ['createdAt', 'name', 'start_date', 'end_date', 'leaves_type', 'leaves', 'duration', 'reason', 'leave_status'];
 
@@ -60,10 +60,10 @@ export class ManageEmployeesLeavesComponent implements OnInit, OnDestroy {
   selectedLeaveStatus: string = '';
 
   /**
- * Constructor for initializing the store and snack bar service.
- * @param snackBarService - Service for displaying snackbar alerts
- * @param store - Store for managing application state
- */
+   * Constructor for initializing the store and snack bar service.
+   * @param snackBarService - Service for displaying snackbar alerts
+   * @param store - Store for managing application state
+   */
   constructor(
     private snackBarService: SnackBarService,
     private store: Store<AppState>
@@ -78,18 +78,18 @@ export class ManageEmployeesLeavesComponent implements OnInit, OnDestroy {
   }
 
   /**
- * Dispatches an action to load employees' leave data from the store.
- */
+   * Dispatches an action to load employees' leave data from the store.
+   */
   loadEmployeesLeaves() {
     this.store.dispatch(getEmployeesLeaves());
   }
 
   /**
- * Handles changes to the leave status for an employee.
- * Dispatches an action to update the leave status in the store.
- * @param val - The selected leave status
- * @param element - The employee's leave data
- */
+   * Handles changes to the leave status for an employee.
+   * Dispatches an action to update the leave status in the store.
+   * @param val - The selected leave status
+   * @param element - The employee's leave data
+   */
   onLeaveStatusChange(val: any, element: ILeave) {
     const updatedLeave = JSON.parse(JSON.stringify({ ...element, leave_status: val.value }));
 
@@ -103,9 +103,9 @@ export class ManageEmployeesLeavesComponent implements OnInit, OnDestroy {
   }
 
   /**
- * Subscribes to the leaves observable to update the table data whenever leave data changes.
- * Sets up pagination for the table.
- */
+   * Subscribes to the leaves observable to update the table data whenever leave data changes.
+   * Sets up pagination for the table.
+   */
   leaveSubscription() {
     this.leaves$.pipe(takeUntil(this.destroy$)).subscribe({
       next: (data: ILeavesResponse | null) => {
@@ -121,8 +121,8 @@ export class ManageEmployeesLeavesComponent implements OnInit, OnDestroy {
   }
 
   /**
-  * Applies filters based on the selected leave type and leave status.
-  */
+   * Applies filters based on the selected leave type and leave status.
+   */
   applyFilters() {
     this.store.dispatch(filterEmployeesLeaves({ leaveType: this.selectedLeaveType, leaveStatus: this.selectedLeaveStatus }));
   }

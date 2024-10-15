@@ -55,7 +55,7 @@ export class ManageProjectsComponent implements OnInit {
    * DataSource for the MatTable used to display projects with pagination.
    */
   dataSource!: MatTableDataSource<any>;
-  displayedColumns: string[] = ['createdAt', 'title', 'description', 'technologies', 'client_name', 'hours', 'price', 'emp'];
+  displayedColumns: string[] = ['createdAt', 'title', 'description', 'technologies', 'client_name', 'hours', 'price', 'emp', 'status'];
 
   /**
    * Form of updating project information.
@@ -67,7 +67,8 @@ export class ManageProjectsComponent implements OnInit {
     client_name: new FormControl('', Validators.required),
     hours: new FormControl(0, [Validators.required, Validators.min(1)]),
     price: new FormControl(0, [Validators.required, Validators.min(1)]),
-    emp: new FormControl([])
+    emp: new FormControl([]),
+    status: new FormControl()
   });
 
   /**
@@ -154,11 +155,13 @@ export class ManageProjectsComponent implements OnInit {
       client_name: new FormControl(data['client_name'] ?? '', Validators.required),
       hours: new FormControl(data['hours'] ?? '', [Validators.required, Validators.min(1)]),
       price: new FormControl(data['price'] ?? '', [Validators.required, Validators.min(1)]),
-      emp: new FormControl(employeeIds)
+      emp: new FormControl(employeeIds),
+      status: new FormControl(data['status'])
     });
   }
 
   onAddProjectButtonClick() {
+    this.selectedTabIndex = 0;
     this.addProjectFormShow = true;
   }
 

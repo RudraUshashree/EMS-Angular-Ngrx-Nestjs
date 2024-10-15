@@ -11,10 +11,15 @@ export const selectDailyUpdatesLoading = createSelector(
 
 export const selectAddDailyUpdate = createSelector(
   selectDailyUpdateFeature,
-  (state: DailyUpdateState) => state.addDailyUpdate
+  (state: DailyUpdateState) => state.dailyUpdateResponse
 );
 
 export const selectDailyUpdates = createSelector(
   selectDailyUpdateFeature,
   (state: DailyUpdateState) => state.dailyUpdates
+);
+
+export const selectUpdateDailyUpdate = createSelector(
+  selectDailyUpdateFeature,
+  (state: DailyUpdateState) => state.dailyUpdateResponse
 );

@@ -18,11 +18,6 @@ export class AdminController {
     */
     @Post("add-admin")
     addAdmin(@Body() addAdminDto: AddAdminDTO) {
-        addAdminDto = {
-            name: "Admin",
-            email: "admin@gmail.com",
-            password: "admin123"
-        }
         return this.adminService.addAdmin(addAdminDto);
     }
 }

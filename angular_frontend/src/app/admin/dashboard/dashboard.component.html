@@ -1,5 +1,5 @@
 @if(loading$ | async){
-  <app-spinner></app-spinner>
+<app-spinner></app-spinner>
 }
 
 <div class="row">
@@ -52,5 +52,45 @@
     @if(!(loading$ | async)){
     <app-work-type-chart [workTypes]="workTypes"></app-work-type-chart>
     }
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-lg-4 col-sm-12">
+    <mat-card>
+      <mat-card-content class="text-center">
+        <mat-card-title>Total Projects</mat-card-title>
+        <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="assessment"></mat-icon>
+        <div>
+          <h1>{{projectsTotalCount}}</h1>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <div class="col-lg-4 col-sm-12">
+    <mat-card>
+      <mat-card-content class="text-center">
+        <mat-card-title>Active Projects</mat-card-title>
+        <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="assessment"></mat-icon>
+        <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="add"></mat-icon>
+        <div>
+          <h1>{{activeProjectsCount}}</h1>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <div class="col-lg-4 col-sm-12">
+    <mat-card>
+      <mat-card-content class="text-center">
+        <mat-card-title>Inactive Projects</mat-card-title>
+        <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="assessment"></mat-icon>
+        <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="remove"></mat-icon>
+        <div>
+          <h1>{{inactiveProjectsCount}}</h1>
+        </div>
+      </mat-card-content>
+    </mat-card>
   </div>
 </div>

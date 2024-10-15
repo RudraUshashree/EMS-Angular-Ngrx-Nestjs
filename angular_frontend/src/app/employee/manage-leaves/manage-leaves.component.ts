@@ -134,7 +134,6 @@ export class ManageLeavesComponent implements OnInit, OnDestroy {
   onApplyFilters() {
     this.leaveTypesForm.get('leave_type')?.valueChanges.subscribe((value) => {
       if (value) {
-        console.log('Selected Leave Type:', value);
         this.store.dispatch(filterOneEmployeeLeaves({ empId: this.empId, leaveType: value }));
       }
     });

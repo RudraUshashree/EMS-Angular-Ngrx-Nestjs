@@ -1,4 +1,4 @@
-interface IEmp {
+export interface IEmp {
   _id: string,
   name: string
 }
@@ -13,13 +13,23 @@ export interface IAddDailyUpdatePayload {
   update_content: string
 }
 
+export interface Project {
+  _id: string,
+  title: string,
+  status: boolean,
+  emp: {
+    _id: string,
+    name: string,
+  }
+}
+
 export interface IDailyUpdate {
   _id: string,
   emp: IEmp,
   work: string,
   skill_title?: string,
   project_type?: string,
-  project?: [],
+  project?: Project[],
   hours: number,
   update_content: string,
   createdAt?: string,
@@ -30,4 +40,13 @@ export interface IDailyUpdate {
 export interface IDailyUpdatesResponse {
   message: string,
   dailyUpdate: IDailyUpdate;
+}
+
+export interface IUpdateDailyUpdatePayload {
+  work?: string,
+  skill_title?: string,
+  project_type?: string,
+  project?: string,
+  hours?: number,
+  update_content?: string
 }

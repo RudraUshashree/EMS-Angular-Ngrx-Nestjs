@@ -1,4 +1,3 @@
-import { ProjectTypeData } from './../../shared/data/project-type';
 import { CommonModule } from '@angular/common';
 import { Component, inject, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
@@ -14,10 +13,11 @@ import { AppState } from 'src/app/store/reducer';
 import { AddDailyUpdateComponent } from '../add-daily-update/add-daily-update.component';
 import { selectDailyUpdates, selectDailyUpdatesLoading } from 'src/app/store/daily-update/selectors';
 import { addDailyUpdate, getEmployeeDailyUpdates } from 'src/app/store/daily-update/actions';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { IProject } from 'src/app/models/project.model';
 import { getEmployeeProjects } from 'src/app/store/project/actions';
 import { selectProjects } from 'src/app/store/project/selectors';
+import { UpdateDailyUpdateComponent } from '../update-daily-update/update-daily-update.component';
 
 @Component({
   selector: 'app-manage-daily-updates',
@@ -44,10 +44,8 @@ export class ManageDailyUpdatesComponent {
 
   empId: string = '';
   dialog = inject(MatDialog);
-  dailyUpdates!: IDailyUpdate[];
+  dailyUpdates: IDailyUpdate[] = [];
   projects!: IProject[];
-  projectsList: any;
-  projectTypeList = ProjectTypeData;
 
   /**
    * Form of updating project information.
@@ -126,20 +124,23 @@ export class ManageDailyUpdatesComponent {
     });
   }
 
-  selectUpdate(dailyUpdate: IDailyUpdate) {
-    this.projectsList = dailyUpdate?.project;
+  isToday(date: string | undefined): boolean {
+    const today = new Date();
+    if (date) {
+      const updateDate = new Date(date);
 
-    this.updateDailyUpdateForm = new FormGroup({
-      work: new FormControl(dailyUpdate['work']),
-      project_type: new FormControl(dailyUpdate['project_type']),
-      project: new FormControl(this.projectsList[0]?._id),
-      skill_title: new FormControl(dailyUpdate['skill_title']),
-      hours: new FormControl(dailyUpdate['hours']),
-      update_content: new FormControl(dailyUpdate['update_content'])
-    });
+      // Compare year, month, and date to check if the date is today
+      return today.getFullYear() === updateDate.getFullYear() &&
+        today.getMonth() === updateDate.getMonth() &&
+        today.getDate() === updateDate.getDate();
+    }
+    return false;
   }
 
-  onUpdateClick(dailyUpdate: any) {
-    console.log('onUpdateClick dailyUpdate: ', dailyUpdate);
+  openUpdateDailyUpdateDialog(dailyUpdate: IDailyUpdate) {
+    this.dialog.open(UpdateDailyUpdateComponent, {
+      width: '400px',
+      data: { dailyUpdate: dailyUpdate, projects: this.projects }
+    });
   }
 }

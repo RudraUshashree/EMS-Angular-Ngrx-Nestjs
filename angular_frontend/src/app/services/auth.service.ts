@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { environment } from 'src/environment/environment';
 import { IEmployee } from '../models/employee.model';
-import { ILoginPayload, ILoginResponse, ISignupResponse } from '../models/auth.model';
+import { IAdminSignupPayload, IAdminSignupResponse, ILoginPayload, ILoginResponse, ISignupResponse } from '../models/auth.model';
 import { jwtDecode } from 'jwt-decode';
 
 @Injectable({
@@ -55,6 +55,15 @@ export class AuthService {
    */
   signUpEmployee(payload: FormData) {
     return this.http.post<ISignupResponse>(`${environment.api_url}/employee/add-employee`, payload);
+  }
+
+  /**
+   * Sends a signup request to add a new admin to the system.
+   * @param payload - Containing admin details.
+   * @returns Observable with the server's response (IAdminSignupResponse).
+   */
+  signUpAdmin(payload: IAdminSignupPayload) {
+    return this.http.post<IAdminSignupResponse>(`${environment.api_url}/admin/add-admin`, payload);
   }
 
   /**

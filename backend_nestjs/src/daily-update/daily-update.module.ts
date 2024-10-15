@@ -29,7 +29,7 @@ export class DailyUpdateModule {
                 { path: 'daily-update', method: RequestMethod.GET },
                 { path: 'daily-update/:id', method: RequestMethod.GET },
                 { path: 'daily-update/add', method: RequestMethod.POST },
-                // { path: 'project/:id', method: RequestMethod.PUT }
+                { path: 'daily-update/:id', method: RequestMethod.PUT }
             );
     }
 }

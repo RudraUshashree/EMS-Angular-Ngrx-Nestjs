@@ -2,6 +2,7 @@ import { Body, Controller, Delete, Get, Param, Post, Put, Query, Req } from "@ne
 import { AuthService } from "../auth/auth.service";
 import { DailyUpdateService } from "./daily-update.service";
 import { AddDailyUpdateDTO } from "./dtos/add-daily-update.dto";
+import { UpdateDailyUpdateDTO } from "./dtos/update-daily-update.dto";
 
 @Controller("daily-update")
 export class DailyUpdateController {
@@ -40,14 +41,14 @@ export class DailyUpdateController {
         return this.dailyUpdateService.getEmployeeDailyUpdates(empId);
     }
 
-    // /**
-    //  * Update the status of a specific leave record.
-    //  * @param id The leave record ID.
-    //  * @param updateProject The DTO containing the updated leave status.
-    //  * @returns The result of the leave status update.
-    //  */
-    // @Put(":id")
-    // updateProject(@Param("id") id: string, @Body() updateProject) {
-    //     return this.dailyUpdateService.updateProject(id, updateProject);
-    // }
+    /**
+     * Update the status of a specific daily update record.
+     * @param id The daily update record ID.
+     * @param updateDailyUpdate The DTO containing the updated daily update record.
+     * @returns The result of the updated daily update record.
+     */
+    @Put(":id")
+    updateDailyUpdate(@Param("id") id: string, @Body() updateDailyUpdate: UpdateDailyUpdateDTO) {
+        return this.dailyUpdateService.updateDailyUpdate(id, updateDailyUpdate);
+    }
 }

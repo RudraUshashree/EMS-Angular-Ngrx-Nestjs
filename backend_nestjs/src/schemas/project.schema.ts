@@ -38,6 +38,12 @@ export class Project {
         required: true
     })
     price: number;
+
+    @Prop({
+        required: true,
+        default: true
+    })
+    status: boolean
 }
 
 export type ProjectDocument = Project & Document;

@@ -8,8 +8,7 @@
   <mat-card-content>
     <mat-card-title>Daily Updates</mat-card-title>
     <mat-accordion class="example-headers-align">
-      <mat-expansion-panel *ngFor="let dailyUpdate of dailyUpdates" (opened)="selectUpdate(dailyUpdate)"
-        hideToggle="true">
+      <mat-expansion-panel *ngFor="let dailyUpdate of dailyUpdates" hideToggle="true">
         <mat-expansion-panel-header>
           <mat-panel-title> {{dailyUpdate.createdAt | date}} </mat-panel-title>
           <mat-panel-description> {{dailyUpdate.work}}
@@ -17,85 +16,45 @@
           </mat-panel-description>
         </mat-expansion-panel-header>
 
-        <form class="basic-form" [formGroup]="updateDailyUpdateForm">
-          <mat-grid-list cols="2" rowHeight="2:1">
-            <mat-grid-tile>
-              <div class="row">
-                <div>
-                  <label>Work </label>
-                  <mat-radio-group formControlName="work">
-                    <mat-radio-button value="Learning">Learning</mat-radio-button>
-                    <mat-radio-button value="Project">Project</mat-radio-button>
-                  </mat-radio-group>
-                </div>
+        <div class="row">
+          <div class="col-4">
+            <div>
+              <label><b>Work: </b></label>
+              {{ dailyUpdate.work }}
+            </div>
 
-                <div *ngIf="updateDailyUpdateForm.get('work')?.value === 'Learning'">
-                  <mat-form-field appearance="fill">
-                    <mat-label>Skill Title</mat-label>
-                    <input matInput formControlName="skill_title">
-                    <mat-error *ngIf="updateDailyUpdateForm.get('skill_title')?.hasError('required')">
-                      Skill title is required
-                    </mat-error>
-                  </mat-form-field>
-                </div>
+            <div *ngIf="dailyUpdate.work === 'Learning'">
+              <label><b>Skill Title: </b></label>
+              {{ dailyUpdate.skill_title }}
+            </div>
 
-                <div *ngIf="updateDailyUpdateForm.get('work')?.value === 'Project'">
-                  <mat-form-field appearance="fill">
-                    <mat-label>Project Type</mat-label>
-                    <mat-select formControlName="project_type">
-                      <mat-option *ngFor="let projectType of projectTypeList" [value]="projectType?.value">
-                        {{projectType?.displayValue}}
-                      </mat-option>
-                    </mat-select>
-                    <mat-error *ngIf="updateDailyUpdateForm.get('project_type')?.hasError('required')">
-                      Project type is required
-                    </mat-error>
-                  </mat-form-field>
-                </div>
+            <div *ngIf="dailyUpdate.work === 'Project'">
+              <label><b>Project Type: </b></label>
+              {{ dailyUpdate.project_type }}
+            </div>
 
-                <div *ngIf="updateDailyUpdateForm.get('work')?.value === 'Project'">
-                  <mat-form-field appearance="fill">
-                    <mat-label>Project</mat-label>
-                    <mat-select formControlName="project">
-                      @for (project of projects; track project) {
-                      <mat-option [value]="project?._id">{{project?.title}}</mat-option>
-                      }
-                    </mat-select>
-                    <mat-error *ngIf="updateDailyUpdateForm.get('project')?.hasError('required')">
-                      Project is required
-                    </mat-error>
-                  </mat-form-field>
-                </div>
+            <div *ngIf="dailyUpdate.work === 'Project' && dailyUpdate.project && dailyUpdate.project.length > 0">
+              <label><b>Project: </b></label>
+              {{ dailyUpdate.project[0].title }}
+            </div>
 
-                <div>
-                  <mat-form-field appearance="fill">
-                    <mat-label>Hours</mat-label>
-                    <input matInput formControlName="hours" type="number">
-                    <mat-error *ngIf="updateDailyUpdateForm.get('hours')?.hasError('required')">
-                      Hours are required
-                    </mat-error>
-                    <mat-error *ngIf="updateDailyUpdateForm.get('hours')?.hasError('min')">
-                      Hours must be a positive number
-                    </mat-error>
-                  </mat-form-field>
-                </div>
+            <div>
+              <label><b>Hours: </b></label>
+              {{ dailyUpdate.hours }}
+            </div>
 
-              </div>
-            </mat-grid-tile>
+          </div>
 
-            <mat-grid-tile>
-              <mat-form-field appearance="fill">
-                <mat-label>Update Content</mat-label>
-                <textarea matInput formControlName="update_content" rows="8"></textarea>
-                <mat-error *ngIf="updateDailyUpdateForm.get('update_content')?.hasError('required')">
-                  Update content is required
-                </mat-error>
-              </mat-form-field>
-            </mat-grid-tile>
-          </mat-grid-list>
-        </form>
-        <mat-action-row>
-          <button mat-button color="primary" (click)="onUpdateClick(updateDailyUpdateForm.value)">Update
+          <div class="col-8">
+            <div>
+              <label><b>Update Content: </b></label>
+              <div class="preserve-whitespace">{{dailyUpdate.update_content}}</div>
+            </div>
+          </div>
+        </div>
+
+        <mat-action-row *ngIf="isToday(dailyUpdate?.createdAt)">
+          <button mat-button color="primary" (click)="openUpdateDailyUpdateDialog(dailyUpdate)">Update
             <mat-icon>edit</mat-icon></button>
         </mat-action-row>
       </mat-expansion-panel>

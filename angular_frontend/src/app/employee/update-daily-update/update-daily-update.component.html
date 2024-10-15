@@ -1,5 +1,5 @@
-<h1 mat-dialog-title>Add Daily Update</h1>
-<form class="basic-form" [formGroup]="addDailyUpdateForm">
+<h1 mat-dialog-title>Update Daily Update</h1>
+<form class="basic-form" [formGroup]="updateDailyUpdateForm">
   <div mat-dialog-content>
     <div>
       <label>Work </label>
@@ -9,7 +9,7 @@
       </mat-radio-group>
     </div>
 
-    <div *ngIf="addDailyUpdateForm.get('work')?.value === 'Project'">
+    <div *ngIf="updateDailyUpdateForm.get('work')?.value === 'Project'">
       <mat-form-field>
         <mat-label>Project Type</mat-label>
         <mat-select formControlName="project_type">
@@ -17,29 +17,33 @@
             {{projectType.displayValue}}
           </mat-option>
         </mat-select>
-        <mat-error *ngIf="addDailyUpdateForm.get('project_type')?.hasError('required')">
+        <mat-error *ngIf="updateDailyUpdateForm.get('project_type')?.hasError('required')">
           Project Type is required
         </mat-error>
       </mat-form-field>
 
-      <mat-form-field>
-        <mat-label>Project</mat-label>
-        <mat-select formControlName="project">
-          <mat-option *ngFor="let project of data" [value]="project._id" [disabled]="project.status === false">
-            {{project.title}}
-          </mat-option>
-        </mat-select>
-        <mat-error *ngIf="addDailyUpdateForm.get('project')?.hasError('required')">
-          Project is required
-        </mat-error>
-      </mat-form-field>
+      <div *ngIf="updateDailyUpdateForm.get('work')?.value === 'Project'">
+        <mat-form-field appearance="fill">
+          <mat-label>Project</mat-label>
+          <mat-select formControlName="project">
+            @for (project of projects; track project) {
+            <mat-option [value]="project?._id" [disabled]="project.status === false">
+              {{project?.title}}
+            </mat-option>
+            }
+          </mat-select>
+          <mat-error *ngIf="updateDailyUpdateForm.get('project')?.hasError('required')">
+            Project is required
+          </mat-error>
+        </mat-form-field>
+      </div>
     </div>
 
-    <div *ngIf="addDailyUpdateForm.get('work')?.value === 'Learning'">
+    <div *ngIf="updateDailyUpdateForm.get('work')?.value === 'Learning'">
       <mat-form-field appearance="fill">
         <mat-label>Skill Title</mat-label>
         <input matInput formControlName="skill_title">
-        <mat-error *ngIf="addDailyUpdateForm.get('skill_title')?.hasError('required')">
+        <mat-error *ngIf="updateDailyUpdateForm.get('skill_title')?.hasError('required')">
           Skill Title is required
         </mat-error>
       </mat-form-field>
@@ -48,10 +52,10 @@
     <mat-form-field appearance="fill">
       <mat-label>Hours</mat-label>
       <input matInput formControlName="hours" type="number">
-      <mat-error *ngIf="addDailyUpdateForm.get('hours')?.hasError('required')">
+      <mat-error *ngIf="updateDailyUpdateForm.get('hours')?.hasError('required')">
         Hours are required
       </mat-error>
-      <mat-error *ngIf="addDailyUpdateForm.get('hours')?.hasError('min')">
+      <mat-error *ngIf="updateDailyUpdateForm.get('hours')?.hasError('min')">
         Hours must be a positive number
       </mat-error>
     </mat-form-field>
@@ -59,14 +63,15 @@
     <mat-form-field appearance="fill">
       <mat-label>Update Content</mat-label>
       <textarea matInput formControlName="update_content" rows="5"></textarea>
-      <mat-error *ngIf="addDailyUpdateForm.get('update_content')?.hasError('required')">
+      <mat-error *ngIf="updateDailyUpdateForm.get('update_content')?.hasError('required')">
         Update Content is required
       </mat-error>
     </mat-form-field>
 
     <div mat-dialog-actions>
       <button mat-button color="warn" (click)="onNoClick()">Cancel</button>
-      <button mat-button color="accent" [disabled]="addDailyUpdateForm.invalid" (click)="onSaveClick()">Save</button>
+      <button mat-button color="accent" [disabled]="updateDailyUpdateForm.invalid"
+        (click)="onUpdateClick()">Update</button>
     </div>
   </div>
 </form>

@@ -8,6 +8,7 @@ import { AuthComponent } from './auth.component';
 import { DemoMaterialModule } from '../demo-material-module';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { AdminSignUpComponent } from './admin-sign-up/admin-sign-up.component';
 
 @NgModule({
   declarations: [
@@ -17,6 +18,7 @@ import { HttpClientModule } from '@angular/common/http';
     CommonModule,
     SignInComponent,
     SignUpComponent,
+    AdminSignUpComponent,
     RouterModule.forChild(AdminRoutes),
     DemoMaterialModule,
     FormsModule,
