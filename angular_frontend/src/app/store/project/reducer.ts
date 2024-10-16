@@ -3,12 +3,18 @@ import {
   addProject,
   addProjectError,
   addProjectSuccess,
+  filterProjects,
+  filterProjectsError,
+  filterProjectsSuccess,
   getEmployeeProjects,
   getEmployeeProjectsError,
   getEmployeeProjectsSuccess,
   getProjects,
   getProjectsError,
   getProjectsSuccess,
+  searchProjects,
+  searchProjectsError,
+  searchProjectsSuccess,
   updateProject,
   updateProjectError,
   updateProjectSuccess
@@ -76,4 +82,14 @@ export const projectReducer = createReducer(
     return { ...state, loading: false };
   }),
   on(updateProjectError, (state, { error }) => ({ ...state, loading: false, error })),
+
+  // Search Projects
+  on(searchProjects, (state) => ({ ...state, loading: true })),
+  on(searchProjectsSuccess, (state, { res }) => ({ ...state, loading: false, projects: res })),
+  on(searchProjectsError, (state, { error }) => ({ ...state, loading: false, error })),
+
+  // Filter Projects
+  on(filterProjects, (state) => ({ ...state, loading: true })),
+  on(filterProjectsSuccess, (state, { res }) => ({ ...state, loading: false, projects: res })),
+  on(filterProjectsError, (state, { error }) => ({ ...state, loading: false, error })),
 );

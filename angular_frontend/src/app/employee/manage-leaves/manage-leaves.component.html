@@ -149,9 +149,12 @@
         <ng-container matColumnDef="actions">
           <th mat-header-cell *matHeaderCellDef> Actions </th>
           <td mat-cell *matCellDef="let element">
-            <button mat-button color="warn" *ngIf="element.leave_status === 'Pending'" (click)="onDeleteLeave(element)">
-              <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="delete"></mat-icon>
-            </button>
+            <div>
+              <button mat-mini-fab color="warn" *ngIf="element.leave_status === 'Pending'"
+                (click)="onDeleteLeave(element)">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
           </td>
         </ng-container>
 

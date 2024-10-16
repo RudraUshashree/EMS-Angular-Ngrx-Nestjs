@@ -1,4 +1,4 @@
-import { IsArray, IsBoolean, IsEnum, IsNumber, IsOptional, IsString } from "class-validator";
+import { IsArray, IsNumber, IsOptional, IsString } from "class-validator";
 
 export class UpdateProjectDTO {
     @IsArray()
@@ -29,7 +29,7 @@ export class UpdateProjectDTO {
     @IsOptional()
     price: number;
 
-    @IsBoolean()
+    @IsString()
     @IsOptional()
-    status: boolean;
+    status: string;
 }

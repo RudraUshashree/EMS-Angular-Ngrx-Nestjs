@@ -25,8 +25,8 @@
       <mat-form-field>
         <mat-label>Project</mat-label>
         <mat-select formControlName="project">
-          <mat-option *ngFor="let project of data" [value]="project._id" [disabled]="project.status === false">
-            {{project.title}}
+          <mat-option *ngFor="let project of data" [value]="project._id" [disabled]="project.status === 'Inactive'">
+            {{project.title}} ({{project.client_name}})
           </mat-option>
         </mat-select>
         <mat-error *ngIf="addDailyUpdateForm.get('project')?.hasError('required')">

@@ -5,7 +5,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Store } from '@ngrx/store';
 import { Observable, Subject, takeUntil } from 'rxjs';
 import { DemoMaterialModule } from 'src/app/demo-material-module';
-import { IDailyUpdatesResponse } from 'src/app/models/daily-updates.model';
+import { IDailyUpdatesResponse, Project } from 'src/app/models/daily-updates.model';
 import { IProject } from 'src/app/models/project.model';
 import { SnackBarService } from 'src/app/services/snackbar.service';
 import { ProjectTypeData } from 'src/app/shared/data/project-type';
@@ -36,7 +36,7 @@ export class UpdateDailyUpdateComponent {
   updateDailyUpdate$: Observable<IDailyUpdatesResponse | null>
 
   projectTypeList = ProjectTypeData;
-  projectsList: any;
+  projectsList: Project[] = [];
   projects!: IProject[];
 
   /**
@@ -64,8 +64,6 @@ export class UpdateDailyUpdateComponent {
     this.projects = this.data.projects
     let dailyUpdate = this.data.dailyUpdate;
     this.projectsList = dailyUpdate?.project;
-    console.log('projectsList: ',this.projectsList);
-
 
     this.updateDailyUpdateForm = new FormGroup({
       work: new FormControl(dailyUpdate['work']),

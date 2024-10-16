@@ -117,8 +117,6 @@ export class EmployeeService {
 				employee: employeeWithPhotoUrl
 			};
 		} catch (error) {
-			console.log('error: ', error);
-
 			if (error instanceof NotFoundException) {
 				throw new NotFoundException(error.message);
 			}

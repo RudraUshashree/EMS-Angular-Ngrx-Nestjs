@@ -1,5 +1,5 @@
 import { CommonModule, NgIf } from '@angular/common';
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, signal, ViewEncapsulation } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { Store } from '@ngrx/store';
@@ -31,7 +31,6 @@ import { SpinnerComponent } from 'src/app/shared/spinner.component';
 export class SignInComponent implements OnInit {
   user$: Observable<IEmployee | null>;
   loading$: Observable<boolean>;
-  public errorMsg: any;
 
   /**
   * Constructor to initialize the store and set up selectors for user and loading state.
@@ -59,11 +58,11 @@ export class SignInComponent implements OnInit {
     password: new FormControl('', Validators.required),
   });
 
-  /**
-   * Getter for accessing form controls, primarily for use in the template.
-   */
-  get getFormData() {
-    return this.LoginForm.controls;
+  // For Password Eye Icon Button
+  hide = signal(true);
+  clickEvent(event: MouseEvent) {
+    this.hide.set(!this.hide());
+    event.stopPropagation();
   }
 
   /**

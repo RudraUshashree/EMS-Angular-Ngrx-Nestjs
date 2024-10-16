@@ -1,7 +1,7 @@
 import { SnackBarService } from '../../services/snackbar.service';
 import { Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
-import { addProject, addProjectError, addProjectSuccess, getEmployeeProjects, getEmployeeProjectsError, getEmployeeProjectsSuccess, getProjects, getProjectsError, getProjectsSuccess, updateProject, updateProjectError, updateProjectSuccess } from "./actions";
+import { addProject, addProjectError, addProjectSuccess, filterProjects, filterProjectsError, filterProjectsSuccess, getEmployeeProjects, getEmployeeProjectsError, getEmployeeProjectsSuccess, getProjects, getProjectsError, getProjectsSuccess, searchProjects, searchProjectsError, searchProjectsSuccess, updateProject, updateProjectError, updateProjectSuccess } from "./actions";
 import { catchError, exhaustMap, map, of } from "rxjs";
 import {
 } from 'src/app/models/leaves.model';
@@ -79,6 +79,40 @@ export class ProjectEffects {
           const errorMsg = error?.error?.message;
           this.snackBarService.openAlert({ message: errorMsg, type: "error" })
           return of({ type: updateProjectError.type, error })
+        })
+      )
+    )
+  ));
+
+  //Search Employee
+  searchProjects$ = createEffect(() => this.actions$.pipe(
+    ofType(searchProjects.type),
+    exhaustMap((props: { searchTerm: string, type: string }) =>
+      this.projectService.searchProjectsByTitleAndClientName(props.searchTerm).pipe(
+        map((res: IProject[]) => {
+          return { type: searchProjectsSuccess.type, res };
+        }),
+        catchError((error) => {
+          const errorMsg = error?.error?.message;
+          this.snackBarService.openAlert({ message: errorMsg, type: "error" })
+          return of({ type: searchProjectsError.type, error })
+        })
+      )
+    )
+  ));
+
+  //Filter Project
+  filterProjects$ = createEffect(() => this.actions$.pipe(
+    ofType(filterProjects.type),
+    exhaustMap((props: { hours?: number, price?: number, status?: string, type: string }) =>
+      this.projectService.filterProjects(props?.hours, props?.price, props?.status).pipe(
+        map((res: IProject[]) => {
+          return { type: filterProjectsSuccess.type, res };
+        }),
+        catchError((error) => {
+          const errorMsg = error?.error?.message;
+          this.snackBarService.openAlert({ message: errorMsg, type: "error" })
+          return of({ type: filterProjectsError.type, error })
         })
       )
     )

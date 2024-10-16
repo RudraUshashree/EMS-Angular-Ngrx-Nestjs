@@ -62,3 +62,36 @@ export const updateProjectError = createAction(
   '[Project] UpdateProjectError',
   props<{ error: any }>()
 );
+
+
+// Search Projects
+export const searchProjects = createAction(
+  '[Project] searchProjects',
+  props<{ searchTerm: string }>()
+);
+
+export const searchProjectsSuccess = createAction(
+  '[Project] searchProjectsSuccess',
+  props<{ res: IProject[] }>()
+);
+
+export const searchProjectsError = createAction(
+  '[Project] searchProjectsError',
+  props<{ error: any }>()
+);
+
+// Filter Projects
+export const filterProjects = createAction(
+  '[Project] filterProjects',
+  props<{ hours?: number | undefined, price?: number | undefined, status?: string | undefined }>()
+);
+
+export const filterProjectsSuccess = createAction(
+  '[Project] filterProjectsSuccess',
+  props<{ res: IProject[] }>()
+);
+
+export const filterProjectsError = createAction(
+  '[Project] filterProjectsError',
+  props<{ error: any }>()
+);

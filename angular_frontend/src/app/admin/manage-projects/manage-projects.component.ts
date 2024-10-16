@@ -1,19 +1,19 @@
 import { CommonModule, NgIf } from '@angular/common';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { Store } from '@ngrx/store';
-import { Observable, Subject, takeUntil } from 'rxjs';
+import { debounceTime, distinctUntilChanged, Observable, Subject, switchMap, takeUntil } from 'rxjs';
 import { DemoMaterialModule } from 'src/app/demo-material-module';
-import { IEmployee } from 'src/app/models/employee.model';
-import { IAddProjectPayload, IAddProjectResponse, IProject } from 'src/app/models/project.model';
+import { IEmp, IEmployee } from 'src/app/models/employee.model';
+import { IAddProjectPayload, IAddProjectResponse, IProject, ProjectFilters } from 'src/app/models/project.model';
 import { SnackBarService } from 'src/app/services/snackbar.service';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { SpinnerComponent } from 'src/app/shared/spinner.component';
 import { getEmployees } from 'src/app/store/employee/actions';
 import { selectGetEmployees } from 'src/app/store/employee/selectors';
-import { addProject, getProjects, updateProject } from 'src/app/store/project/actions';
+import { addProject, filterProjects, getProjects, searchProjects, updateProject } from 'src/app/store/project/actions';
 import { selectAddProject, selectProjects, selectProjectsLoading } from 'src/app/store/project/selectors';
 import { AppState } from 'src/app/store/reducer';
 
@@ -23,6 +23,7 @@ import { AppState } from 'src/app/store/reducer';
   imports: [
     DemoMaterialModule,
     ReactiveFormsModule,
+    FormsModule,
     SharedModule,
     NgIf,
     CommonModule,
@@ -48,8 +49,14 @@ export class ManageProjectsComponent implements OnInit {
    */
   selectedTabIndex: number = 0;
   selectedProject!: IProject;
+
   employees: IEmployee[] = [];
+  searchControl = new FormControl();
+  hoursFilterControl = new FormControl();
+  priceFilterControl = new FormControl();
   addProjectFormShow: boolean = false;
+  selectedStatus: string = '';
+  filterValues: ProjectFilters = {};
 
   /**
    * DataSource for the MatTable used to display projects with pagination.
@@ -97,6 +104,24 @@ export class ManageProjectsComponent implements OnInit {
   ngOnInit(): void {
     this.onLoadAllEmployees();
     this.onLoadProjects();
+
+    this.searchControl.valueChanges.pipe(
+      debounceTime(300),
+      distinctUntilChanged(),
+      switchMap((searchTerm) => {
+        this.store.dispatch(searchProjects({ searchTerm: searchTerm }));
+        return this.projects$;
+      }),
+      takeUntil(this.destroy$)
+    ).subscribe({
+      next: (project: IProject[]) => {
+        this.dataSource.data = project;
+      },
+      error: (error) => {
+        const errorMsg = error?.error?.message;
+        this.snackBarService.openAlert({ message: errorMsg, type: "error" });
+      }
+    });
   }
 
   /**
@@ -128,7 +153,6 @@ export class ManageProjectsComponent implements OnInit {
     this.employees$.pipe(takeUntil(this.destroy$)).subscribe({
       next: (employees) => {
         this.employees = employees;
-        console.log('emp: ', this.employees);
       }
     })
   }
@@ -140,13 +164,16 @@ export class ManageProjectsComponent implements OnInit {
   onRowClicked(data: IProject) {
     this.selectedTabIndex = 1;
     this.selectedProject = data;
-    let empData: any = data.emp;
+    let empData: IEmp[] = data.emp;
 
     const emp = this.employees.filter(employees =>
-      empData.some((emp: any) => emp._id === employees._id)
+      empData.some((emp: IEmp) => {
+        return emp._id === employees._id
+      })
     );
 
     const employeeIds = emp.map(employee => employee._id);
+    const isActive = data['status'] === 'Active';
 
     this.projectForm = new FormGroup({
       title: new FormControl(data['title'] ?? '', Validators.required),
@@ -156,8 +183,54 @@ export class ManageProjectsComponent implements OnInit {
       hours: new FormControl(data['hours'] ?? '', [Validators.required, Validators.min(1)]),
       price: new FormControl(data['price'] ?? '', [Validators.required, Validators.min(1)]),
       emp: new FormControl(employeeIds),
-      status: new FormControl(data['status'])
+      status: new FormControl(isActive)
     });
+  }
+
+  /**
+   * Handles the search input event, updating the search form control value.
+   * @param event - Input event from the search bar
+   */
+  onSearch(event: any) {
+    this.hoursFilterControl.reset();
+    this.priceFilterControl.reset();
+    this.selectedStatus = '';
+    const value = event.target.value;
+    this.searchControl.setValue(value);
+  }
+
+  /**
+   * Applies filters based on selected employee type and worked technologies.
+   */
+  applyFilters() {
+    this.filterValues.hours = this.hoursFilterControl.value ?? 0;
+    this.filterValues.price = this.priceFilterControl.value ?? 0;
+
+    if (this.selectedStatus != null) {
+      this.filterValues.status = this.selectedStatus;
+    }
+  }
+
+  onApplyFiltersButtonClick() {
+    console.log('this.filterValues: ', this.filterValues);
+
+    this.store.dispatch(filterProjects({ hours: this.filterValues.hours, price: this.filterValues.price, status: this.filterValues.status }));
+    this.projects$.pipe(takeUntil(this.destroy$)).subscribe({
+      next: (projects: IProject[]) => {
+        this.dataSource.data = projects;
+      },
+      error: (error) => {
+        const errorMsg = error?.error?.message;
+        this.snackBarService.openAlert({ message: errorMsg, type: "error" });
+      }
+    })
+  }
+
+  onClearFiltersButtonClick() {
+    this.hoursFilterControl.reset();
+    this.priceFilterControl.reset();
+    this.selectedStatus = '';
+    this.onLoadProjects();
   }
 
   onAddProjectButtonClick() {
@@ -187,9 +260,12 @@ export class ManageProjectsComponent implements OnInit {
       Object.keys(this.projectForm.controls).forEach(key => {
         const control = this.projectForm.get(key);
 
-        // Check if the control is dirty (value has changed)
         if (control?.dirty) {
-          updatedValues[key] = control.value;
+          if (key === 'status') {
+            updatedValues[key] = control.value ? 'Active' : 'Inactive';
+          } else {
+            updatedValues[key] = control.value;
+          }
         }
       });
 

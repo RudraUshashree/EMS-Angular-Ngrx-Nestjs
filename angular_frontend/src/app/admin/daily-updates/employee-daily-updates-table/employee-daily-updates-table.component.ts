@@ -18,11 +18,11 @@ import { SharedModule } from 'src/app/shared/shared.module';
   styleUrl: './employee-daily-updates-table.component.scss'
 })
 export class EmployeeDailyUpdatesTableComponent {
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
   @Input() updates: IDailyUpdate[] = [];
+
   displayedColumns: string[] = ['createdAt', 'emp', 'work', 'project_type', 'project', 'skill_title', 'hours', 'update_content'];
   dataSource = new MatTableDataSource<IDailyUpdate>();
-
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;

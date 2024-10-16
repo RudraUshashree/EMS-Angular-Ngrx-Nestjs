@@ -10,7 +10,8 @@ import { getDailyUpdates } from 'src/app/store/daily-update/actions';
 import { selectDailyUpdates, selectDailyUpdatesLoading } from 'src/app/store/daily-update/selectors';
 import { AppState } from 'src/app/store/reducer';
 import { EmployeeDailyUpdatesTableComponent } from './employee-daily-updates-table/employee-daily-updates-table.component';
-import { IDailyUpdate, IEmp } from 'src/app/models/daily-updates.model';
+import { IDailyUpdate } from 'src/app/models/daily-updates.model';
+import { IEmp } from 'src/app/models/employee.model';
 
 interface GroupedDailyUpdate {
   emp: IEmp;

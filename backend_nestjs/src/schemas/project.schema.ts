@@ -41,9 +41,9 @@ export class Project {
 
     @Prop({
         required: true,
-        default: true
+        default: 'Active'
     })
-    status: boolean
+    status: string
 }
 
 export type ProjectDocument = Project & Document;

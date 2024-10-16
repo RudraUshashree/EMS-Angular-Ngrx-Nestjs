@@ -1,0 +1,22 @@
+.container{
+  display: flex;
+  max-width: 1140px;
+  margin: 0 auto;
+  height: 100vh;
+  padding: 50px 0;
+  justify-content: center;
+  @media (max-width: 1199px) {
+    max-width: 920px;
+  }
+  @media (max-width: 991px) {
+    max-width: 720px;
+  }
+  @media (max-width: 767px) {
+    max-width: 100%;
+    padding: 16px;
+  }
+}
+
+.main-wrapper {
+  margin: auto;
+}

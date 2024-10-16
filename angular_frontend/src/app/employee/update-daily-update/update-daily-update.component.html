@@ -27,7 +27,7 @@
           <mat-label>Project</mat-label>
           <mat-select formControlName="project">
             @for (project of projects; track project) {
-            <mat-option [value]="project?._id" [disabled]="project.status === false">
+            <mat-option [value]="project?._id" [disabled]="project.status === 'Inactive'">
               {{project?.title}}
             </mat-option>
             }

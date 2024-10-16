@@ -61,6 +61,37 @@ export class ProjectService {
     }
 
     /**
+     * Searches for projects based on a search term (by title and client name).
+     * @param searchTerm The search term to filter projects by title and client name.
+     * @returns A list of projects matching the search term.
+     * @throws NotFoundException If no projects are found matching the search term.
+     * @throws BadRequestException If validation fails.
+     */
+    async searchProject(searchTerm: string) {
+        try {
+            const regex = new RegExp(searchTerm, 'i');
+            const searchedProjects = await this.projectModel.find({
+                $or: [
+                    { title: { $regex: regex } },
+                    { client_name: { $regex: regex } }
+                ]
+            }).lean().exec();
+
+            if (searchedProjects.length === 0) {
+                throw new NotFoundException("Project not found");
+            }
+
+            return searchedProjects;
+        } catch (error) {
+            if (error.name === 'NotFoundException') {
+                throw new NotFoundException(error.errors);
+            }
+
+            throw new BadRequestException(error.errors);
+        }
+    }
+
+    /**
      * Updates an project's information based on their ID.
      * @param id The ID of the project to be updated.
      * @param updateProjectDTO The data transfer object containing the updated project details.
@@ -85,12 +116,39 @@ export class ProjectService {
                 project: updatedProject
             };
         } catch (error) {
-            console.log('error: ', error);
-
             if (error instanceof NotFoundException) {
                 throw new NotFoundException(error.message);
             }
 
+            throw new BadRequestException(error.errors);
+        }
+    }
+
+    /**
+     * Filters projects by hours, price and status.
+     * @param hours Optional query parameter to filter by project hours.
+     * @param price Optional query parameter to filter by project price.
+     * @param status Optional query parameter to filter by project status.
+     * @returns A list of projects matching the filter criteria.
+     */
+    async filterProjects(hours?: number, price?: number, status?: string) {
+        try {
+            const query: any = {};
+
+            if (hours !== undefined && hours !== null && hours != 0) {
+                query.hours = +hours;
+            }
+
+            if (price !== undefined && price !== null && price != 0) {
+                query.price = +price;
+            }
+
+            if (status !== undefined && status !== null && status !== '') {
+                query.status = status;
+            }
+
+            return await this.projectModel.find(query).lean().exec();
+        } catch (error) {
             throw new BadRequestException(error.errors);
         }
     }

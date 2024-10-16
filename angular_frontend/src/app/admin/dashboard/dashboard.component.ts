@@ -135,8 +135,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.projects$.pipe(takeUntil(this.destroy$)).subscribe({
       next: (projects: IProject[]) => {
         this.projectsTotalCount = projects.length;
-        this.activeProjectsCount = projects.filter(project => project.status === true).length;
-        this.inactiveProjectsCount = projects.filter(project => project.status === false).length;
+        this.activeProjectsCount = projects.filter(project => project.status === 'Active').length;
+        this.inactiveProjectsCount = projects.filter(project => project.status === 'Inactive').length;
       }
     })
   }

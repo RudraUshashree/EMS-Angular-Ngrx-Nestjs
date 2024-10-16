@@ -1,5 +1,5 @@
 import { CommonModule, NgFor, NgIf } from '@angular/common';
-import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnDestroy, OnInit, signal, ViewEncapsulation } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { Observable, Subject, take } from 'rxjs';
@@ -49,10 +49,10 @@ export class SignUpComponent implements OnInit, OnDestroy {
 
 
   /**
-  * Constructor to initialize the store and setup selectors for sign-up success.
-  * @param router - Angular Router for navigation
-  * @param store - NgRx Store for dispatching actions and selecting state
-  */
+   * Constructor to initialize the store and setup selectors for sign-up success.
+   * @param router - Angular Router for navigation
+   * @param store - NgRx Store for dispatching actions and selecting state
+   */
   constructor(
     private router: Router,
     private store: Store<AppState>
@@ -62,7 +62,6 @@ export class SignUpComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void { }
 
-  // Form group for the sign-up form with controls for name, email, password, etc.
   employeeSignUpForm = new FormGroup({
     name: new FormControl('', [Validators.required, Validators.minLength(3)]),
     email: new FormControl('', [Validators.required, Validators.email]),
@@ -81,10 +80,17 @@ export class SignUpComponent implements OnInit, OnDestroy {
     image: new FormControl('', [Validators.required]),
   });
 
+  // For Password Eye Icon Button
+  hide = signal(true);
+  clickEvent(event: MouseEvent) {
+    this.hide.set(!this.hide());
+    event.stopPropagation();
+  }
+
   /**
- * Handles the sign-up process by dispatching the signup action with the form data.
- * It also handles image file upload.
- */
+   * Handles the sign-up process by dispatching the signup action with the form data.
+   * It also handles image file upload.
+   */
   onSignUp() {
     const employeeData: any = this.employeeSignUpForm.value;
     const fd = new FormData();
@@ -110,9 +116,9 @@ export class SignUpComponent implements OnInit, OnDestroy {
   }
 
   /**
- * Handles file input change, stores the selected file, and generates an image preview.
- * @param event - The file input change event
- */
+   * Handles file input change, stores the selected file, and generates an image preview.
+   * @param event - The file input change event
+   */
   onFileChange(event: any): void {
     const file: File = event.target.files[0];
 

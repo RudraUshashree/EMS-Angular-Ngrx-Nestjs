@@ -110,7 +110,6 @@ export class DailyUpdateService {
                 dailyUpdate: dailyUpdate
             };
         } catch (error) {
-            console.log('error: ', error);
             if (error instanceof NotFoundException) {
                 throw new NotFoundException(error.message);
             }

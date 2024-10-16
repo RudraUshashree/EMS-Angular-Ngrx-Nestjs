@@ -53,7 +53,6 @@ describe('ProfileComponent', () => {
 
     if (profileComponentElement) {
       const nameElement = profileComponentElement.querySelector('#employee-name');
-      console.log(nameElement.textContent);
       if (nameElement) {
         expect(nameElement.textContent).toContain(mockEmployeeData.name);
       } else {

@@ -1,7 +1,4 @@
-export interface IEmp {
-  _id: string,
-  name: string
-}
+import { IEmp } from "./employee.model";
 
 export interface IAddDailyUpdatePayload {
   emp: [],
@@ -16,7 +13,6 @@ export interface IAddDailyUpdatePayload {
 export interface Project {
   _id: string,
   title: string,
-  status: boolean,
   emp: {
     _id: string,
     name: string,

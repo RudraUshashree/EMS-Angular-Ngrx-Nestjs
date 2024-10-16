@@ -113,6 +113,46 @@
     <mat-tab label="Projects">
       <div class="mat-elevation-z8 search-filter-section">
 
+        <div>
+          <mat-form-field appearance="outline">
+            <input matInput [(ngModel)]="searchControl.value" (input)="onSearch($event)"
+              placeholder="Search project by project title or client name">
+          </mat-form-field>
+        </div>
+
+        <div>
+          <div class="row">
+            <div class="col-2">
+              <mat-form-field appearance="outline">
+                <input matInput [(ngModel)]="hoursFilterControl.value" type="number" (input)="applyFilters()"
+                  placeholder="Hours">
+              </mat-form-field>
+            </div>
+            <div class="col-2">
+              <mat-form-field appearance="outline">
+                <input matInput [(ngModel)]="priceFilterControl.value" type="number" (input)="applyFilters()"
+                  placeholder="Price">
+              </mat-form-field>
+            </div>
+            <div class="col-2">
+              <mat-form-field appearance="outline">
+                <mat-label>Status</mat-label>
+                <mat-select [(ngModel)]="selectedStatus" (selectionChange)="applyFilters()">
+                  <mat-option value="Active">Active</mat-option>
+                  <mat-option value="Inactive">Inactive</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div class="col-2 text-center">
+              <button mat-flat-button class="apply-filter" (click)="onApplyFiltersButtonClick()">Apply Filters</button>
+            </div>
+            <div class="col-2">
+              <button mat-flat-button color="warn" (click)="onClearFiltersButtonClick()">Clear Filters</button>
+            </div>
+          </div>
+        </div>
+
+
         <table mat-table [dataSource]="dataSource">
           <ng-container matColumnDef="createdAt">
             <th mat-header-cell *matHeaderCellDef> Date </th>
@@ -160,7 +200,7 @@
             <th mat-header-cell *matHeaderCellDef> Status </th>
             <td mat-cell *matCellDef="let element">
               <mat-chip-set aria-label="">
-                <mat-chip> {{element.status ? 'Active' : 'Inactive'}} </mat-chip>
+                <mat-chip> {{element.status}} </mat-chip>
               </mat-chip-set>
             </td>
           </ng-container>
@@ -262,7 +302,7 @@
               <label>Project Status</label>
               <div>
                 <mat-slide-toggle formControlName="status"
-                  [ngClass]="{'blue-toggle': projectForm.get('status')?.value}">
+                  [ngClass]="{'blue-toggle': projectForm.get('status')?.value }">
                   {{projectForm.get('status')?.value ? 'Active' : 'Inactive'}}
                 </mat-slide-toggle>
               </div>

@@ -23,6 +23,32 @@ export class ProjectController {
     }
 
     /**
+     * Searches for projects based on a search term.
+     * @param searchTerm The term used to search projects (by title and client name.).
+     * @returns A list of projects that match the search term.
+     */
+    @Get("search")
+    searchProject(@Query("searchTerm") searchTerm: string) {
+        return this.projectService.searchProject(searchTerm)
+    }
+
+    /**
+     * Filters projects by hours, price and status.
+     * @param hours Optional query parameter to filter by project hours.
+     * @param price Optional query parameter to filter by project price.
+     * @param status Optional query parameter to filter by project status.
+     * @returns A list of projects matching the filter criteria.
+     */
+    @Get('filter')
+    async filterProjects(
+        @Query('hours') hours?: number,
+        @Query('price') price?: number,
+        @Query('status') status?: string,
+    ) {
+        return this.projectService.filterProjects(hours, price, status);
+    }
+
+    /**
      * Retrives all projects records.
      * @returns A list of all projects records.
      */

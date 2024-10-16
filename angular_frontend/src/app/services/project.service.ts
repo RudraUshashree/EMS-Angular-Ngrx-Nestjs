@@ -8,7 +8,6 @@ import { IAddProjectPayload, IAddProjectResponse, IProject, IUpdateProjectPayloa
   providedIn: 'root'
 })
 export class ProjectService {
-
   /**
    * Constructor for ProjectService, injecting the HttpClient service.
    *
@@ -32,8 +31,6 @@ export class ProjectService {
    * @returns Observable with the projects data (IProject).
    */
   getProjects(): Observable<IProject[]> {
-    console.log('service');
-
     return this.http.get<IProject[]>(`${environment.api_url}/project`);
   }
 
@@ -48,13 +45,33 @@ export class ProjectService {
   }
 
   /**
-   * Updates the status of a specific project.
+   * Updates a specific project.
    *
    * @param id - The ID of the project to be updated.
-   * @param updatedProjectData - The new status to update for the project.
-   * @returns Observable with the response after updating the project status (IUpdateEmployeeLeaveStatusResponse).
+   * @param updatedProjectData - The new updated project data.
+   * @returns Observable with the response after updating the project (IUpdateProjectResponse).
    */
   updateProject(id: string, updatedProjectData: IUpdateProjectPayload): Observable<IUpdateProjectResponse> {
     return this.http.put<IUpdateProjectResponse>(`${environment.api_url}/project/${id}`, updatedProjectData);
+  }
+
+  /**
+   * Searches for projects by their name.
+   * @param searchTerm - The title or client name or part of the title or client name to search for.
+   * @returns Observable with the list of projects matching the search criteria (IProject[]).
+   */
+  searchProjectsByTitleAndClientName(searchTerm: string): Observable<IProject[]> {
+    return this.http.get<IProject[]>(`${environment.api_url}/project/search?searchTerm=${searchTerm}`)
+  }
+
+  /**
+   * Filters projects based on project type and worked technologies.
+   * @param hours - The number of hours of a project.
+   * @param price - The price of a project.
+   * @param status - The status of a project (true for Active and false for Inactive).
+   * @returns Observable with the list of projects matching the filter criteria (IProject[]).
+   */
+  filterProjects(hours?: number, price?: number, status?: string): Observable<IProject[]> {
+    return this.http.get<IProject[]>(`${environment.api_url}/project/filter?hours=${hours}&price=${price}&status=${status}`);
   }
 }
