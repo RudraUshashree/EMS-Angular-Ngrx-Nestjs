@@ -1,5 +1,5 @@
 import { CommonModule, NgFor, NgIf } from '@angular/common';
-import { Component, OnDestroy, OnInit, signal, ViewEncapsulation } from '@angular/core';
+import { Component, OnDestroy, signal, ViewEncapsulation } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { Observable, Subject, take } from 'rxjs';
@@ -31,7 +31,7 @@ import { SpinnerComponent } from 'src/app/shared/spinner.component';
   styleUrl: './sign-up.component.scss',
   encapsulation: ViewEncapsulation.None
 })
-export class SignUpComponent implements OnInit, OnDestroy {
+export class SignUpComponent implements OnDestroy {
 
   // Observable to track if the sign-up process was successful
   private destroy$: Subject<void> = new Subject<void>();
@@ -47,7 +47,6 @@ export class SignUpComponent implements OnInit, OnDestroy {
   selectedFile: File | null = null;
   imagePreview: string | null = null;
 
-
   /**
    * Constructor to initialize the store and setup selectors for sign-up success.
    * @param router - Angular Router for navigation
@@ -60,27 +59,31 @@ export class SignUpComponent implements OnInit, OnDestroy {
     this.signupSuccess$ = this.store.select(selectAuthSignupSuccess);
   }
 
-  ngOnInit(): void { }
-
-  employeeSignUpForm = new FormGroup({
+  personalDetailsFormGroup: FormGroup = new FormGroup({
     name: new FormControl('', [Validators.required, Validators.minLength(3)]),
     email: new FormControl('', [Validators.required, Validators.email]),
     password: new FormControl('', [Validators.required, Validators.minLength(4)]),
     dob: new FormControl('', [Validators.required]),
     contact: new FormControl('', [Validators.required, Validators.pattern('^[0-9]{10}$')]),
+    image: new FormControl('', [Validators.required])
+  });
+
+  addressDetailsFormGroup: FormGroup = new FormGroup({
     address: new FormControl('', [Validators.required]),
     city: new FormControl(''),
-    zipcode: new FormControl('', [Validators.pattern('^[0-9]{5,6}$')]),
+    zipcode: new FormControl('', [Validators.pattern('^[0-9]{5,6}$')])
+  });
+
+  workDetailsFormGroup: FormGroup = new FormGroup({
     emp_type: new FormControl('', [Validators.required]),
     work_type: new FormControl('', [Validators.required]),
     experience: new FormControl('', [Validators.required, Validators.min(0)]),
     salary: new FormControl('', [Validators.required, Validators.min(0)]),
     doj: new FormControl('', [Validators.required]),
-    worked_technologies: new FormControl('', [Validators.required]),
-    image: new FormControl('', [Validators.required]),
+    worked_technologies: new FormControl('', [Validators.required])
   });
 
-  // For Password Eye Icon Button
+  // For password eye icon button click event
   hide = signal(true);
   clickEvent(event: MouseEvent) {
     this.hide.set(!this.hide());
@@ -92,7 +95,12 @@ export class SignUpComponent implements OnInit, OnDestroy {
    * It also handles image file upload.
    */
   onSignUp() {
-    const employeeData: any = this.employeeSignUpForm.value;
+    const employeeData = {
+      ...this.personalDetailsFormGroup.value,
+      ...this.addressDetailsFormGroup.value,
+      ...this.workDetailsFormGroup.value
+    };
+
     const fd = new FormData();
 
     // Append form data

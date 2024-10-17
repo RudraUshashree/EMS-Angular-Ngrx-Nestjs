@@ -1,10 +1,22 @@
-.container {
+body,
+html {
+  height: 100%;
+}
+
+.main-container {
   display: flex;
-  max-width: 1140px;
-  margin: 0 auto;
-  height: 100vh;
-  padding: 50px 0;
   justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.container {
+  max-width: 1140px;
+  width: 150%;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: rgb(252, 252, 252);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 
   @media (max-width: 1199px) {
     max-width: 920px;
@@ -20,44 +32,26 @@
   }
 }
 
+.mat-form-field {
+  width: 100%;
+}
+
+.heading {
+  color: rgb(0, 0, 0);
+}
+
 .validation {
-  color: red;
-  padding-bottom: 20px;
+  color: #e91e63;
+  font-size: 12px;
+  font-weight: 400;
 }
 
 .create-link {
   color: rgb(0, 0, 0);
 }
 
-.date-wrapper {
-  .mat-mdc-form-field{
-    .mat-mdc-text-field-wrapper{
-      width: 210px;
-    }
-  }
-}
-
 .form-main-wrapper {
   margin: auto;
-}
-
-.basic-form {
-  background: #fff;
-  padding: 24px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  margin: auto;
-  border-radius: 10px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
-}
-
-.basic-form h3 {
-  color: #333;
-  font-weight: 600;
-  font-size: 20px;
-  line-height: 28px;
 }
 
 .profile-wrap {
@@ -74,4 +68,10 @@
     border: 1px solid #ccc;
     border-radius: 8px;
   }
+}
+
+.position-end {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
 }

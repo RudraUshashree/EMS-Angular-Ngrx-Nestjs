@@ -136,8 +136,7 @@ export class EmployeeEffects {
           return { type: searchEmployeesSuccess.type, res };
         }),
         catchError((error) => {
-          const errorMsg = error?.error?.message;
-          this.snackBarService.openAlert({ message: errorMsg, type: "error" })
+          this.snackBarService.openAlert({ message: error, type: "error" })
           return of({ type: searchEmployeesError.type, error })
         })
       )

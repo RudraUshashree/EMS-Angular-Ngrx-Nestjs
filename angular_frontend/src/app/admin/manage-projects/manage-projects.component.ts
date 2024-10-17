@@ -212,18 +212,7 @@ export class ManageProjectsComponent implements OnInit {
   }
 
   onApplyFiltersButtonClick() {
-    console.log('this.filterValues: ', this.filterValues);
-
     this.store.dispatch(filterProjects({ hours: this.filterValues.hours, price: this.filterValues.price, status: this.filterValues.status }));
-    this.projects$.pipe(takeUntil(this.destroy$)).subscribe({
-      next: (projects: IProject[]) => {
-        this.dataSource.data = projects;
-      },
-      error: (error) => {
-        const errorMsg = error?.error?.message;
-        this.snackBarService.openAlert({ message: errorMsg, type: "error" });
-      }
-    })
   }
 
   onClearFiltersButtonClick() {

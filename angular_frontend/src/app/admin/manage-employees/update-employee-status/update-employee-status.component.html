@@ -1,0 +1,117 @@
+<h1 mat-dialog-title>Employee Details</h1>
+<form class="basic-form" [formGroup]="employeeForm">
+  <div mat-dialog-content>
+    <form class="basic-form" [formGroup]="employeeForm">
+      <div class="row text-center">
+        <div class="col-12">
+          <img *ngIf="photoUrl" [src]="photoUrl" width="100" height="100" alt="user" class="img-circle">
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-6">
+          <mat-form-field appearance="outline">
+            <mat-label>Name</mat-label>
+            <input matInput placeholder="Name" readonly formControlName="name">
+          </mat-form-field>
+        </div>
+        <div class="col-6">
+          <mat-form-field appearance="outline">
+            <mat-label>Date of birth</mat-label>
+            <input matInput readonly formControlName="dob">
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-6">
+          <mat-form-field appearance="outline">
+            <mat-label>Contact No.</mat-label>
+            <input matInput readonly formControlName="contact">
+          </mat-form-field>
+        </div>
+        <div class="col-6">
+          <mat-form-field appearance="outline">
+            <mat-label>Address</mat-label>
+            <input matInput readonly formControlName="address">
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-6">
+          <mat-form-field appearance="outline">
+            <mat-label>City</mat-label>
+            <input matInput readonly formControlName="city">
+          </mat-form-field>
+        </div>
+        <div class="col-6">
+          <mat-form-field appearance="outline">
+            <mat-label>Zipcode</mat-label>
+            <input matInput readonly formControlName="zipcode">
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-6">
+          <mat-form-field appearance="outline">
+            <mat-label>Employee Type</mat-label>
+            <input matInput readonly formControlName="emp_type">
+          </mat-form-field>
+        </div>
+        <div class="col-6">
+          <mat-form-field appearance="outline">
+            <mat-label>Work Type</mat-label>
+            <input matInput readonly formControlName="work_type">
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-6">
+          <mat-form-field appearance="outline">
+            <mat-label>Experience</mat-label>
+            <input matInput readonly formControlName="experience">
+          </mat-form-field>
+        </div>
+        <div class="col-6">
+          <mat-form-field appearance="outline">
+            <mat-label>Salary</mat-label>
+            <input matInput readonly formControlName="salary">
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-6">
+          <mat-form-field appearance="outline">
+            <mat-label>Date of Joining</mat-label>
+            <input matInput readonly formControlName="doj">
+          </mat-form-field>
+        </div>
+        <div class="col-6">
+          <mat-form-field appearance="outline">
+            <mat-label>Worked Technologies</mat-label>
+            <input matInput readonly formControlName="worked_technologies">
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-6">
+          <mat-form-field appearance="outline">
+            <mat-label>Employee Status</mat-label>
+            <mat-select formControlName="status">
+              <mat-option value="Active">Active</mat-option>
+              <mat-option value="Inactive">Inactive</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col-6 text-center">
+          <button mat-flat-button color="primary" (click)="onUpdateStatus()">Update Employee Status</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</form>

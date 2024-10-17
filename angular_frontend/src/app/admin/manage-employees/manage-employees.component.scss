@@ -1,14 +1,11 @@
-.mat-mdc-row:hover {
-  background-color: rgba(0, 0, 0, 0.08);
-  cursor: pointer;
-}
-
 .mat-mdc-card {
   padding: 0px 16px;
 }
 
-.image {
-  border-radius: 10px;
+.mat-mdc-card.emp-card:hover {
+  padding: 0px 16px;
+  background-color: rgba(0, 0, 0, 0.08);
+  cursor: pointer;
 }
 
 .search-filter-section {
@@ -52,4 +49,25 @@
       line-height: normal;
     }
   }
+}
+
+.emp-card {
+  height: 260px;
+  width: 300px;
+}
+
+.status-active-circle {
+  width: 8px;
+  height: 8px;
+  background-color: green;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.status-inactive-circle {
+  width: 8px;
+  height: 8px;
+  background-color: red;
+  border-radius: 50%;
+  display: inline-block;
 }

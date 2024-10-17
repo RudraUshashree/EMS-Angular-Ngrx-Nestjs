@@ -14,7 +14,6 @@ import { AppState } from 'src/app/store/reducer';
 import { filterEmployees, getEmployees, searchEmployees } from 'src/app/store/employee/actions';
 import { IEmployee } from 'src/app/models/employee.model';
 import { selectGetEmployees } from 'src/app/store/employee/selectors';
-import { SnackBarService } from 'src/app/services/snackbar.service';
 import { SpinnerComponent } from 'src/app/shared/spinner.component';
 
 @Component({
@@ -29,13 +28,11 @@ export class ManageEmployeeComponent implements OnInit, OnDestroy {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   /**
-   * Observables for handling employees, search results, employee status updates, and loading states.
+   * Observables for handling employees and loading states.
    */
   destroy$ = new Subject<void>()
-  filteredEmployees$: Observable<IEmployee[]>;
-  searchEmployees$: Observable<IEmployee[]>;
-  loading$: Observable<boolean>;
   employees$: Observable<IEmployee[]>;
+  loading$: Observable<boolean>;
 
   /**
    * Lists for employee types and technologies.
@@ -64,13 +61,10 @@ export class ManageEmployeeComponent implements OnInit, OnDestroy {
    * @param store - NgRx Store to manage the application state
    */
   constructor(
-    private snackBarService: SnackBarService,
     private store: Store<AppState>
   ) {
     this.employees$ = this.store.select(selectGetEmployees);
     this.loading$ = this.store.select(selectGetEmployeesLoading);
-    this.filteredEmployees$ = this.store.select(selectGetEmployees);
-    this.searchEmployees$ = this.store.select(selectGetEmployees);
   }
 
   ngOnInit(): void {
@@ -82,18 +76,10 @@ export class ManageEmployeeComponent implements OnInit, OnDestroy {
       distinctUntilChanged(),
       switchMap((searchTerm) => {
         this.store.dispatch(searchEmployees({ searchName: searchTerm }));
-        return this.searchEmployees$;
+        return this.employees$;
       }),
       takeUntil(this.destroy$)
-    ).subscribe({
-      next: (employee: IEmployee[]) => {
-        this.dataSource.data = employee;
-      },
-      error: (error) => {
-        const errorMsg = error?.error?.message;
-        this.snackBarService.openAlert({ message: errorMsg, type: "error" });
-      }
-    });
+    ).subscribe();
   }
 
   /**
@@ -111,16 +97,9 @@ export class ManageEmployeeComponent implements OnInit, OnDestroy {
    * Applies the filters for employee type and technologies and updates the displayed employees.
    */
   onApplyFilters() {
-    this.store.dispatch(filterEmployees({ employeeType: this.selectedEmpType, workedTechnologies: this.selectedworkedTechnologies }));
-    this.filteredEmployees$.pipe(takeUntil(this.destroy$)).subscribe({
-      next: (employees: IEmployee[]) => {
-        this.dataSource.data = employees;
-      },
-      error: (error) => {
-        const errorMsg = error?.error?.message;
-        this.snackBarService.openAlert({ message: errorMsg, type: "error" });
-      }
-    })
+    if (this.selectedEmpType || this.selectedworkedTechnologies.length) {
+      this.store.dispatch(filterEmployees({ employeeType: this.selectedEmpType, workedTechnologies: this.selectedworkedTechnologies }));
+    }
   }
 
   /**
