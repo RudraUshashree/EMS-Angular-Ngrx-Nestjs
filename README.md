@@ -3,7 +3,7 @@
 
 #### The first step to clone the repository:
 ```bash
-$ https://github.com/sonirathore01/sonirathore01-Employee_Management_System_Nestjs_Angular.git
+$ https://github.com/RudraUshashree/EMS-Angular-Ngrx-Nestjs.git
 $ cd Employee_Management_System_Demo
 ```
 
@@ -43,6 +43,9 @@ $ npm test
 
 
 ## Frontend Setup
+
+#### Angular need versions
+![ng-version](https://github.com/user-attachments/assets/46ba290a-6e51-463d-bb19-b71dde2337ef)
 
 #### Angular CLI Version
 ```bash
