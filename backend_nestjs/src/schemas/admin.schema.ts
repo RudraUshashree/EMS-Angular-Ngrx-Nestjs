@@ -42,12 +42,10 @@ AdminSchema.pre<AdminDocument>("save", async function (next: Function) {
     const hassedPwd = await bcrypt.hash(this.password, +process.env.SALT);
     this.password = hassedPwd;
     next();
-}
-)
+})
 
 AdminSchema.method("isValid", async function (adminPwd: string) {
     const hassedPwd = this.password;
     const isMatched = await bcrypt.compare(adminPwd, hassedPwd);
     return isMatched;
-}
-)
+})

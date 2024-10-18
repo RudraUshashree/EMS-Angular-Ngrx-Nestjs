@@ -1,4 +1,3 @@
-import { selectGetEmployeesLoading } from './../../../../store/employee/selectors';
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { DemoMaterialModule } from 'src/app/demo-material-module';
 import { NgFor, NgIf } from '@angular/common';
@@ -13,7 +12,7 @@ import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/store/reducer';
 import { filterEmployees, getEmployees, searchEmployees } from 'src/app/store/employee/actions';
 import { IEmployee } from 'src/app/models/employee.model';
-import { selectGetEmployees } from 'src/app/store/employee/selectors';
+import { selectGetEmployees, selectGetEmployeesLoading } from 'src/app/store/employee/selectors';
 import { SpinnerComponent } from 'src/app/shared/spinner.component';
 
 @Component({

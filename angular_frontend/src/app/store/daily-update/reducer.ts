@@ -1,6 +1,19 @@
 import { createReducer, on } from '@ngrx/store';
 import { IDailyUpdate, IDailyUpdatesResponse } from 'src/app/models/daily-updates.model';
-import { addDailyUpdate, addDailyUpdateError, addDailyUpdateSuccess, getDailyUpdates, getDailyUpdatesError, getDailyUpdatesSuccess, getEmployeeDailyUpdates, getEmployeeDailyUpdatesError, getEmployeeDailyUpdatesSuccess, updateDailyUpdate, updateDailyUpdateError, updateDailyUpdateSuccess } from './actions';
+import {
+  addDailyUpdate,
+  addDailyUpdateError,
+  addDailyUpdateSuccess,
+  getDailyUpdates,
+  getDailyUpdatesError,
+  getDailyUpdatesSuccess,
+  getEmployeeDailyUpdates,
+  getEmployeeDailyUpdatesError,
+  getEmployeeDailyUpdatesSuccess,
+  updateDailyUpdate,
+  updateDailyUpdateError,
+  updateDailyUpdateSuccess
+} from './actions';
 
 export interface DailyUpdateState {
   loading: boolean;

@@ -1,5 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, Query, Req } from "@nestjs/common";
-import { AuthService } from "../auth/auth.service";
+import { Body, Controller, Get, Param, Post, Put } from "@nestjs/common";
 import { DailyUpdateService } from "./daily-update.service";
 import { AddDailyUpdateDTO } from "./dtos/add-daily-update.dto";
 import { UpdateDailyUpdateDTO } from "./dtos/update-daily-update.dto";
@@ -7,10 +6,7 @@ import { UpdateDailyUpdateDTO } from "./dtos/update-daily-update.dto";
 @Controller("daily-update")
 export class DailyUpdateController {
 
-    constructor(
-        private dailyUpdateService: DailyUpdateService,
-        private authService: AuthService
-    ) { }
+    constructor(private dailyUpdateService: DailyUpdateService) { }
 
     /**
      *Add new daily update.

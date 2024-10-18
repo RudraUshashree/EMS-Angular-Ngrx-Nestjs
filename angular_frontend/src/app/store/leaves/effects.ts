@@ -39,7 +39,11 @@ import { LeavesService } from 'src/app/services/leaves.service';
 @Injectable()
 export class LeaveEffects {
 
-  constructor(private actions$: Actions, private leavesService: LeavesService, private snackBarService: SnackBarService) { }
+  constructor(
+    private actions$: Actions,
+    private leavesService: LeavesService,
+    private snackBarService: SnackBarService
+  ) { }
 
   //Add Leaves
   addLeave$ = createEffect(() => this.actions$.pipe(

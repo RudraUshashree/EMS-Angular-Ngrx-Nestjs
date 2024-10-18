@@ -53,7 +53,6 @@ export class EmployeeDashboardComponent implements OnInit, OnDestroy {
   currentEmployee!: IEmployee | null;
   showUpdateProfileForm: boolean = false;
 
-
   /**
   * Constructor to initialize the component with necessary services.
   * @param authService - Service for authentication related tasks.

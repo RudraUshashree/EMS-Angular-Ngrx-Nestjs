@@ -133,9 +133,3 @@ EmployeeSchema.method("isValid", async function (userPwd: string) {
     const isMatched = await bcrypt.compare(userPwd, hassedPwd);
     return isMatched;
 })
-
-// EmployeeSchema.pre("find", function (next: Function) {
-//     // this.populate({ path: "emp", select: { token: -1 } })
-//     this.select("token")
-//     next();
-// })

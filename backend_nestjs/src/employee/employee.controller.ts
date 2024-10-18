@@ -1,4 +1,4 @@
-import { Body, Controller, Get, InternalServerErrorException, Param, Post, Put, Query, UploadedFiles, UseInterceptors } from "@nestjs/common";
+import { Body, Controller, Get, Param, Post, Put, Query, UploadedFiles, UseInterceptors } from "@nestjs/common";
 import { EmployeeService } from "./employee.service";
 import { FilesInterceptor } from "@nestjs/platform-express";
 import { diskStorage } from 'multer';

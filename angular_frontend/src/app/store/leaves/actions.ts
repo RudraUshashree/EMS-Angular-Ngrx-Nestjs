@@ -1,5 +1,13 @@
 import { createAction, props } from '@ngrx/store';
-import { ILeave, ILeaveAddPayload, ILeaveAddResponse, ILeaveDeleteResponse, ILeavesResponse, IUpdateEmployeeLeaveStatusPayload, IUpdateEmployeeLeaveStatusResponse } from 'src/app/models/leaves.model';
+import {
+  ILeave,
+  ILeaveAddPayload,
+  ILeaveAddResponse,
+  ILeaveDeleteResponse,
+  ILeavesResponse,
+  IUpdateEmployeeLeaveStatusPayload,
+  IUpdateEmployeeLeaveStatusResponse
+} from 'src/app/models/leaves.model';
 
 export const addLeave = createAction(
   '[Leave] Add Leave',

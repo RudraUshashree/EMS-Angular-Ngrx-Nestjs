@@ -1,5 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, Query, Req } from "@nestjs/common";
-import { AuthService } from "../auth/auth.service";
+import { Body, Controller, Get, Param, Post, Put, Query } from "@nestjs/common";
 import { ProjectService } from "./project.service";
 import { AddProjectDTO } from "./dtos/add-project.dto";
 import { UpdateProjectDTO } from "./dtos/update-project.dto";
@@ -7,10 +6,7 @@ import { UpdateProjectDTO } from "./dtos/update-project.dto";
 @Controller("project")
 export class ProjectController {
 
-    constructor(
-        private projectService: ProjectService,
-        private authService: AuthService
-    ) { }
+    constructor(private projectService: ProjectService) { }
 
     /**
      *Add new project.

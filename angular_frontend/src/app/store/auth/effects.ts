@@ -2,7 +2,17 @@ import { SnackBarService } from './../../services/snackbar.service';
 import { Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { AuthService } from "src/app/services/auth.service";
-import { adminSignup, adminSignupError, adminSignupSuccess, login, loginError, loginSuccess, signup, signupError, signupSuccess } from "./actions";
+import {
+  adminSignup,
+  adminSignupError,
+  adminSignupSuccess,
+  login,
+  loginError,
+  loginSuccess,
+  signup,
+  signupError,
+  signupSuccess
+} from "./actions";
 import { catchError, exhaustMap, map, of } from "rxjs";
 import { IAdminSignupPayload, IAdminSignupResponse, ILoginPayload, ILoginResponse, ISignupResponse } from 'src/app/models/auth.model';
 
