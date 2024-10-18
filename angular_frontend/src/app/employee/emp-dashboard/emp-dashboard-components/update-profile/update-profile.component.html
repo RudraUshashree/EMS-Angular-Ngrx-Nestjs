@@ -1,9 +1,14 @@
 <mat-card>
   <mat-card-content>
-    <div class="d-flex justify-content-end p-3">
-      <button mat-mini-fab color="warn" (click)="onClose()">
-        <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="close"></mat-icon>
-      </button>
+    <div class="row">
+      <div class="col-12 text-center">
+        <mat-card-title>Update Profile</mat-card-title>
+      </div>
+      <div class="col-0 d-flex justify-content-end p-2">
+        <button mat-mini-fab color="warn" (click)="onClose()">
+          <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="close"></mat-icon>
+        </button>
+      </div>
     </div>
     <form class="basic-form" [formGroup]="updateEmployeeForm">
       <div class="row">
